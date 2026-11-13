@@ -4,11 +4,13 @@
 
 纯静态网页，没有后端，不需要安装或构建，也不引用任何外部资源。
 
+**在线玩：<https://wjlrain-pai101.github.io/pet-garden/>**
+
 ## 怎么玩
 
-- **本地**：双击 `index.html`。
-- **离线分享**：把 `萌宠小花园-单文件版.html` 这一个文件发到平板或手机上，用浏览器打开。
-- **在线**：部署到 Vercel 后访问分配的网址（见下文）。
+- **在线**：打开上面的网址。
+- **离线**：下载[单文件版](https://wjlrain-pai101.github.io/pet-garden/萌宠小花园-单文件版.html)，把这一个文件发到平板或手机上，用浏览器打开。
+- **本地**：下载整个仓库，双击 `index.html`。
 
 进度自动保存在浏览器里，按网址和设备分开，互不同步。
 
@@ -24,13 +26,11 @@
 | `js/minigames.js` | 五个小游戏和等级设置 |
 | `tools/build-single.js` | 生成单文件版 |
 
-## 部署到 Vercel
+## 发布
 
-1. 把这个仓库推到 GitHub。
-2. 打开 <https://vercel.com/new>，导入这个仓库。
-3. Framework Preset 选 **Other**，Build Command 和 Output Directory 都留空，点 Deploy。
+网站用 GitHub Pages 托管，直接发布这个仓库 `main` 分支的根目录，没有构建步骤。
 
-之后每次推送到 `main` 分支，Vercel 会自动重新发布。
+每次推送到 `main`，GitHub 会自动重新发布。页面有 10 分钟缓存，更新后可能要等一会儿或强制刷新才能看到。
 
 ## 改完代码以后
 
