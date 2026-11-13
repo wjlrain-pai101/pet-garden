@@ -1,0 +1,11 @@
+# 本地工具配置和第一版的备份，不放进仓库
+.claude/
+backup-v1/
+
+# 系统和编辑器产生的杂项
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vercel/
+node_modules/

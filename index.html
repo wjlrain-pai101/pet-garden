@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>萌宠小花园</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="svg-defs"></div>
+<div id="app">
+
+  <!-- ========== 封面 ========== -->
+  <section id="screen-title" class="screen active">
+    <div class="title-bg" id="title-bg"></div>
+    <div class="title-inner">
+      <h1 class="logo"><span>萌</span><span>宠</span><span>小</span><span>花</span><span>园</span></h1>
+      <p class="slogan">养一只小可爱 · 种一园小花花 · 等一张远方的明信片</p>
+      <div class="title-pets" id="title-pets"></div>
+      <div class="title-btns">
+        <button class="btn big" id="btn-continue">继续游戏</button>
+        <button class="btn big green" id="btn-new">开始领养</button>
+      </div>
+      <p class="foot">点一下开始，会有轻轻的音乐</p>
+    </div>
+  </section>
+
+  <!-- ========== 选宠物 ========== -->
+  <section id="screen-choose" class="screen">
+    <h2 class="choose-title">选一只你最喜欢的小伙伴吧</h2>
+    <div class="choose-grid" id="choose-grid"></div>
+    <div class="choose-form">
+      <label>给它起个名字：<input id="pet-name" maxlength="6" autocomplete="off"></label>
+      <button class="btn big" id="btn-adopt">就是它啦</button>
+    </div>
+  </section>
+
+  <!-- ========== 游戏 ========== -->
+  <section id="screen-game" class="screen">
+    <header id="hud">
+      <div class="hud-row">
+        <div class="hud-pet">
+          <div class="hud-avatar" id="hud-avatar"></div>
+          <div class="hud-name">
+            <b id="hud-petname"></b><span class="lv" id="hud-lv"></span><span class="ill" id="hud-ill"></span>
+            <div class="exp"><i id="hud-exp"></i></div>
+          </div>
+        </div>
+        <div class="hud-right">
+          <div class="coin" id="hud-coin"><i data-ic="acorn"></i><b>0</b></div>
+          <button class="icon-btn" id="btn-tasks" title="今日任务"><i data-ic="tasks"></i><span class="dot"></span></button>
+          <button class="icon-btn" id="btn-music" title="声音开关"></button>
+          <button class="icon-btn" id="btn-menu" title="设置"><i data-ic="gear"></i></button>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat" data-k="hunger"><i data-ic="bowl"></i><em>饱饱</em><div class="bar"><i></i></div></div>
+        <div class="stat" data-k="clean"><i data-ic="drop"></i><em>干净</em><div class="bar"><i></i></div></div>
+        <div class="stat" data-k="happy"><i data-ic="heart"></i><em>开心</em><div class="bar"><i></i></div></div>
+        <div class="stat" data-k="energy"><i data-ic="bolt"></i><em>精力</em><div class="bar"><i></i></div></div>
+      </div>
+    </header>
+
+    <main id="stage">
+      <!-- 小屋 -->
+      <div class="scene" id="scene-home">
+        <div class="bg"></div>
+        <div class="wall-cards" id="wall-cards"></div>
+        <div class="night-mask"></div>
+        <div class="away-note" id="away-note"></div>
+        <div class="pet-zone" id="pet-zone">
+          <div class="bubble" id="bubble"></div>
+          <div class="prop" id="prop"></div>
+          <div class="pet" id="pet"></div>
+          <div class="tub" id="tub"></div>
+          <div class="zzz">Z<small>z</small><sub>z</sub></div>
+        </div>
+        <div id="bath-layer"></div>
+      </div>
+      <!-- 花园 -->
+      <div class="scene" id="scene-garden">
+        <div class="bg"></div>
+        <i class="deco cloud c1" data-ic="cloud"></i><i class="deco cloud c2" data-ic="cloud"></i>
+        <div class="garden-tip">点空地播种 · 点小苗浇水 · 成熟了就收获</div>
+        <div class="garden-wrap">
+          <div class="g-row">
+            <button class="mailbox" id="mailbox"></button>
+            <div class="pet small" id="pet-garden"></div>
+            <button class="guest" id="guest"></button>
+          </div>
+          <div class="plots" id="plots"></div>
+        </div>
+      </div>
+      <!-- 游乐场 -->
+      <div class="scene" id="scene-play">
+        <div class="bg"></div>
+        <i class="deco kite" data-ic="kite"></i><i class="deco cloud c2" data-ic="cloud"></i>
+        <div class="panel">
+          <h2>林间空地 · 玩游戏捡橡果</h2>
+          <div class="game-cards" id="game-cards"></div>
+        </div>
+      </div>
+      <!-- 商店 -->
+      <div class="scene" id="scene-shop">
+        <div class="bg"></div>
+        <div class="panel">
+          <div class="tabs" id="shop-tabs">
+            <button class="tab" data-tab="food">食物</button>
+            <button class="tab" data-tab="seed">种子</button>
+            <button class="tab" data-tab="wear">装扮</button>
+            <button class="tab" data-tab="gear">旅行用品</button>
+          </div>
+          <div class="shop-grid" id="shop-grid"></div>
+        </div>
+      </div>
+      <!-- 旅行手帐 -->
+      <div class="scene" id="scene-album">
+        <div class="panel album">
+          <div class="tabs" id="album-tabs">
+            <button class="tab" data-tab="cards">明信片</button>
+            <button class="tab" data-tab="souv">特产</button>
+            <button class="tab" data-tab="stickers">贴纸</button>
+          </div>
+          <div id="album-body"></div>
+        </div>
+      </div>
+    </main>
+
+    <div id="actions">
+      <button class="act" data-act="feed"><i data-ic="apple"></i><em>喂食</em></button>
+      <button class="act" data-act="bath"><i data-ic="tub"></i><em>洗澡</em></button>
+      <button class="act" data-act="sleep"><i data-ic="moon"></i><em>睡觉</em></button>
+      <button class="act" data-act="talent"><i data-ic="note"></i><em>才艺</em></button>
+      <button class="act" data-act="dress"><i data-ic="bow"></i><em>装扮</em></button>
+      <button class="act" data-act="travel"><i data-ic="backpack"></i><em>旅行</em></button>
+    </div>
+
+    <nav id="nav">
+      <button data-scene="home"><i data-ic="house"></i>小屋</button>
+      <button data-scene="garden"><i data-ic="garden"></i>花园<span class="dot"></span></button>
+      <button data-scene="play"><i data-ic="kite"></i>游乐场</button>
+      <button data-scene="shop"><i data-ic="basket"></i>商店</button>
+      <button data-scene="album"><i data-ic="book"></i>手帐<span class="dot"></span></button>
+    </nav>
+  </section>
+</div>
+
+<!-- 小游戏窗口 -->
+<div id="game" class="game-overlay">
+  <div class="game-box">
+    <div class="game-head">
+      <span id="g-title"></span><span id="g-info"></span>
+      <button class="g-close" id="g-close">×</button>
+    </div>
+    <div class="game-body" id="g-body"></div>
+  </div>
+</div>
+
+<div id="modal-root"></div>
+<div id="banner"></div>
+<div id="toast"></div>
+<div id="fx"></div>
+<div id="grain"></div>
+
+<script src="js/art.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/minigames.js"></script>
+</body>
+</html>
