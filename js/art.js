@@ -35,12 +35,13 @@ function _eye(x, y, mood, r) {
   if (mood === 'sleep') return `<path d="M${x - r - 2} ${y} q${r + 2} ${r} ${r * 2 + 4} 0"/>`;
   if (mood === 'joy' || mood === 'eat') return `<path d="M${x - r - 2} ${y + 3} q${r + 2} ${-r * 1.7} ${r * 2 + 4} 0"/>`;
   // 着凉：半睁着的眼睛；肚子疼：疼得眯成 > <
-  if (mood === 'cold') return `<path d="M${x - r} ${y - 1} a${r} ${r} 0 0 0 ${r * 2} 0z" fill="${C.line}" stroke-width="2"/>`;
+  if (mood === 'cold' || mood === 'fever') return `<path d="M${x - r} ${y - 1} a${r} ${r} 0 0 0 ${r * 2} 0z" fill="${C.line}" stroke-width="2"/>`;
   if (mood === 'tummy') { const s = x < 100 ? 1 : -1; return `<path d="M${x - s * r} ${y - r * .9} L${x + s * r * .7} ${y} L${x - s * r} ${y + r * .9}" stroke-width="3.200"/>`; }
   let s = `<g class="eye" stroke="none"><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r * 1.14}" fill="${C.line}"/><circle cx="${x - r * 0.3}" cy="${y - r * 0.42}" r="${r * 0.34}" fill="#fff"/></g>`;
-  if (mood === 'sad') {
-    const left = x < 100;
-    s += `<path d="M${x - r - 3} ${y - r - (left ? 4 : 10)} L${x + r + 3} ${y - r - (left ? 10 : 4)}" stroke-width="2.6"/>`;
+  if (mood === 'sad' || mood === 'throat') {
+    const left = x < 100 && mood === 'sad';
+    const l = x < 100;
+    s += `<path d="M${x - r - 3} ${y - r - (l ? 4 : 10)} L${x + r + 3} ${y - r - (l ? 10 : 4)}" stroke-width="2.6"/>`;
     if (left) s += `<path d="M${x - r} ${y + r + 2} q-5 9 0 12 q5 -3 0 -12z" fill="${C.sky}" stroke-width="1.6"/>`;
   }
   return s;
@@ -50,7 +51,8 @@ function _blush(x1, x2, y) {
   return `<path d="${one(x1)} ${one(x2)}" stroke="${C.coral}" stroke-width="2.2" opacity=".75"/>`;
 }
 function _mouth(x, y, mood) {
-  if (mood === 'cold' || mood === 'tummy') return `<path d="M${x - 9} ${y + 6} q4.500 -5 9 0 q4.500 5 9 0" stroke-width="2.600"/>`;
+  if (mood === 'throat') return '';   // 嗓子疼戴着口罩，嘴巴看不见
+  if (mood === 'cold' || mood === 'tummy' || mood === 'fever') return `<path d="M${x - 9} ${y + 6} q4.500 -5 9 0 q4.500 5 9 0" stroke-width="2.600"/>`;
   if (mood === 'eat') return `<ellipse cx="${x}" cy="${y + 6}" rx="7" ry="8" fill="#C9705F" stroke-width="2.4"/>`;
   if (mood === 'sad') return `<path d="M${x - 8} ${y + 9} q8 -9 16 0" stroke-width="2.6"/>`;
   if (mood === 'happy' || mood === 'joy') return `<path d="M${x - 9} ${y + 1} q9 14 18 0z" fill="#C9705F" stroke-width="2.4"/>`;
@@ -177,6 +179,17 @@ function wearSVG(id, p) {
     }
     case 'glasses':
       return `<g fill="rgba(255,255,255,.35)" stroke-width="3.2"><circle cx="${e[0]}" cy="${e[2]}" r="14.5"/><circle cx="${e[1]}" cy="${e[2]}" r="14.5"/><path d="M${e[0] + 14.5} ${e[2]} L${e[1] - 14.5} ${e[2]}"/></g>`;
+    case 'beret':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M2 -24 l3 -9"/><path d="M-28 0 Q-33 -24 0 -25 Q33 -24 28 0 Q0 9 -28 0Z" fill="${C.coral}"/></g>`;
+    case 'flower': {
+      let pt = '';
+      for (let i = 0; i < 5; i++) pt += `<ellipse cx="0" cy="-8" rx="6" ry="7.500" fill="${C.pink}" stroke-width="2" transform="rotate(${i * 72})"/>`;
+      return `<g transform="translate(${hx + 32} ${hy + 16}) rotate(15)">${pt}<circle r="4.500" fill="${C.yellow}" stroke-width="2"/></g>`;
+    }
+    case 'cap':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M8 -3 Q42 -6 47 6 Q28 1 8 4Z" fill="#6F9DB5"/><path d="M-26 0 Q-26 -27 0 -27 Q26 -27 26 0Z" fill="${C.blue}"/><circle cy="-27" r="3.200" fill="${C.cream}" stroke-width="2"/></g>`;
+    case 'wizard':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-17 -2 Q-6 -30 9 -54 Q13 -26 18 -2Z" fill="#8E7DB8"/><path d="M-33 0 Q0 -11 33 0 Q0 9 -33 0Z" fill="#7C6BA6"/><polygon points="0,-30 2,-25 7,-25 3,-21.500 4.500,-16.500 0,-19.500 -4.500,-16.500 -3,-21.500 -7,-25 -2,-25" fill="${C.yellow}" stroke-width="1.600"/></g>`;
     case 'strawhat':
       return `<g transform="translate(${hx} ${hy + 12})"><ellipse rx="40" ry="10" fill="${C.sand}"/><path d="M-23 -1 Q-23 -28 0 -28 Q23 -28 23 -1" fill="${C.sand}"/><path d="M-22.5 -8 Q0 0 22.5 -8" stroke="${C.coral}" stroke-width="5"/></g>`;
   }
@@ -186,10 +199,19 @@ function petInner(type, mood, wear) {
   if (!PETS[type]) type = 'bird';
   const p = PETS[type];
   let extra = '';
-  if (mood === 'cold')   // 头上顶一个冰袋
+  if (mood === 'fever')  // 发烧：头上顶一个冰袋，脸蛋红红的
     extra = `<g transform="translate(${p.hat[0]} ${p.hat[1] + 8})"><path d="M-7 -22 l-4 -9 h22 l-4 9" fill="${C.sky}"/><path d="M-21 -1 Q-24 -23 0 -23 Q24 -23 21 -1 Q0 7 -21 -1Z" fill="${C.sky}"/><path d="M-10 -12 q3 -5 8 -6" stroke="#fff" stroke-width="2.400"/></g>`;
   if (mood === 'tummy')  // 头顶冒出一个晕乎乎的小圈
     extra = `<path d="M${p.hat[0] + 44} ${p.hat[1] - 2} m-9 0 a9 9 0 1 1 9 9 a5.500 5.500 0 1 1 -5.500 -5.500" stroke-width="2.600"/>`;
+  const e0 = p.eyes[0], e1 = p.eyes[1], cx = (e0 + e1) / 2, ey = p.eyes[2];
+  if (mood === 'fever')
+    extra += `<circle cx="${e0 - 9}" cy="${ey + 17}" r="10" fill="${C.red}" opacity=".4" stroke="none"/><circle cx="${e1 + 9}" cy="${ey + 17}" r="10" fill="${C.red}" opacity=".4" stroke="none"/>`;
+  if (mood === 'cold')   // 着凉：流鼻涕，冷得发抖
+    extra = `<path d="M${cx + 7} ${ey + 20} q-5 10 0 13 q5 -3 0 -13z" fill="${C.sky}" stroke-width="1.800"/>` +
+      `<path d="M${e0 - 34} ${ey - 8} l-9 -4 M${e0 - 37} ${ey + 5} l-10 0 M${e1 + 34} ${ey - 8} l9 -4 M${e1 + 37} ${ey + 5} l10 0" stroke="${C.blue}" stroke-width="2.600"/>`;
+  if (mood === 'throat') // 嗓子疼：戴口罩
+    extra = `<path d="M${cx - 23} ${ey + 14} L${e0 - 30} ${ey + 4} M${cx + 23} ${ey + 14} L${e1 + 30} ${ey + 4}" stroke-width="2"/>` +
+      `<rect x="${cx - 24}" y="${ey + 9}" width="48" height="29" rx="10" fill="${C.white}"/><path d="M${cx - 14} ${ey + 19} h28 M${cx - 14} ${ey + 28} h28" stroke="${C.blue}" stroke-width="1.600"/>`;
   return PET_DRAW[type](mood || 'normal') + (wear ? wearSVG(wear, p) : '') + extra;
 }
 function petSVG(type, mood, wear, forImage) {
@@ -508,11 +530,31 @@ const DESTS = {
   bamboo: { name: '竹林深处', time: 180, souv: 'bamboo',    pet: [108, 104, .42] },
   town:   { name: '灯笼小镇', time: 210, souv: 'tanghulu',  pet: [116, 37, .34] },
   snow:   { name: '雪山脚下', time: 240, souv: 'snowflake', pet: [86, 104, .42] },
-  camp:   { name: '星空营地', time: 240, souv: 'firefly',   pet: [12, 108, .4] }
+  camp:   { name: '星空营地', time: 240, souv: 'firefly',   pet: [12, 108, .4] },
+  sakura:    { name: '樱花小径', time: 150, souv: 'dango',        pet: [86, 104, .42] },
+  meadow:    { name: '青青草原', time: 150, souv: 'yogurt',       pet: [30, 104, .42] },
+  waterfall: { name: '彩虹瀑布', time: 210, souv: 'springwater',  pet: [4, 96, .42] },
+  desert:    { name: '沙漠绿洲', time: 210, souv: 'melon',        pet: [96, 104, .42] },
+  ocean:     { name: '海底世界', time: 240, souv: 'roll',         pet: [108, 56, .42] },
+  ferris:    { name: '摩天轮乐园', time: 210, souv: 'cottoncandy', pet: [84, 104, .42] }
 };
+/* 特产：每个地方一种，都可以吃或喝，比商店里的东西更管用。
+ * drink 表示是喝的；sweet 表示是甜食（连着吃太多甜的会肚子疼） */
 const SOUVS = {
-  tea: '花田花茶', onigiri: '新米饭团', egg: '温泉蛋', shell: '海螺贝壳',
-  bamboo: '鲜竹笋', tanghulu: '冰糖葫芦', snowflake: '雪花水晶', firefly: '萤火虫灯'
+  tea:         { name: '花田花茶',   ic: 'tea',         drink: true, thirst: 32, happy: 10 },
+  onigiri:     { name: '新米饭团',   ic: 'onigiri',     hunger: 36 },
+  egg:         { name: '温泉蛋',     ic: 'egg',         hunger: 26, energy: 10 },
+  shell:       { name: '贝壳酥',     ic: 'shell',       hunger: 20, happy: 12 },
+  bamboo:      { name: '鲜竹笋',     ic: 'bamboo',      hunger: 30 },
+  tanghulu:    { name: '冰糖葫芦',   ic: 'tanghulu',    hunger: 12, happy: 20, sweet: 1 },
+  snowflake:   { name: '雪花冰',     ic: 'shavedice',   drink: true, thirst: 22, happy: 15 },
+  firefly:     { name: '烤棉花糖',   ic: 'marshmallow', hunger: 10, happy: 22, sweet: 1 },
+  dango:       { name: '樱花团子',   ic: 'dango',       hunger: 18, happy: 15, sweet: 1 },
+  yogurt:      { name: '草原酸奶',   ic: 'yogurt',      drink: true, thirst: 26, hunger: 10 },
+  springwater: { name: '山泉水',     ic: 'springwater', drink: true, thirst: 42 },
+  melon:       { name: '沙漠蜜瓜',   ic: 'melon',       hunger: 16, thirst: 20 },
+  roll:        { name: '海苔饭卷',   ic: 'roll',        hunger: 32 },
+  cottoncandy: { name: '彩虹棉花糖', ic: 'cottoncandy', hunger: 6, happy: 26, sweet: 1 }
 };
 const _hill = (d, f) => `<path d="${d}" fill="${f}"/>`;
 const CARD_BG = {
@@ -618,7 +660,7 @@ function postcardSVG(cardId, petType, wear) {
   const pos = d.pet;
   const petG = `<g transform="translate(${pos[0]} ${pos[1]}) scale(${pos[2]})" stroke-width="${(2.4 / pos[2]).toFixed(1)}">${petInner(petType, 'joy', wear)}</g>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="4 4 292 192" preserveAspectRatio="xMidYMid slice">${G_OPEN('wob-m', 2.4)}` +
-    CARD_BG[p[0]](rare) + petG + (p[0] === 'spring' ? CARD_BG.springFront() : '') + '</g></svg>';
+    CARD_BG[p[0]](rare) + petG + (CARD_BG[p[0] + 'Front'] ? CARD_BG[p[0] + 'Front']() : '') + '</g></svg>';
 }
 
 /* ---------- 花园里的信箱和树桩 ---------- */
@@ -633,3 +675,127 @@ function stumpSVG() {
   return `<svg viewBox="0 0 120 56">${G_OPEN('wob-m', 2.6)}<path d="M14 20 q-2 24 -8 32 h108 q-6 -8 -8 -32z" fill="${C.dwood}"/><ellipse cx="60" cy="20" rx="46" ry="13" fill="#E2C79C"/>` +
     `<path d="M40 20 a20 5.500 0 0 0 40 0 M52 19 a8 2.500 0 0 0 16 0" stroke-width="1.600"/></g></svg>`;
 }
+
+/* ---------- 第二批图标：饮料、新食物、新药、新装扮、新旅行用品、新特产 ---------- */
+const _glass = liquid => `<path d="M11 7 h26 l-3 35 q0 2 -3 2 h-14 q-3 0 -3 -2z" fill="#EEF5F4"/><path d="M12.800 21 h22.400 l-1.900 21 h-18.600z" fill="${liquid}" stroke-width="1.600"/>`;
+const _slice = (rind, flesh) => `<path d="M2 14 A22.500 22.500 0 0 0 46 14Z" fill="${rind}"/><path d="M8 14 A16.500 16.500 0 0 0 40 14Z" fill="${flesh}" stroke-width="1.600"/>`;
+Object.assign(ICONS, {
+  // 喝的
+  water: _glass(C.sky),
+  milk: `<rect x="18" y="4" width="12" height="7" rx="2" fill="${C.blue}"/><path d="M17 11 h14 v5 q6 4 6 10 v15 q0 3 -3 3 h-20 q-3 0 -3 -3 v-15 q0 -6 6 -10z" fill="${C.white}"/><rect x="11" y="27" width="26" height="9" fill="${C.sky}" stroke-width="1.600"/>`,
+  juice: _glass(C.orange) + `<path d="M30 3 l-7 30" stroke="${C.red}" stroke-width="3"/><circle cx="38" cy="10" r="6" fill="${C.yellow}" stroke-width="1.800"/>`,
+  honey: `<rect x="14" y="5" width="20" height="7" rx="2" fill="${C.wood}"/><path d="M12 12 h24 q5 6 5 16 q0 15 -17 15 q-17 0 -17 -15 q0 -10 5 -16z" fill="${C.yellow}"/><path d="M24 20 q-7 9 0 14 q7 -5 0 -14z" fill="#F8E9B0" stroke-width="1.600"/>`,
+  cocoa: `<path d="M17 9 q-3 -3 0 -6 M26 9 q-3 -3 0 -6"/><path d="M34 22 q10 0 9 8 q-1 7 -9 6"/><path d="M7 16 h28 v19 q0 9 -9 9 h-10 q-9 0 -9 -9z" fill="${C.coral}"/><ellipse cx="21" cy="17" rx="14" ry="3.600" fill="${C.dwood}" stroke-width="1.600"/><rect x="16" y="12" width="9" height="7" rx="2.500" fill="${C.white}" stroke-width="1.600"/>`,
+  // 吃的
+  bread: `<path d="M6 26 Q4 12 16 12 Q24 6 32 12 Q44 12 42 26 V38 Q42 42 38 42 H10 Q6 42 6 38Z" fill="#E2B877"/><path d="M16 18 l-3 8 M24 16 l-3 9 M32 18 l-3 8" stroke-width="1.800"/>`,
+  cheese: `<path d="M4 34 L40 13 L44 34 V42 H4Z" fill="${C.yellow}"/><path d="M4 34 H44" stroke-width="1.800"/><circle cx="17" cy="38" r="2.600" fill="${C.orange}" stroke="none"/><circle cx="31" cy="27" r="3.200" fill="${C.orange}" stroke="none"/><circle cx="35" cy="38" r="2.200" fill="${C.orange}" stroke="none"/>`,
+  friedegg: `<path d="M8 26 Q4 12 18 12 Q26 4 34 12 Q46 16 42 28 Q44 42 28 42 Q12 46 8 26Z" fill="${C.white}"/><circle cx="25" cy="26" r="8.500" fill="${C.yellow}"/>`,
+  watermelon: _slice(C.green, C.red) + `<path d="M17 19 v.100 M24 25 v.100 M31 19 v.100 M24 17 v.100" stroke-width="3"/>`,
+  cookie: `<circle cx="24" cy="24" r="18" fill="#D9A866"/><path d="M16 17 v.100 M28 15 v.100 M32 26 v.100 M20 29 v.100 M26 34 v.100 M14 25 v.100" stroke="${C.dwood}" stroke-width="4.500"/>`,
+  pudding: `<path d="M3 41 h42"/><path d="M13 14 h22 l7 23 q0 4 -4 4 h-28 q-4 0 -4 -4z" fill="${C.yellow}"/><path d="M13 14 h22 l2.500 8 q-13.500 5 -27 0z" fill="${C.dwood}"/><circle cx="24" cy="9" r="4" fill="${C.red}"/>`,
+  candy: `<path d="M13 24 L3 15 V33Z M35 24 L45 15 V33Z" fill="${C.coral}"/><circle cx="24" cy="24" r="11.500" fill="${C.pink}"/><path d="M17 20 q7 -5 14 0 M17 28 q7 5 14 0" stroke-width="1.600"/>`,
+  tomato: `<circle cx="24" cy="28" r="17" fill="${C.red}"/><path d="M24 13 l-9 -5 l6 7 l-8 2 l11 2 l11 -2 l-8 -2 l6 -7z" fill="${C.green}" stroke-width="1.800"/>`,
+  // 药
+  pearsoup: `<path d="M17 12 q-3 -4 0 -8 M28 12 q-3 -4 0 -8"/><path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.200" fill="#F3E3A8" stroke-width="1.600"/><path d="M19 22 q-1 -7 5 -7 q6 0 5 7z" fill="${C.lgreen}" stroke-width="1.600"/>`,
+  feverpatch: `<g transform="rotate(-12 24 24)"><rect x="4" y="13" width="40" height="22" rx="7" fill="${C.sky}"/><path d="M13 20 h22 M13 28 h22" stroke="#fff" stroke-width="2.400"/></g>`,
+  vitamin: `<rect x="15" y="4" width="18" height="9" rx="2" fill="${C.orange}"/><rect x="10" y="13" width="28" height="31" rx="7" fill="${C.cream}"/><circle cx="24" cy="29" r="8.500" fill="${C.orange}"/><path d="M20 29 h8 M24 25 v8" stroke="#fff" stroke-width="2.600"/>`,
+  panacea: `<rect x="19" y="3" width="10" height="7" rx="2" fill="${C.wood}"/><path d="M20 10 v10 L8 38 q-2 6 4 6 h24 q6 0 4 -6 L28 20 v-10z" fill="#E6F0E8"/><path d="M14 30 L11.500 37 q-1.500 5 3 5 h19 q4.500 0 3 -5 L34 30z" fill="${C.purple}" stroke-width="1.600"/>` + _star(24, 36, 4.800, 2.100, C.yellow),
+  // 装扮
+  beret: `<path d="M25 11 l3 -7"/><path d="M5 30 Q1 11 24 11 Q47 11 43 30 Q24 39 5 30Z" fill="${C.coral}"/>`,
+  flowerclip: _petals(24, 24, 5, 9.500, 6.500, 8, C.pink) + `<circle cx="24" cy="24" r="5" fill="${C.yellow}"/>`,
+  cap: `<path d="M26 30 Q45 27 47 37 Q36 33 26 36Z" fill="#6F9DB5"/><path d="M7 32 Q7 9 24 9 Q41 9 41 32Z" fill="${C.blue}"/><circle cx="24" cy="9" r="3" fill="${C.cream}"/>`,
+  wizard: `<path d="M12 37 Q20 18 30 3 Q32 22 36 37Z" fill="#8E7DB8"/><path d="M3 40 Q24 30 45 40 Q24 47 3 40Z" fill="#7C6BA6"/>` + _star(25, 26, 4.800, 2.100, C.yellow),
+  // 旅行用品
+  umbrella: `<path d="M24 8 V40 q0 5 -5 4"/><path d="M4 26 Q6 8 24 8 Q42 8 44 26 Q38 20 34 26 Q29 20 24 26 Q19 20 14 26 Q10 20 4 26Z" fill="${C.coral}"/>`,
+  goggles: `<path d="M5 22 l-3 -3 M43 22 l3 -3"/><rect x="5" y="13" width="38" height="22" rx="10" fill="${C.sky}"/><path d="M24 13 v22" stroke-width="1.800"/><path d="M11 20 q3 -3 7 -3 M30 20 q3 -3 7 -3" stroke="#fff" stroke-width="2.200"/>`,
+  camera: `<rect x="16" y="7" width="13" height="8" rx="2" fill="#8C8478"/><rect x="4" y="14" width="40" height="27" rx="5" fill="#A39A8C"/><circle cx="24" cy="27" r="9.500" fill="${C.sky}"/><circle cx="24" cy="27" r="4" fill="${C.white}" stroke-width="1.600"/><circle cx="38" cy="20" r="2" fill="${C.yellow}" stroke="none"/>`,
+  // 特产
+  dango: `<path d="M24 47 V3"/><circle cx="24" cy="12" r="7.500" fill="${C.pink}"/><circle cx="24" cy="25" r="7.500" fill="${C.white}"/><circle cx="24" cy="38" r="7.500" fill="${C.lgreen}"/>`,
+  yogurt: `<path d="M12 13 h24 l-3 29 q0 2 -3 2 h-12 q-3 0 -3 -2z" fill="${C.white}"/><rect x="9" y="7" width="30" height="7" rx="2" fill="${C.blue}"/><path d="M17 26 q7 -7 14 0 q-7 8 -14 0z" fill="${C.pink}" stroke-width="1.600"/>`,
+  springwater: `<rect x="19" y="2" width="10" height="7" rx="2" fill="${C.blue}"/><path d="M17 9 h14 l3 8 v26 q0 3 -3 3 h-14 q-3 0 -3 -3 v-26z" fill="#EEF5F4"/><rect x="14" y="24" width="20" height="11" fill="${C.sky}" stroke-width="1.600"/>`,
+  melon: _slice(C.lgreen, '#F3C98B') + `<path d="M17 19 v.100 M24 23 v.100 M31 19 v.100" stroke="${C.dwood}" stroke-width="3"/>`,
+  roll: `<path d="M7 19 v13 a17 9 0 0 0 34 0 v-13" fill="#5E6B55"/><ellipse cx="24" cy="19" rx="17" ry="9" fill="${C.white}"/><circle cx="19" cy="18" r="3.800" fill="${C.orange}" stroke="none"/><circle cx="28" cy="21" r="3.800" fill="${C.green}" stroke="none"/>`,
+  cottoncandy: `<path d="M24 47 V28"/><path d="M10 27 a9 9 0 0 1 4 -17 a11 11 0 0 1 20 0 a9 9 0 0 1 4 17 a10.500 10.500 0 0 1 -28 0z" fill="${C.pink}"/><path d="M16 17 q4 -5 9 -3 M27 24 q4 1 6 -3" stroke="#fff" stroke-width="2"/>`,
+  marshmallow: `<path d="M5 45 L41 7"/><g transform="rotate(-46 27 19)"><rect x="18" y="11" width="18" height="16" rx="6" fill="${C.white}"/><path d="M22 16 q5 -3 10 0" stroke="${C.dwood}" stroke-width="2.400"/></g>`,
+  shavedice: `<path d="M10 26 Q12 5 24 5 Q36 5 38 26Z" fill="${C.white}"/><path d="M15 17 q9 -9 18 0" stroke="${C.red}" stroke-width="4.500" opacity=".75"/><path d="M5 26 h38 q-2 17 -19 17 q-17 0 -19 -17z" fill="${C.sky}"/>`
+});
+
+/* ---------- 第二批旅行目的地的明信片 ---------- */
+const _arcBow = (cx, cy, r) => `<path d="M${cx - r} ${cy} A${r} ${r} 0 0 1 ${cx + r} ${cy}" stroke="${C.coral}" stroke-width="6" opacity=".8"/><path d="M${cx - r + 9} ${cy} A${r - 9} ${r - 9} 0 0 1 ${cx + r - 9} ${cy}" stroke="${C.yellow}" stroke-width="6" opacity=".8"/><path d="M${cx - r + 18} ${cy} A${r - 18} ${r - 18} 0 0 1 ${cx + r - 18} ${cy}" stroke="${C.blue}" stroke-width="6" opacity=".8"/>`;
+const _burst = (x, y, c, s) => `<path d="M${x} ${y} l0 -${13 * s} M${x} ${y} l${11 * s} -${7 * s} M${x} ${y} l${11 * s} ${7 * s} M${x} ${y} l0 ${13 * s} M${x} ${y} l-${11 * s} ${7 * s} M${x} ${y} l-${11 * s} -${7 * s}" stroke="${c}" stroke-width="2.600"/>`;
+Object.assign(CARD_BG, {
+  sakura(r) {
+    let petals = '';
+    for (let i = 0, n = r ? 30 : 10; i < n; i++) { const x = (i * 53 + 17) % 296, y = (i * 37 + 11) % 150 + 18; petals += `<ellipse cx="${x}" cy="${y}" rx="3.400" ry="2" fill="#F2B8C0" stroke="none" transform="rotate(${i * 40} ${x} ${y})"/>`; }
+    const tree = (x, s) => `<path d="M${x} 152 q-4 -30 2 -${50 * s}" stroke="${C.dwood}" stroke-width="${7 * s}"/>` +
+      `<path d="M${x + 2 - 34 * s} ${152 - 52 * s} a${18 * s} ${16 * s} 0 0 1 ${14 * s} -${24 * s} a${22 * s} ${20 * s} 0 0 1 ${40 * s} 0 a${18 * s} ${16 * s} 0 0 1 ${14 * s} ${24 * s} a${34 * s} ${16 * s} 0 0 1 -${68 * s} 0z" fill="#F2B8C0"/>`;
+    return `<rect width="300" height="200" fill="#F7ECE6" stroke="none"/><circle cx="254" cy="34" r="15" fill="#F3D98B"/>
+      ${_hill('M0 124 Q90 96 170 120 T300 108 V200 H0Z', '#D6E5BD')}${tree(150, .7)}${tree(48, 1)}${tree(240, 1.150)}
+      ${_hill('M0 146 Q150 130 300 144 V200 H0Z', '#B9D398')}
+      <path d="M126 200 Q144 170 150 148 Q158 170 178 200Z" fill="#EFE3C4"/>${petals}
+      ${r ? `<rect x="196" y="168" width="56" height="20" rx="3" fill="${C.coral}" transform="rotate(-5 224 178)"/><g transform="translate(198 134) scale(.400)">${FRIEND_DRAW.duck()}</g>` : ''}`;
+  },
+  meadow(r) {
+    const sheep = (x, y) => `<path d="M${x - 6} ${y + 8} v7 M${x + 7} ${y + 8} v7" stroke-width="2"/><ellipse cx="${x}" cy="${y}" rx="15" ry="10" fill="${C.white}"/><circle cx="${x - 14}" cy="${y - 3}" r="6" fill="#5B4636" stroke-width="1.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 70 : 60}" cy="${r ? 60 : 36}" r="${r ? 24 : 17}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${r ? `<path d="M168 62 l-6 16 h12z" fill="${C.wood}" stroke-width="1.600"/><ellipse cx="168" cy="38" rx="19" ry="23" fill="${C.coral}"/><path d="M168 15 v46 M158 19 q-7 19 0 40 M178 19 q7 19 0 40" stroke-width="1.400"/>` : ''}
+      ${_hill('M0 122 Q80 84 160 112 T300 98 V200 H0Z', '#C9DDB0')}
+      <path d="M216 138 v-22 q26 -22 52 0 v22z" fill="${C.white}"/><path d="M210 118 q32 -30 64 0z" fill="${C.sand}"/><path d="M235 138 v-13 a7 7 0 0 1 14 0 v13" fill="${C.coral}"/>
+      ${_hill('M0 142 Q150 122 300 140 V200 H0Z', '#A9C987')}
+      ${sheep(152, 152)}${sheep(198, 170)}
+      <path d="M120 180 l-3 -8 M120 180 l0 -10 M120 180 l3 -8 M260 174 l-3 -8 M260 174 l0 -10 M260 174 l3 -8" stroke="${C.dgreen}" stroke-width="2"/>`;
+  },
+  waterfall(r) {
+    return `<rect width="300" height="200" fill="#DCECE6" stroke="none"/>
+      <path d="M-6 -6 H112 Q100 60 114 152 H-6Z" fill="#9DB89A"/><path d="M306 -6 H188 Q200 60 186 152 H306Z" fill="#8FAE8C"/>
+      <path d="M112 -6 H188 Q200 60 186 152 H114 Q100 60 112 -6Z" fill="#EEF5F4"/>
+      <path d="M128 2 q-6 70 2 144 M150 2 v146 M172 2 q6 70 -2 144" stroke="${C.blue}" stroke-width="2.400"/>
+      <path d="M40 60 L52 30 L64 60Z M236 76 L248 46 L260 76Z" fill="${C.dgreen}"/>
+      ${r ? _arcBow(150, 150, 96) : ''}
+      <path d="M38 152 Q150 134 262 152 Q252 192 150 194 Q48 192 38 152Z" fill="${C.sky}"/>
+      <g stroke="none" fill="#fff" opacity=".85"><ellipse cx="128" cy="150" rx="20" ry="9"/><ellipse cx="156" cy="146" rx="24" ry="10"/><ellipse cx="180" cy="152" rx="18" ry="8"/></g>
+      <path d="M-6 150 Q46 140 78 160 Q72 190 60 206 H-6Z" fill="#A9C987"/><path d="M306 150 Q254 140 222 160 Q228 190 240 206 H306Z" fill="#A9C987"/>`;
+  },
+  desert(r) {
+    const camel = (x, y) => `<path d="M${x} ${y} q4 -14 12 -8 q4 -10 10 0 q6 -6 10 2 l4 -11 l5 2 l-4 13 v15 h-4 v-11 h-22 v11 h-4z" fill="${C.dwood}" stroke-width="1.600"/>`;
+    const arm = d => `<path d="${d}" stroke="${C.line}" stroke-width="10"/><path d="${d}" stroke="${C.green}" stroke-width="5.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F3D2A8' : '#F6E9C8'}" stroke="none"/>
+      <circle cx="58" cy="42" r="${r ? 24 : 18}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 120 Q70 84 150 116 T300 100 V200 H0Z', '#EBD39A')}
+      ${r ? camel(172, 100) + camel(216, 96) : ''}
+      ${_hill('M0 148 Q100 126 190 144 T300 138 V200 H0Z', '#E3C27F')}
+      ${arm('M40 138 h-11 v-14')}${arm('M48 130 h11 v-12')}<path d="M36 156 V112 q0 -8 8 -8 q8 0 8 8 V156z" fill="${C.green}"/>
+      <ellipse cx="238" cy="172" rx="42" ry="12" fill="${C.sky}"/>
+      <path d="M262 166 q-7 -30 2 -54" stroke="${C.dwood}" stroke-width="6"/>
+      <path d="M264 112 q-26 -12 -38 6 q22 -6 38 -6z M264 112 q-10 -24 -32 -20 q18 6 32 20z M264 112 q22 -14 36 2 q-20 -4 -36 -2z M264 112 q8 -22 28 -22 q-14 8 -28 22z" fill="${C.green}" stroke-width="1.800"/>`;
+  },
+  ocean(r) {
+    let bub = '';
+    [[30, 40, 5], [52, 92, 3.500], [252, 60, 4.500], [272, 122, 3], [204, 28, 3.500], [96, 20, 3]].forEach(b => { bub += `<circle cx="${b[0]}" cy="${b[1]}" r="${b[2]}" stroke="#fff" stroke-width="1.800"/>`; });
+    const fish = (x, y, c, flip) => `<g transform="translate(${x} ${y}) scale(${flip ? -1 : 1} 1)"><path d="M-14 0 Q-4 -10 8 -2 L16 -8 V8 L8 2 Q-4 10 -14 0Z" fill="${c}"/><circle cx="-8" cy="-1.500" r="1.600" fill="${C.line}" stroke="none"/></g>`;
+    return `<rect width="300" height="200" fill="#8FC0D4" stroke="none"/>
+      <path d="M60 -6 L16 206 H92 L112 -6Z M172 -6 L192 206 H256 L212 -6Z" fill="#A9D2DF" stroke="none" opacity=".7"/>
+      ${fish(56, 64, C.orange)}${fish(246, 92, C.yellow, 1)}${fish(222, 44, C.pink)}
+      ${r ? `<path d="M176 158 q30 -32 82 -12 q10 -14 22 -12 q-4 12 -8 18 q-10 26 -62 22 q-28 -2 -34 -16z" fill="#6F9DB5"/><circle cx="204" cy="152" r="2.200" fill="${C.line}" stroke="none"/><rect x="26" y="158" width="36" height="24" rx="3" fill="${C.wood}"/><path d="M26 168 h36 M44 164 v8" stroke-width="2"/>` : ''}
+      ${_hill('M-6 178 Q150 162 306 176 V206 H-6Z', C.sand)}
+      <path d="M92 180 q-8 -16 0 -30 q8 -14 0 -28 M108 182 q8 -14 0 -28" stroke="${C.dgreen}" stroke-width="5"/>
+      <path d="M278 180 v-26 m0 12 l-11 -11 m11 4 l11 -13" stroke="${C.coral}" stroke-width="5"/>${bub}`;
+  },
+  oceanFront() {
+    return `<circle cx="150" cy="96" r="52" fill="rgba(255,255,255,.2)" stroke="#fff" stroke-width="2.600"/><path d="M116 70 q8 -15 23 -19" stroke="#fff" stroke-width="3.200"/>`;
+  },
+  ferris(r) {
+    let cab = '', st = '', lights = '';
+    const cs = [C.coral, C.yellow, C.blue, C.pink, C.lgreen, C.purple, C.orange, C.sky];
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, x = 210 + Math.cos(a) * 58, y = 90 + Math.sin(a) * 58; cab += `<path d="M210 90 L${x.toFixed(1)} ${y.toFixed(1)}" stroke-width="1.600"/><rect x="${(x - 8).toFixed(1)}" y="${(y - 6).toFixed(1)}" width="16" height="13" rx="3" fill="${cs[i]}" stroke-width="1.600"/>`; }
+    [[24, 26], [70, 44], [118, 20], [150, 52], [280, 30], [44, 70]].forEach(p => { st += `<circle cx="${p[0]}" cy="${p[1]}" r="2" fill="#FFF6C9"/>`; });
+    for (let i = 0; i < 9; i++) lights += `<circle cx="${14 + i * 15}" cy="${112 + Math.round(8 * Math.sin(i / 8 * Math.PI))}" r="3" fill="${cs[i % 8]}" stroke="none"/>`;
+    return `<rect width="300" height="200" fill="#3E4A7A" stroke="none"/><g stroke="none">${st}</g>
+      ${r ? _burst(64, 46, C.yellow, 1.100) + _burst(118, 70, C.coral, .800) + _burst(28, 84, C.pink, .700) : `<path d="M62 26 A15 15 0 1 0 76 50 A12 12 0 0 1 62 26Z" fill="#FFF6C9"/>`}
+      <path d="M210 90 L180 160 M210 90 L240 160" stroke-width="4"/><circle cx="210" cy="90" r="58"/>${cab}<circle cx="210" cy="90" r="6" fill="${C.yellow}"/>
+      ${_hill('M-6 158 Q150 146 306 156 V206 H-6Z', '#56755A')}
+      <path d="M8 162 L36 120 L64 162Z" fill="${C.coral}"/><path d="M28 162 L36 120 L44 162Z" fill="${C.cream}"/>
+      <path d="M10 112 Q76 126 140 112" stroke-width="1.600"/>${lights}`;
+  }
+});

@@ -55,6 +55,7 @@
       </div>
       <div class="stats">
         <div class="stat" data-k="hunger"><i data-ic="bowl"></i><em>饱饱</em><div class="bar"><i></i></div></div>
+        <div class="stat" data-k="thirst"><i data-ic="water"></i><em>水分</em><div class="bar"><i></i></div></div>
         <div class="stat" data-k="clean"><i data-ic="drop"></i><em>干净</em><div class="bar"><i></i></div></div>
         <div class="stat" data-k="happy"><i data-ic="heart"></i><em>开心</em><div class="bar"><i></i></div></div>
         <div class="stat" data-k="energy"><i data-ic="bolt"></i><em>精力</em><div class="bar"><i></i></div></div>
@@ -62,6 +63,7 @@
     </header>
 
     <main id="stage">
+      <div id="alert"></div>
       <!-- 小屋 -->
       <div class="scene" id="scene-home">
         <div class="bg"></div>
@@ -106,7 +108,9 @@
         <div class="panel">
           <div class="tabs" id="shop-tabs">
             <button class="tab" data-tab="food">食物</button>
+            <button class="tab" data-tab="drink">饮料</button>
             <button class="tab" data-tab="seed">种子</button>
+            <button class="tab" data-tab="med">药品</button>
             <button class="tab" data-tab="wear">装扮</button>
             <button class="tab" data-tab="gear">旅行用品</button>
           </div>

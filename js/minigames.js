@@ -20,7 +20,7 @@ const Games = (function () {
   const levelName = id => levelsOf(id)[lvOf(id) - 1];
 
   /* 宠物在家就用宠物；出门旅行了，就由来做客的小伙伴陪着玩 */
-  const buddy = () => S.trip ? (S.visitor ? S.visitor.id : 'hedgehog') : null;
+  const buddy = () => gone() ? (S.visitor ? S.visitor.id : 'hedgehog') : null;
   function playerSVG(mood) { const b = buddy(); return b ? friendSVG(b) : petSVG(S.pet.type, mood, S.wear); }
   function svgImg(svg) { const img = new Image(); img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); return img; }
   function playerImg() { const b = buddy(); return svgImg(b ? friendSVG(b, true) : petSVG(S.pet.type, 'happy', S.wear, true)); }
@@ -30,7 +30,7 @@ const Games = (function () {
 
   function open(id) {
     const g = LIST.find(x => x.id === id); if (!g) return;
-    if (!S.trip) {
+    if (!gone()) {
       if (S.sick) { toast(S.pet.name + ' 生病了，等它好了再一起玩吧'); return; }
       if (S.sleeping) { toast(S.pet.name + ' 正在睡觉呢，先叫它起床吧'); return; }
       if (S.stats.energy < 10) { toast(S.pet.name + ' 太累啦，让它睡一会儿再玩吧'); return; }
@@ -43,7 +43,7 @@ const Games = (function () {
     stop(); $('#g-info').textContent = '';
     const b = buddy();
     $('#g-body').innerHTML = `<div class="g-panel"><div class="g-big">${icon(g.ic)}</div><h2>${g.name}</h2><p>${g.how}</p>` +
-      (b ? `<p class="hint">${esc(S.pet.name)} 出门旅行了，这次由${FRIENDS[b].name}陪你玩</p>` : '') +
+      (b ? `<p class="hint">${esc(S.pet.name)} ${S.runaway ? '不在家' : '出门旅行了'}，这次由${FRIENDS[b].name}陪你玩</p>` : '') +
       `<span class="lv-label">${g.id === 'math' ? '选一个年级' : '选一个难度'}</span><div class="lv-pick" id="lv-pick">` +
       levelsOf(g.id).map((n, i) => `<button class="lv-btn${lvOf(g.id) === i + 1 ? ' on' : ''}" data-lv="${i + 1}">${n}</button>`).join('') +
       '</div><button class="btn big" id="g-start">开始</button></div>';
@@ -57,7 +57,7 @@ const Games = (function () {
   }
   function run(g) {
     stop();
-    if (!S.trip) { S.stats.energy = clamp(S.stats.energy - 10, 0, 100); updateHUD(); }
+    if (!gone()) { S.stats.energy = clamp(S.stats.energy - 10, 0, 100); updateHUD(); }
     $('#g-body').innerHTML = '';
     const G = {
       alive: true, lv: lvOf(g.id), body: $('#g-body'), offs: [], timers: [],
@@ -80,16 +80,16 @@ const Games = (function () {
     coins = Math.max(0, Math.round(coins));
     Sound.music('play'); Sound.sfx[coins > 0 ? 'level' : 'bad']();
     if (coins >= 15) confetti();
-    S.coins += coins; if (!S.trip) addStat('happy', 12);
+    S.coins += coins; if (!gone()) addStat('happy', 12);
     S.counters.game++; progress('game');
     addExp(12 + Math.min(20, coins)); afterAction();
     $('#g-info').textContent = '';
     $('#g-body').innerHTML = `<div class="g-panel"><div class="g-big">${coins >= 15 ? icon('trophy') : coins > 0 ? icon('star') : playerSVG('normal')}</div><h2>${text}</h2>
-      <p class="g-reward">${icon('acorn')}+${coins}${S.trip ? '' : '　' + icon('heart') + '+12'}</p>
+      <p class="g-reward">${icon('acorn')}+${coins}${gone() ? '' : '　' + icon('heart') + '+12'}</p>
       <div class="row"><button class="btn" id="g-again">再玩一次</button><button class="btn plain" id="g-exit">回空地</button></div></div>`;
     $('#g-again').onclick = () => {
       Sound.sfx.click();
-      if (!S.trip && S.stats.energy < 10) { close(); toast(S.pet.name + ' 玩累啦，让它睡一会儿吧'); return; }
+      if (!gone() && S.stats.energy < 10) { close(); toast(S.pet.name + ' 玩累啦，让它睡一会儿吧'); return; }
       run(g);
     };
     $('#g-exit').onclick = () => { Sound.sfx.click(); close(); };

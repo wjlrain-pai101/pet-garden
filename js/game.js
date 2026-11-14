@@ -14,6 +14,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;'
 const dayNum = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000); };
 
 /* ---------- 数据表 ---------- */
+/* 吃的和喝的。drink 表示是饮料（主要补“水分”）；sweet 表示是甜食，连着吃太多会肚子疼 */
 const FOODS = {
   millet:     { name: '小米',     ic: 'millet',     hunger: 16, price: 4 },
   seed:       { name: '瓜子',     ic: 'seed',       hunger: 16, price: 5 },
@@ -24,47 +25,88 @@ const FOODS = {
   corn:       { name: '玉米',     ic: 'corn',       hunger: 18, price: 6 },
   apple:      { name: '苹果',     ic: 'apple',      hunger: 14, happy: 4, price: 5 },
   strawberry: { name: '草莓',     ic: 'strawberry', hunger: 12, happy: 8, price: 7 },
-  cake:       { name: '小蛋糕',   ic: 'cake',       hunger: 10, happy: 16, price: 14 }
+  tomato:     { name: '番茄',     ic: 'tomato',     hunger: 12, thirst: 8, price: 5 },
+  watermelon: { name: '西瓜',     ic: 'watermelon', hunger: 10, thirst: 22, price: 9 },
+  bread:      { name: '小面包',   ic: 'bread',      hunger: 22, price: 8 },
+  friedegg:   { name: '煎蛋',     ic: 'friedegg',   hunger: 18, energy: 6, price: 9 },
+  cheese:     { name: '奶酪',     ic: 'cheese',     hunger: 16, happy: 6, price: 9 },
+  cookie:     { name: '曲奇',     ic: 'cookie',     hunger: 12, happy: 8, price: 8 },
+  pudding:    { name: '布丁',     ic: 'pudding',    hunger: 10, happy: 14, sweet: 1, price: 12 },
+  candy:      { name: '水果糖',   ic: 'candy',      hunger: 4,  happy: 12, sweet: 1, price: 6 },
+  cake:       { name: '小蛋糕',   ic: 'cake',       hunger: 10, happy: 16, sweet: 1, price: 14 },
+  water:      { name: '清水',     ic: 'water',      drink: true, thirst: 24, price: 2 },
+  milk:       { name: '牛奶',     ic: 'milk',       drink: true, thirst: 20, hunger: 8, price: 6 },
+  juice:      { name: '橙汁',     ic: 'juice',      drink: true, thirst: 22, happy: 6, price: 7 },
+  honey:      { name: '蜂蜜水',   ic: 'honey',      drink: true, thirst: 20, energy: 8, price: 8 },
+  cocoa:      { name: '热可可',   ic: 'cocoa',      drink: true, thirst: 14, happy: 14, sweet: 1, price: 10 }
 };
 const SEEDS = {
   carrot:     { name: '胡萝卜', ic: 'carrot',     time: 60,  give: 3, food: 'carrot',     price: 5 },
   millet:     { name: '小米',   ic: 'millet',     time: 60,  give: 4, food: 'millet',     price: 5 },
+  tomato:     { name: '番茄',   ic: 'tomato',     time: 75,  give: 3, food: 'tomato',     price: 6 },
   corn:       { name: '玉米',   ic: 'corn',       time: 90,  give: 3, food: 'corn',       price: 7 },
   strawberry: { name: '草莓',   ic: 'strawberry', time: 90,  give: 3, food: 'strawberry', price: 8 },
   sunflower:  { name: '向日葵', ic: 'sunflower',  time: 120, give: 4, food: 'seed',       price: 9 },
+  watermelon: { name: '西瓜',   ic: 'watermelon', time: 120, give: 2, food: 'watermelon', price: 10 },
   tulip:      { name: '郁金香', ic: 'tulip',      time: 75,  coins: 25, price: 8 },
   rose:       { name: '玫瑰',   ic: 'rose',       time: 110, coins: 40, price: 12 },
   ginger:     { name: '生姜',   ic: 'ginger',     time: 75,  give: 2, med: 'gingertea', price: 6 },
-  mint:       { name: '薄荷',   ic: 'mint',       time: 60,  give: 2, med: 'mint',      price: 6 }
+  mint:       { name: '薄荷',   ic: 'mint',       time: 60,  give: 2, med: 'mint',      price: 6 },
+  pear:       { name: '雪梨',   ic: 'pear',       time: 90,  give: 2, med: 'pearsoup',  price: 7 }
 };
-/* 生病很温和：不会变重，也不会有更坏的结果；吃药 + 休息就好，实在没药过几分钟也会自己好 */
+/* 药。tonic 是保健品（没病时吃，预防生病）；any 是什么病都能治 */
 const MEDS = {
-  gingertea: { name: '姜茶',   ic: 'gingertea', price: 8, desc: '着凉的时候喝' },
-  mint:      { name: '薄荷草', ic: 'mint',      price: 8, desc: '肚子疼的时候吃' }
+  gingertea:  { name: '姜茶',       ic: 'gingertea',  price: 8,  desc: '着凉的时候喝' },
+  mint:       { name: '薄荷草',     ic: 'mint',       price: 8,  desc: '肚子疼的时候吃' },
+  pearsoup:   { name: '冰糖梨汤',   ic: 'pearsoup',   price: 9,  desc: '嗓子疼的时候喝' },
+  feverpatch: { name: '退烧贴',     ic: 'feverpatch', price: 10, desc: '发烧的时候贴' },
+  vitamin:    { name: '维生素软糖', ic: 'vitamin',    price: 15, desc: '没病时吃，10 分钟内不生病', tonic: true },
+  panacea:    { name: '万能药水',   ic: 'panacea',    price: 40, desc: '什么病都能马上治好', any: true }
 };
+/* 四种小毛病：某项状态（stat）低于 below，先出现症状；一直不处理就会生病。
+ * rest 是吃药以后怎么休息：sleep 要睡一觉，rest 歇一会儿就行 */
+const SICK_AFTER = 150;      // 出现症状后，多少秒不处理会生病
+const RUNAWAY_AFTER = 600;   // 生病后，多少秒不吃药会离家出走（关掉游戏的时间也算）
 const ILLS = {
-  cold:  { name: '着凉了', med: 'gingertea', how: '给它喝一杯姜茶，再让它睡一觉就会好', say: '阿嚏！我好像着凉了…',
-           lines: [['阿嚏！鼻子痒痒的…', '想喝一杯热热的姜茶…'], ['喝了姜茶暖暖的，想睡一觉…']] },
-  tummy: { name: '肚子疼', med: 'mint', how: '给它吃一点薄荷草，再休息一会儿就会好', say: '哎哟，肚子好疼…',
-           lines: [['肚子咕噜咕噜地疼…', '想吃一点薄荷草…'], ['舒服多了，再歇一会儿就好…']] }
+  cold:   { name: '着凉了', short: '着凉', stat: 'clean',  below: 20, symptom: '在打喷嚏',     cause: '身上太脏', fix: '洗澡',   act: 'bath',  fx: '阿嚏！',
+            med: 'gingertea',  rest: 'sleep', how: '给它喝一杯姜茶，再让它睡一觉就会好', say: '阿嚏！我好像着凉了…',
+            lines: [['阿嚏！鼻子痒痒的…', '想喝一杯热热的姜茶…'], ['喝了姜茶暖暖的，想睡一觉…']] },
+  tummy:  { name: '肚子疼', short: '肚子疼', stat: 'hunger', below: 15, symptom: '肚子咕咕直叫', cause: '饿得太久', fix: '吃东西', act: 'feed',  fx: '咕噜噜…',
+            med: 'mint',       rest: 'rest',  how: '给它吃一点薄荷草，再休息一会儿就会好', say: '哎哟，肚子好疼…',
+            lines: [['肚子咕噜咕噜地疼…', '想吃一点薄荷草…'], ['舒服多了，再歇一会儿就好…']] },
+  throat: { name: '嗓子疼', short: '嗓子疼', stat: 'thirst', below: 15, symptom: '嗓子干干的',   cause: '太久没喝水', fix: '喝水',  act: 'drink', fx: '咳咳…',
+            med: 'pearsoup',   rest: 'rest',  how: '给它喝一碗冰糖梨汤，再休息一会儿就会好', say: '咳咳… 嗓子好疼…',
+            lines: [['咳咳… 说话都疼…', '想喝一碗甜甜的梨汤…'], ['嗓子润润的，再歇一会儿就好…']] },
+  fever:  { name: '发烧了', short: '发烧', stat: 'energy', below: 12, symptom: '没精神、额头烫', cause: '太累了',   fix: '睡觉',   act: 'sleep', fx: '呼… 好烫',
+            med: 'feverpatch', rest: 'sleep', how: '给它贴上退烧贴，再让它睡一觉就会好', say: '头晕晕的… 我好像发烧了…',
+            lines: [['头好晕，脸烫烫的…', '想贴一张凉凉的退烧贴…'], ['凉凉的好舒服，想睡一觉…']] }
 };
 const WEARS = {
-  bow:     { name: '蝴蝶结',   ic: 'bow',     price: 30 },
-  star:    { name: '星星发卡', ic: 'star',    price: 30 },
-  hat:     { name: '派对帽',   ic: 'party',   price: 50 },
-  glasses: { name: '小眼镜',   ic: 'glasses', price: 60 },
-  wreath:  { name: '花环',     ic: 'wreath',  price: 80 },
-  crown:   { name: '小皇冠',   ic: 'crown',   price: 150 }
+  bow:     { name: '蝴蝶结',   ic: 'bow',        price: 30 },
+  star:    { name: '星星发卡', ic: 'star',       price: 30 },
+  flower:  { name: '小花发夹', ic: 'flowerclip', price: 35 },
+  beret:   { name: '贝雷帽',   ic: 'beret',      price: 40 },
+  cap:     { name: '棒球帽',   ic: 'cap',        price: 45 },
+  hat:     { name: '派对帽',   ic: 'party',      price: 50 },
+  glasses: { name: '小眼镜',   ic: 'glasses',    price: 60 },
+  wreath:  { name: '花环',     ic: 'wreath',     price: 80 },
+  wizard:  { name: '魔法帽',   ic: 'wizard',     price: 120 },
+  crown:   { name: '小皇冠',   ic: 'crown',      price: 150 }
 };
+/* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
   bell:     { name: '幸运铃铛', ic: 'bell',     price: 18, desc: '更容易遇见珍贵风景', once: true },
-  strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以走到海边', to: ['sea'] },
-  lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林和小镇', to: ['bamboo', 'town'] },
-  tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山和营地', to: ['snow', 'camp'] }
+  strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边和沙漠', to: ['sea', 'desert'] },
+  umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布', to: ['waterfall'] },
+  lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇和乐园', to: ['bamboo', 'town', 'ferris'] },
+  camera:   { name: '小相机',   ic: 'camera',   price: 70, desc: '更容易多带回一张明信片' },
+  tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山和营地', to: ['snow', 'camp'] },
+  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring'];
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow'];
 const TASKS = [
   { id: 'feed',    name: '喂宠物吃 3 次饭',   need: 3, coin: 15, ic: 'apple' },
+  { id: 'drink',   name: '给宠物喝 2 次水',   need: 2, coin: 10, ic: 'water' },
   { id: 'water',   name: '给植物浇 5 次水',   need: 5, coin: 15, ic: 'drop' },
   { id: 'game',    name: '玩 2 次小游戏',     need: 2, coin: 20, ic: 'kite' },
   { id: 'bath',    name: '给宠物洗 1 次澡',   need: 1, coin: 15, ic: 'tub' },
@@ -90,16 +132,16 @@ const STICKERS = [
 /* ---------- 存档 ---------- */
 let S = null;
 function newState(type, name) {
-  const inv = { apple: 2 }; inv[PETS[type].fav] = 3;
+  const inv = { apple: 2, water: 2 }; inv[PETS[type].fav] = 3;
   return {
     v: 2, pet: { type, name }, level: 1, exp: 0, coins: 60,
-    stats: { hunger: 62, clean: 74, happy: 70, energy: 86 },
+    stats: { hunger: 62, thirst: 68, clean: 74, happy: 70, energy: 86 },
     inv, seeds: { carrot: 2, tulip: 1 }, owned: [], wear: null, gear: {},
     plots: [null, null, null, null, null, null],
     sleeping: false, last: Date.now(),
     trip: null, mail: [], cards: {}, cardLog: [], souv: {}, visitor: null, albumNew: false,
     daily: { day: 0, signed: false, prog: {}, claimed: {} }, streak: 0,
-    sick: null, meds: {}, risk: { cold: 0, tummy: 0 }, sweet: 0, immune: 0,
+    sick: null, runaway: null, meds: {}, risk: { cold: 0, tummy: 0, throat: 0, fever: 0 }, sweet: 0, immune: 0, souvSeen: {},
     counters: { feed: 0, water: 0, harvest: 0, game: 0, bath: 0, pet: 0, trip: 0, guest: 0, cure: 0 },
     gameLv: { math: 3, catch: 2, fly: 2, memory: 2, melody: 2 },   // 小游戏等级：口算是年级，其余是 1 轻松 / 2 普通 / 3 挑战
     stickers: [], phrases: [], soundOn: true
@@ -122,7 +164,9 @@ function loadState() {
     if (!Array.isArray(s.plots) || s.plots.length !== 6) s.plots = b.plots;
     if (s.trip && !DESTS[s.trip.dest]) s.trip = null;
     if (s.sick && !ILLS[s.sick.type]) s.sick = null;
-    if (!s.risk) s.risk = { cold: 0, tummy: 0 };
+    s.risk = Object.assign({ cold: 0, tummy: 0, throat: 0, fever: 0 }, d.risk);
+    if (!d.souvSeen) { s.souvSeen = {}; for (const k in s.souv) if (s.souv[k]) s.souvSeen[k] = 1; }   // 旧存档：以前拿到过的特产都算见过
+    if (s.runaway && !ILLS[s.runaway.type]) s.runaway = null;
     if (!s.meds) s.meds = {};
     return s;
   } catch (e) { return null; }
@@ -222,7 +266,7 @@ function updateHUD() {
   $('#hud-lv').innerHTML = 'Lv.' + S.level + '<em> ' + levelTitle(S.level) + '</em>';
   $('#hud-exp').style.width = (S.exp / needExp(S.level) * 100) + '%';
   $('#hud-coin b').textContent = S.coins;
-  $('#hud-ill').textContent = S.sick && !S.trip ? ILLS[S.sick.type].name : '';
+  $('#hud-ill').textContent = S.runaway ? '离家出走了' : S.sick && !S.trip ? ILLS[S.sick.type].name : '';
   for (const k in S.stats) {
     const el = $(`.stat[data-k="${k}"]`); if (!el) continue;
     el.querySelector('.bar i').style.width = S.stats[k] + '%';
@@ -242,9 +286,9 @@ function calcMood() {
   if (S.sleeping) return 'sleep';
   if (tempMood) return tempMood;
   if (S.sick) return S.sick.type;
-  const s = S.stats, mn = Math.min(s.hunger, s.clean, s.happy, s.energy);
+  const s = S.stats, mn = Math.min(s.hunger, s.thirst, s.clean, s.happy, s.energy);
   if (mn < 25) return 'sad';
-  return (s.hunger + s.clean + s.happy + s.energy) / 4 >= 72 ? 'happy' : 'normal';
+  return (s.hunger + s.thirst + s.clean + s.happy + s.energy) / 5 >= 72 ? 'happy' : 'normal';
 }
 function renderPet(force) {
   const mood = calcMood(), sig = S.pet.type + '|' + mood + '|' + S.wear;
@@ -255,7 +299,7 @@ function renderPet(force) {
     const el = $(id); el.innerHTML = svg;
     el.className = el.className.replace(/\s*mood-\w+/g, '') + ' mood-' + mood;
   });
-  $('#hud-avatar').innerHTML = petSVG(S.pet.type, ['sleep', 'sad', 'cold', 'tummy'].includes(mood) ? mood : 'normal', S.wear);
+  $('#hud-avatar').innerHTML = petSVG(S.pet.type, ['sleep', 'sad', 'cold', 'tummy', 'throat', 'fever'].includes(mood) ? mood : 'normal', S.wear);
   $('#scene-home').classList.toggle('night', S.sleeping);
   document.documentElement.style.setProperty('--grow', (0.84 + Math.min(S.level, 10) * 0.016).toFixed(3));
 }
@@ -273,7 +317,9 @@ function say(t, ms) {
   clearTimeout(sayTimer); sayTimer = setTimeout(() => b.classList.remove('show'), ms || 2800);
 }
 /* 宠物不在家或在睡觉时，照顾类的操作先不做 */
+const gone = () => !!(S.trip || S.runaway);   // 宠物现在不在家（去旅行了，或者离家出走了）
 function blocked() {
+  if (S.runaway) { toast(S.pet.name + ' 离家出走了，先去把它接回来吧'); return true; }
   if (S.trip) { toast(S.pet.name + ' 出门旅行了，等它回来吧'); return true; }
   if (S.sleeping) { toast('嘘… ' + S.pet.name + ' 正在睡觉，先叫它起床吧'); return true; }
   return false;
@@ -282,7 +328,7 @@ function petCenter() { const r = $('#pet').getBoundingClientRect(); return { x: 
 
 let lastPat = 0;
 function patPet(e) {
-  if (bath || S.trip) return;
+  if (bath || gone()) return;
   if (S.sleeping) { say('呼… 呼…', 1500); return; }
   const now = Date.now(); if (now - lastPat < 450) return; lastPat = now;
   floatFx(icon(pick(['heart', 'heart', 'sparkle'])), e.clientX, e.clientY - 20);
@@ -298,13 +344,14 @@ const LINES = {
   clean: ['身上脏脏的，想洗澡澡~', '帮我洗个澡好不好？'],
   happy: ['陪我玩一会儿好吗？', '有点无聊，我们去游乐场吧！'],
   energy: ['好困呀，想睡觉了…', '眼睛快睁不开啦…'],
+  thirst: ['好渴呀，想喝水~', '嘴巴干干的，有喝的吗？'],
   ok: ['今天也要开开心心！', '和你在一起真好~', '花园里的小苗长高了吗？', '记得多喝水哦！', '好想去远一点的地方看看呀~', '我们是最好的朋友！', '写完作业再来找我玩哦~'],
   parrot: ['你好！你好！', '早上好呀！', '彩虹真漂亮！', '我会说话，厉害吧！']
 };
 function autoSay() {
-  if (S.sleeping || S.trip || scene !== 'home' || bath || Games.active) return;
+  if (S.sleeping || gone() || scene !== 'home' || bath || Games.active) return;
   if (S.sick) { say(pick(ILLS[S.sick.type].lines[S.sick.treated ? 1 : 0])); return; }
-  const s = S.stats, keys = ['hunger', 'clean', 'happy', 'energy'];
+  const s = S.stats, keys = ['hunger', 'thirst', 'clean', 'happy', 'energy'];
   const low = keys.filter(k => s[k] < 35).sort((a, b) => s[a] - s[b])[0];
   if (low) { say(pick(LINES[low])); return; }
   if (S.mail.length) { say('信箱里好像有我寄的明信片！'); return; }
@@ -317,52 +364,84 @@ function autoSay() {
 /* 在家时自己走走、看看书、喝喝茶 */
 const IDLE = { book: '今天看一本图画书~', tea: '喝口茶，歇一会儿~', note: '哼一首小曲儿 ♪' };
 function idleAct() {
-  if (S.sleeping || S.trip || S.sick || bath || scene !== 'home' || Games.active || modalOpen()) return;
+  if (S.sleeping || gone() || S.sick || bath || scene !== 'home' || Games.active || modalOpen()) return;
   const z = $('#pet-zone'), x = pick([30, 50, 50, 68]), prop = $('#prop');
   if ((z.dataset.x || '50') !== String(x)) { z.dataset.x = x; z.style.left = x + '%'; petAnim('walk', 1800); }
   const act = pick([null, 'book', 'tea', 'note']);
   if (act) {
     prop.innerHTML = icon(act);
-    setTimeout(() => { if (S && !S.trip && !bath) { prop.classList.add('show'); if (Math.random() < .6) say(IDLE[act]); } }, 1900);
+    setTimeout(() => { if (S && !gone() && !S.sick && !bath) { prop.classList.add('show'); if (Math.random() < .6) say(IDLE[act]); } }, 1900);
   } else prop.classList.remove('show');
 }
 function resetIdle() { const z = $('#pet-zone'); z.dataset.x = '50'; z.style.left = '50%'; $('#prop').classList.remove('show'); }
 
-/* ---------- 喂食 ---------- */
-const myFoods = () => Object.keys(S.inv).filter(k => S.inv[k] > 0 && FOODS[k]);
+/* ---------- 喂食：吃的、喝的、旅行带回来的特产 ---------- */
+const myFoods = () => Object.keys(S.inv).filter(k => S.inv[k] > 0 && FOODS[k] && !FOODS[k].drink);
+const myDrinks = () => Object.keys(S.inv).filter(k => S.inv[k] > 0 && FOODS[k] && FOODS[k].drink);
+const mySouvs = () => Object.keys(S.souv).filter(k => S.souv[k] > 0 && SOUVS[k]);
 const noFoodHTML = '<p class="empty">食物吃光啦！<br>去商店买一些，或者去花园种出来吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button><button class="btn small green" data-go="garden">去花园</button></div>';
-function openFeed() {
+/* 一样东西吃下去的效果，写成一行小字 */
+const fxText = it => [it.hunger && '饱饱+' + it.hunger, it.thirst && '水分+' + it.thirst, it.happy && '开心+' + it.happy, it.energy && '精力+' + it.energy].filter(Boolean).join(' ');
+let feedTab = 'food';
+function openFeed(tab) {
   if (blocked() || bath) return;
-  const ids = myFoods(), fav = PETS[S.pet.type].fav;
-  let html = '<h2>喂点什么好呢？</h2>';
-  if (!ids.length) html += noFoodHTML;
-  else html += '<div class="item-grid">' + ids.map(k => itemBtn(`data-food="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') + '</div>';
-  const m = openModal(html);
+  if (typeof tab === 'string') feedTab = tab;
+  const fav = PETS[S.pet.type].fav;
+  let body = '';
+  if (feedTab === 'souv') {
+    const ids = mySouvs();
+    body = ids.length
+      ? '<div class="item-grid">' + ids.map(k => itemBtn(`data-souv="${k}"`, SOUVS[k].ic, SOUVS[k].name, '×' + S.souv[k])).join('') + '</div>'
+      : '<p class="empty">还没有特产。<br>送它去旅行，回来时会带着当地的特产~</p>';
+  } else {
+    const ids = feedTab === 'drink' ? myDrinks() : myFoods();
+    if (ids.length) body = '<div class="item-grid">' + ids.map(k => itemBtn(`data-food="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') + '</div>';
+    else body = feedTab === 'drink'
+      ? '<p class="empty">没有喝的了！<br>去商店买点清水或牛奶吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button></div>'
+      : noFoodHTML;
+    if (feedTab === 'food' && S.meds.vitamin) body += '<h3>保健</h3><div class="item-grid">' + itemBtn('data-vit="1"', 'vitamin', '维生素软糖', '×' + S.meds.vitamin + ' 防生病') + '</div>';
+  }
+  const tabs = [['food', '吃的'], ['drink', '喝的'], ['souv', '特产']];
+  const m = openModal('<h2>喂点什么好呢？</h2><div class="tabs">' + tabs.map(t => `<button class="tab${feedTab === t[0] ? ' on' : ''}" data-ft="${t[0]}">${t[1]}</button>`).join('') + '</div>' + body);
   m.addEventListener('click', e => {
-    const b = e.target.closest('[data-food]'), g = e.target.closest('[data-go]');
+    const t = e.target.closest('[data-ft]'), b = e.target.closest('[data-food]'), sv = e.target.closest('[data-souv]'), g = e.target.closest('[data-go]');
+    if (t) { Sound.sfx.click(); openFeed(t.dataset.ft); return; }
     if (b) { closeModal(); feed(b.dataset.food); }
-    if (g) { closeModal(); shopTab = 'food'; switchScene(g.dataset.go); }
+    if (sv) { closeModal(); feed(sv.dataset.souv, true); }
+    if (e.target.closest('[data-vit]')) { closeModal(); takeVitamin(); }
+    if (g) { closeModal(); shopTab = feedTab === 'drink' ? 'drink' : 'food'; switchScene(g.dataset.go); }
   });
 }
-function feed(id) {
-  const f = FOODS[id]; if (!f || !S.inv[id]) return;
-  if (S.stats.hunger >= 96) { say('我吃得饱饱的，吃不下啦~'); return; }
-  if (id === 'cake' && S.sick && S.sick.type === 'tummy') { say('肚子疼，现在不能吃蛋糕…'); return; }
-  S.inv[id]--; $('#prop').classList.remove('show');
+/* isSouv 为 true 时吃的是特产 */
+function feed(id, isSouv) {
+  const it = isSouv ? SOUVS[id] : FOODS[id], stock = isSouv ? S.souv : S.inv;
+  if (!it || !stock[id]) return;
+  if (S.stats[it.drink ? 'thirst' : 'hunger'] >= 96) { say(it.drink ? '喝得饱饱的，喝不下啦~' : '我吃得饱饱的，吃不下啦~'); return; }
+  if (it.sweet && S.sick && S.sick.type === 'tummy') { say('肚子疼，现在不能吃甜的…'); return; }
+  stock[id]--; $('#prop').classList.remove('show');
   const pc = petCenter(), st = $('#stage').getBoundingClientRect();
-  flyIcon(f.ic, st.left + st.width / 2, st.bottom - 10, pc.x, pc.r.top + pc.r.height * .56, () => {
-    Sound.sfx.eat(); setTempMood('eat', 1300); petAnim('chomp', 1300);
-    addStat('hunger', f.hunger); if (f.happy) addStat('happy', f.happy);
-    if (PETS[S.pet.type].fav === id) { addStat('happy', 10); say('哇！是我最爱吃的' + f.name + '！'); }
-    else say(pick(['啊呜啊呜，真好吃！', '谢谢你，好香呀~', '吃饱饱，长高高！']));
-    floatFx(icon('bowl') + '+' + f.hunger, pc.x, pc.r.top);
-    S.counters.feed++; progress('feed'); addExp(8); afterAction();
-    if (id === 'cake') {   // 蛋糕连着吃太多会肚子疼：第二块先提醒，第三块才生病
+  flyIcon(it.ic, st.left + st.width / 2, st.bottom - 10, pc.x, pc.r.top + pc.r.height * .56, () => {
+    Sound.sfx[it.drink ? 'water' : 'eat'](); setTempMood('eat', 1300); petAnim('chomp', 1300);
+    ['hunger', 'thirst', 'happy', 'energy'].forEach(k => { if (it[k]) addStat(k, it[k]); });
+    if (isSouv) say(pick(['是旅行带回来的' + it.name + '！真好吃~', '一尝就想起那次旅行啦~']));
+    else if (PETS[S.pet.type].fav === id) { addStat('happy', 10); say('哇！是我最爱吃的' + it.name + '！'); }
+    else say(it.drink ? pick(['咕嘟咕嘟，真解渴！', '好喝！谢谢你~']) : pick(['啊呜啊呜，真好吃！', '谢谢你，好香呀~', '吃饱饱，长高高！']));
+    floatFx(icon(it.drink ? 'water' : 'bowl') + '+' + (it.drink ? it.thirst : it.hunger), pc.x, pc.r.top);
+    S.counters.feed++; progress(it.drink ? 'drink' : 'feed'); addExp(isSouv ? 12 : 8); afterAction();
+    if (it.sweet) {   // 甜食连着吃太多会肚子疼：第二份先提醒，第三份才生病
       S.sweet = (S.sweet || 0) + 1;
       if (S.sweet >= 2.6) setTimeout(() => { if (S) getSick('tummy'); }, 1600);
-      else if (S.sweet >= 1.6) setTimeout(() => { if (S && !S.sick) say('蛋糕真好吃！不过再吃就要肚子疼啦~', 3600); }, 1600);
+      else if (S.sweet >= 1.6) setTimeout(() => { if (S && !S.sick) say('甜甜的真好吃！不过再吃甜的就要肚子疼啦~', 3600); }, 1600);
     }
   });
+}
+function takeVitamin() {
+  if (S.sick) { say('已经生病了，要吃对症的药才行…'); return; }
+  if (!S.meds.vitamin) return;
+  S.meds.vitamin--; S.immune = 600; S.risk = { cold: 0, tummy: 0, throat: 0, fever: 0 };
+  Sound.sfx.eat(); setTempMood('eat', 1200); petAnim('chomp', 1200);
+  say('酸酸甜甜的！接下来 10 分钟我都不会生病~', 3800);
+  afterAction();
 }
 
 /* ---------- 洗澡 ---------- */
@@ -426,7 +505,7 @@ function endBath() {
 /* ---------- 睡觉 ---------- */
 function toggleSleep() {
   if (bath) return;
-  if (S.trip) { blocked(); return; }
+  if (gone()) { blocked(); return; }
   if (!S.sleeping) {
     if (S.stats.energy >= 92 && !S.sick) { say('我现在精神满满，还不想睡~'); return; }
     S.sleeping = true; resetIdle(); say('晚安…', 2000);
@@ -438,9 +517,9 @@ function updateActions() {
   const set = (act, ic, label) => { const b = $(`.act[data-act=${act}]`); b.querySelector('i').innerHTML = icon(ic); b.querySelector('em').textContent = label; };
   set('sleep', S.sleeping ? 'sun' : 'moon', S.sleeping ? '起床' : '睡觉');
   const p = PETS[S.pet.type];
-  if (S.sick && !S.trip) set('talent', 'med', '吃药'); else set('talent', p.talentIcon, p.talent);
+  if (S.sick && !gone()) set('talent', 'med', '吃药'); else set('talent', p.talentIcon, p.talent);
   set('travel', 'backpack', S.trip ? '旅行中' : '旅行');
-  $$('.act').forEach(b => b.classList.toggle('off', !!S.trip && b.dataset.act !== 'travel'));
+  $$('.act').forEach(b => b.classList.toggle('off', gone() && !(S.trip && b.dataset.act === 'travel')));
 }
 
 /* ---------- 才艺（小鸟唱歌 / 鹦鹉学说话 / 其他宠物表演） ---------- */
@@ -498,15 +577,63 @@ function parrotSay(t) {
   afterAction();
 }
 
-/* ---------- 生病和照顾 ----------
- * 着凉：身上太脏太久，或者从雪山/营地回来偶尔会得 → 喝姜茶，再睡一觉
- * 肚子疼：饿太久，或者连着吃三块蛋糕 → 吃薄荷草，再休息一会儿
- * 生病时不能旅行、表演和玩小游戏，但不会变重；没有药的话，照顾好了几分钟后也会自己好 */
+/* ---------- 生病、照顾和离家出走 ----------
+ * 1. 某项状态太低 → 先出现症状，画面上方提示“再不处理，多久后会生病”
+ * 2. SICK_AFTER 秒不处理 → 生病。生病时不能旅行、表演和玩小游戏
+ * 3. 吃对症的药 + 休息 → 康复；万能药水可以马上治好
+ * 4. 生病后 RUNAWAY_AFTER 秒一直不吃药（关掉游戏的时间也算）→ 离家出走，
+ *    要带着药和它最爱的食物去接，接回来病就好了 */
+const NO_RISK = () => ({ cold: 0, tummy: 0, throat: 0, fever: 0 });
+/* 把秒数写成“2 分 30 秒”，按 5 秒取整，免得数字跳得太快 */
+function fmtLeft(s) {
+  s = Math.max(5, Math.ceil(s / 5) * 5);
+  const m = Math.floor(s / 60), r = s % 60;
+  return (m ? m + ' 分' : '') + (r ? (m ? ' ' : '') + r + ' 秒' : (m ? '钟' : ''));
+}
+/* 现在有没有“快要生病”的症状：有的话返回最紧急的那一种 */
+function symptom() {
+  if (!S || S.sick || gone() || S.immune > 0) return null;
+  let best = null;
+  for (const t in ILLS) {
+    const ill = ILLS[t];
+    if (S.stats[ill.stat] < ill.below) { const left = SICK_AFTER - (S.risk[t] || 0); if (!best || left < best.left) best = { type: t, left }; }
+  }
+  return best;
+}
+/* 画面上方的提醒条：症状、生病、离家出走三种情况都在这里说清楚还剩多久、该怎么办 */
+function renderAlert() {
+  const el = $('#alert'), name = esc(S.pet.name);
+  let html = '', bad = false;
+  if (S.runaway) { bad = true; html = `<b>${name} 离家出走了</b><span>带上药和它最爱吃的，去接它回家</span><button data-al="fetch">去接它</button>`; }
+  else if (S.sick && !S.trip) {
+    const k = S.sick, ill = ILLS[k.type]; bad = true;
+    if (k.treated) html = `<b>${name} ${ill.name}</b><span>已经吃过药了，${ill.rest === 'sleep' ? '让它睡一觉就会好' : '再休息一会儿就会好'}</span>` + (ill.rest === 'sleep' && !S.sleeping ? '<button data-al="sleep">去睡觉</button>' : '');
+    else html = `<b>${name} ${ill.name}</b><span>再不吃药，${fmtLeft(RUNAWAY_AFTER - k.age)}后它会离家出走</span><button data-al="med">去治疗</button>`;
+  } else {
+    const sy = symptom();
+    if (sy) { const ill = ILLS[sy.type]; html = `<b>${name} ${ill.symptom}</b><span>${ill.cause}，再不${ill.fix}，${fmtLeft(sy.left)}后会${ill.short}</span><button data-al="${ill.act}">去${ill.fix}</button>`; }
+  }
+  if (bath || Games.active) html = '';   // 洗澡和玩小游戏时先不打扰
+  if (el.dataset.h === html) return;
+  el.dataset.h = html; el.innerHTML = html;
+  el.classList.toggle('on', !!html); el.classList.toggle('bad', bad);
+}
+function alertAction(act) {
+  Sound.sfx.click();
+  if (act === 'fetch') { openFetch(); return; }
+  if (scene !== 'home') switchScene('home');
+  if (act === 'bath') startBath();
+  else if (act === 'feed') openFeed('food');
+  else if (act === 'drink') openFeed('drink');
+  else if (act === 'sleep') { if (!S.sleeping) toggleSleep(); }
+  else if (act === 'med') openMeds();
+}
+
 function getSick(type) {
-  if (!S || S.sick || S.trip) return;
+  if (!S || S.sick || gone() || S.immune > 0) return;
   S.sick = { type, treated: false, rest: 0, age: 0 };
-  S.risk = { cold: 0, tummy: 0 }; S.sweet = 0;
-  resetIdle(); renderPet(true); updateActions(); updateHUD(); Sound.sfx.bad();
+  S.risk = NO_RISK(); S.sweet = 0;
+  resetIdle(); renderPet(true); updateActions(); updateHUD(); renderAlert(); Sound.sfx.bad();
   say(ILLS[type].say, 4000);
   if (!Games.active && !modalOpen()) showSickHelp(); else toast(S.pet.name + ' ' + ILLS[type].name);
   save();
@@ -514,63 +641,127 @@ function getSick(type) {
 function showSickHelp() {
   const ill = ILLS[S.sick.type], med = MEDS[ill.med];
   const m = openModal(`<div class="hero">${petSVG(S.pet.type, S.sick.type, S.wear)}</div><h2>${esc(S.pet.name)} ${ill.name}</h2>
-    <p>别担心，${ill.how}。<br>${med.name}可以在商店买，也可以在花园里种。</p>
+    <p>别担心，${ill.how}。<br>${med.name}可以在商店买${Object.keys(SEEDS).some(s => SEEDS[s].med === ill.med) ? '，也可以在花园里种' : ''}。</p>
+    <p class="hint">要是 ${fmtLeft(RUNAWAY_AFTER)}内一直不给它吃药，它会难过得离家出走。</p>
     <div class="row"><button class="btn" id="sick-go">去照顾它</button></div>`);
   $('#sick-go', m).onclick = () => { closeModal(); if (scene !== 'home') switchScene('home'); openMeds(); };
 }
 function openMeds() {
-  if (!S.sick || S.trip || bath) return;
-  const k = S.sick, ill = ILLS[k.type], key = ill.med, med = MEDS[key], n = S.meds[key] || 0;
-  if (k.treated) { toast(k.type === 'cold' ? '已经喝过姜茶啦，让它睡一觉吧' : '已经吃过药啦，让它休息一会儿'); return; }
+  if (!S.sick || gone() || bath) return;
+  const k = S.sick, ill = ILLS[k.type], key = ill.med, med = MEDS[key], n = S.meds[key] || 0, pn = S.meds.panacea || 0;
+  if (k.treated) { toast(ill.rest === 'sleep' ? '已经吃过药啦，让它睡一觉吧' : '已经吃过药啦，让它休息一会儿'); return; }
   if (S.sleeping) { toast('它睡着了，先叫醒再吃药吧'); return; }
   let html = `<h2>${esc(S.pet.name)} ${ill.name}</h2><p>${ill.how}。</p>`;
-  if (n) html += '<div class="item-grid">' + itemBtn('data-med="1"', med.ic, med.name, '×' + n) + '</div>';
-  else html += `<p class="empty">家里没有${med.name}了。</p><div class="row"><button class="btn small" data-go="shop">去商店买</button><button class="btn small green" data-go="garden">去花园种</button></div>`;
+  if (n || pn) html += '<div class="item-grid">' + (n ? itemBtn(`data-med="${key}"`, med.ic, med.name, '×' + n) : '') + (pn ? itemBtn('data-med="panacea"', 'panacea', '万能药水', '×' + pn + ' 马上好') : '') + '</div>';
+  else html += `<p class="empty">家里没有${med.name}了。</p><div class="row"><button class="btn small" data-go="shop">去商店买</button>` +
+    (Object.keys(SEEDS).some(s => SEEDS[s].med === key) ? '<button class="btn small green" data-go="garden">去花园种</button>' : '') + '</div>';
   const m = openModal(html);
   m.addEventListener('click', e => {
-    const g = e.target.closest('[data-go]');
-    if (g) { closeModal(); shopTab = 'food'; switchScene(g.dataset.go); }
-    if (e.target.closest('[data-med]')) { closeModal(); giveMed(); }
+    const g = e.target.closest('[data-go]'), b = e.target.closest('[data-med]');
+    if (g) { closeModal(); shopTab = g.dataset.go === 'shop' ? 'med' : shopTab; switchScene(g.dataset.go); }
+    if (b) { closeModal(); giveMed(b.dataset.med); }
   });
 }
-function giveMed() {
-  const k = S.sick; if (!k || k.treated) return;
-  const key = ILLS[k.type].med; if (!S.meds[key]) return;
-  S.meds[key]--; k.treated = true; k.rest = 0;
+function giveMed(key) {
+  const k = S.sick; if (!k || k.treated || !S.meds[key]) return;
+  const ill = ILLS[k.type], all = key === 'panacea';
+  if (!all && key !== ill.med) return;
+  S.meds[key]--;
+  if (!all) { k.treated = true; k.rest = 0; }
   const pc = petCenter(), st = $('#stage').getBoundingClientRect();
   flyIcon(MEDS[key].ic, st.left + st.width / 2, st.bottom - 10, pc.x, pc.r.top + pc.r.height * .56, () => {
     Sound.sfx.eat(); setTempMood('eat', 1300); petAnim('chomp', 1300);
-    say(k.type === 'cold' ? '暖暖的… 我想睡一觉' : '舒服一点了，让我歇一会儿', 3600);
-    if (k.type === 'cold') setTimeout(() => toast('点“睡觉”，让它好好睡一觉'), 1600);
+    if (all) { setTimeout(() => { if (S && S.sick) cure(); }, 1300); return; }
+    say(ill.rest === 'sleep' ? '舒服一点了… 我想睡一觉' : '舒服一点了，让我歇一会儿', 3600);
+    renderAlert();
   });
   save();
 }
 function cure() {
   S.sick = null; S.immune = 240; S.counters.cure = (S.counters.cure || 0) + 1;
   addStat('happy', 15);
-  renderPet(true); updateActions(); updateHUD(); playSceneMusic();
+  renderPet(true); updateActions(); updateHUD(); renderAlert(); playSceneMusic();
   Sound.sfx.level(); confetti(); banner(S.pet.name + ' 好起来啦');
   say('我好啦！谢谢你照顾我~', 3800);
   addExp(10); afterAction();
 }
+
+/* 离家出走：不是永远离开，带上药和它最爱的食物就能接回来 */
+function runAway() {
+  const k = S.sick; if (!k || gone()) return;
+  if (bath) endBath();
+  S.runaway = { type: k.type, since: Date.now() };
+  S.sick = null; S.sleeping = false;
+  resetIdle(); renderAway(); renderPet(true); updateActions(); updateHUD(); renderAlert(); playSceneMusic(); Sound.sfx.bad();
+  if (!Games.active && !modalOpen()) showRunawayHelp(); else toast(S.pet.name + ' 离家出走了…', 3600);
+  save();
+}
+function showRunawayHelp() {
+  const ill = ILLS[S.runaway.type], fav = FOODS[PETS[S.pet.type].fav];
+  const m = openModal(`<div class="hero">${icon('mail')}</div><h2>${esc(S.pet.name)} 离家出走了</h2>
+    <p>它${ill.short}太久，一直没有吃到药，<br>难过地去了刺猬栗子家。</p>
+    <p>带上<b>${MEDS[ill.med].name}</b>（或万能药水）和它最爱的<b>${fav.name}</b>去接它，它就会回家。</p>
+    <div class="row"><button class="btn" id="ra-go">去接它回家</button></div>`);
+  $('#ra-go', m).onclick = () => { closeModal(); openFetch(); };
+}
+function openFetch() {
+  const r = S.runaway; if (!r) return;
+  const ill = ILLS[r.type], favId = PETS[S.pet.type].fav, fav = FOODS[favId];
+  const medKey = S.meds[ill.med] ? ill.med : (S.meds.panacea ? 'panacea' : null), hasFood = (S.inv[favId] || 0) > 0;
+  const row = (ic, name, ok) => `<div class="need${ok ? ' ok' : ''}">${icon(ic)}<b>${name}</b><span>${ok ? '准备好了' : '还没有'}</span></div>`;
+  let html = `<h2>去接 ${esc(S.pet.name)} 回家</h2><p>它在刺猬栗子家等你。要带上这两样：</p>` +
+    row(MEDS[medKey || ill.med].ic, medKey === 'panacea' ? '万能药水' : MEDS[ill.med].name + '（或万能药水）', !!medKey) + row(fav.ic, '它最爱的' + fav.name, hasFood);
+  if (medKey && hasFood) html += '<div class="row"><button class="btn big green" id="fetch-go">出发</button></div>';
+  else html += '<div class="row">' + (medKey ? '' : '<button class="btn small" data-shop="med">去买药</button>') + (hasFood ? '' : '<button class="btn small" data-shop="food">去买吃的</button>') + '</div>';
+  const m = openModal(html);
+  m.addEventListener('click', e => {
+    const s = e.target.closest('[data-shop]');
+    if (s) { closeModal(); shopTab = s.dataset.shop; switchScene('shop'); }
+    if (e.target.closest('#fetch-go')) { closeModal(); fetchBack(medKey, favId); }
+  });
+}
+function fetchBack(medKey, favId) {
+  if (!S.runaway || !S.meds[medKey] || !S.inv[favId]) return;
+  S.meds[medKey]--; S.inv[favId]--;
+  S.runaway = null; S.immune = 240; S.risk = NO_RISK();
+  const st = S.stats, floor = { hunger: 50, thirst: 50, clean: 45, energy: 50, happy: 45 };
+  for (const k in floor) st[k] = Math.max(st[k], floor[k]);
+  if (scene !== 'home') switchScene('home');
+  renderAway(); resetIdle(); renderPet(true); updateActions(); updateHUD(); renderAlert(); playSceneMusic();
+  Sound.sfx.trip(); confetti(); setTempMood('joy', 2500);
+  openModal(`<div class="hero">${petSVG(S.pet.type, 'joy', S.wear)}</div><h2>${esc(S.pet.name)} 回家啦</h2>
+    <p>它吃了药，又吃到了最爱的东西，病已经好了。</p>
+    <div class="row"><button class="btn" data-close>欢迎回家</button></div>`,
+    { onClose: () => say('对不起，让你担心了… 下次我不舒服，要早点给我吃药哦', 4200) });
+  addExp(5); afterAction();
+}
+
+let symNow = null, symFx = 0;
 function tickSick(dt) {
-  if (S.trip) return;
+  if (gone()) { renderAlert(); return; }
   S.immune = Math.max(0, (S.immune || 0) - dt);
-  S.sweet = Math.max(0, (S.sweet || 0) - dt / 120);   // 两分钟消化掉一块蛋糕
+  S.sweet = Math.max(0, (S.sweet || 0) - dt / 120);   // 两分钟消化掉一份甜食
   const k = S.sick, st = S.stats;
   if (!k) {
-    if (S.immune > 0 || Games.active) return;
-    const r = S.risk;
-    r.cold = st.clean < 20 ? r.cold + dt : Math.max(0, r.cold - dt);
-    r.tummy = st.hunger < 15 ? r.tummy + dt : Math.max(0, r.tummy - dt);
-    if (r.cold >= 90) getSick('cold'); else if (r.tummy >= 90) getSick('tummy');
-    return;
+    if (!Games.active && S.immune <= 0) {
+      for (const t in ILLS) { const ill = ILLS[t]; S.risk[t] = st[ill.stat] < ill.below ? (S.risk[t] || 0) + dt : Math.max(0, (S.risk[t] || 0) - dt * 2); }
+      const due = Object.keys(ILLS).filter(t => S.risk[t] >= SICK_AFTER)[0];
+      if (due) { symNow = null; getSick(due); renderAlert(); return; }
+    }
+    const sy = symptom();
+    if (sy && sy.type !== symNow && !Games.active) { const ill = ILLS[sy.type]; toast(S.pet.name + ' ' + ill.symptom + '：' + ill.cause + '，快' + ill.fix + '吧', 3800); Sound.sfx.pop(); }
+    symNow = sy ? sy.type : null;
+    if (sy && scene === 'home' && !S.sleeping && !bath && !modalOpen() && (symFx += dt) >= 6) {
+      symFx = 0; const pc = petCenter(); floatFx(ILLS[sy.type].fx, pc.x, pc.r.top + 10);
+    }
+  } else {
+    k.age += dt;
+    if (k.treated) {
+      if (ILLS[k.type].rest === 'sleep') { if (S.sleeping) k.rest += dt; if (k.rest >= 20) { S.sleeping = false; cure(); } }
+      else { if (!Games.active) k.rest += dt; if (k.rest >= 30) cure(); }
+    } else if (k.age >= RUNAWAY_AFTER) runAway();
   }
-  k.age += dt;
-  if (k.treated) {
-    if (k.type === 'cold') { if (S.sleeping) k.rest += dt; if (k.rest >= 20) { S.sleeping = false; cure(); } }
-    else { if (!Games.active) k.rest += dt; if (k.rest >= 30) cure(); }
-  } else if (k.age > 360 && Math.min(st.hunger, st.clean, st.energy) >= 50) cure();
+  if (S) renderAlert();
 }
 
 /* ---------- 装扮 ---------- */
@@ -607,6 +798,7 @@ function openPack() {
   if (S.sick) { say('生病了不能出门，先把病养好吧…'); return; }
   if (S.stats.hunger < 40) { say('肚子还饿着呢，吃饱了再出发吧~'); return; }
   if (S.stats.energy < 35) { say('有点困，睡一觉再去旅行吧~'); return; }
+  if (S.stats.thirst < 30) { say('好渴呀，先喝点水再出发吧~'); return; }
   const foods = myFoods(), fav = PETS[S.pet.type].fav;
   if (!foods.length) {
     const m0 = openModal('<h2>准备行囊</h2><p class="empty">出门要带便当，可是家里没有吃的了。</p>' + noFoodHTML.replace(/^<p.*?<\/p>/, ''));
@@ -614,16 +806,20 @@ function openPack() {
     return;
   }
   const tools = Object.keys(GEAR).filter(k => !GEAR[k].once && S.gear[k]);
-  const sel = { food: null, tool: null, bell: false };
+  const drinks = myDrinks();
+  const sel = { food: null, drink: null, tool: null, bell: false };
   let html = `<h2>准备行囊</h2><p>带上便当，${esc(S.pet.name)} 会自己去远方走走，<br>路上还会寄明信片回来。</p><h3>便当（选一样）</h3><div class="item-grid">` +
-    foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') + '</div><h3>旅行用品（可以不带）</h3>';
-  if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、灯笼和帐篷，<br>带上它们能去更远的地方。</p>';
+    foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') + '</div>' +
+    (drinks.length ? '<h3>水壶（可以不带，带了回来不口渴）</h3><div class="item-grid">' + drinks.map(k => itemBtn(`data-pd="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k])).join('') + '</div>' : '') +
+    '<h3>旅行用品（可以不带）</h3>';
+  if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、灯笼、帐篷和潜水镜，<br>带上它们能去更远的地方。</p>';
   else html += '<div class="item-grid">' + tools.map(k => itemBtn(`data-pt="${k}"`, GEAR[k].ic, GEAR[k].name, GEAR[k].desc)).join('') +
     (S.gear.bell ? itemBtn('data-pb="1"', 'bell', '幸运铃铛', '×' + S.gear.bell) : '') + '</div>';
   html += '<div class="row"><button class="btn big green" id="go-trip">出发</button></div>';
   const m = openModal(html);
   m.addEventListener('click', e => {
-    const f = e.target.closest('[data-pf]'), t = e.target.closest('[data-pt]'), b = e.target.closest('[data-pb]');
+    const f = e.target.closest('[data-pf]'), t = e.target.closest('[data-pt]'), b = e.target.closest('[data-pb]'), d = e.target.closest('[data-pd]');
+    if (d) { sel.drink = sel.drink === d.dataset.pd ? null : d.dataset.pd; $$('[data-pd]', m).forEach(x => x.classList.toggle('sel', x.dataset.pd === sel.drink)); Sound.sfx.pop(); }
     if (f) { sel.food = f.dataset.pf; $$('[data-pf]', m).forEach(x => x.classList.toggle('sel', x === f)); Sound.sfx.pop(); }
     if (t) { sel.tool = sel.tool === t.dataset.pt ? null : t.dataset.pt; $$('[data-pt]', m).forEach(x => x.classList.toggle('sel', x.dataset.pt === sel.tool)); Sound.sfx.pop(); }
     if (b) { sel.bell = !sel.bell; b.classList.toggle('sel', sel.bell); Sound.sfx.pop(); }
@@ -636,16 +832,18 @@ function openPack() {
 function startTrip(sel) {
   S.inv[sel.food]--;
   if (sel.bell) S.gear.bell--;
+  if (sel.drink) S.inv[sel.drink]--;
   const isFav = PETS[S.pet.type].fav === sel.food;
-  const dest = sel.tool && Math.random() < .75 ? pick(GEAR[sel.tool].to) : pick(BASE_DESTS);
+  const to = sel.tool && GEAR[sel.tool].to;   // 带了能去远方的用品，四次里有三次会去那里
+  const dest = to && Math.random() < .75 ? pick(to) : pick(BASE_DESTS);
   const rareP = .15 + (sel.bell ? .3 : 0) + (isFav ? .1 : 0) + (sel.food === 'cake' ? .1 : 0);
   const rare = Math.random() < rareP;
   S.trip = {
     dest, start: Date.now(), dur: DESTS[dest].time,
     card: dest + (rare ? ':b' : ':a'),
-    extra: Math.random() < (rare ? .5 : .2) ? dest + (rare ? ':a' : ':b') : null,
+    extra: Math.random() < (rare ? .5 : .2) + (sel.tool === 'camera' ? .4 : 0) ? dest + (rare ? ':a' : ':b') : null,
     souv: isFav || Math.random() < .7 ? DESTS[dest].souv : null,
-    coins: rand(8, 20), mailed: false
+    coins: rand(8, 20), mailed: false, drink: !!sel.drink
   };
   progress('trip'); resetIdle();
   Sound.sfx.trip(); setTempMood('joy', 1500); say('我出发啦！等我的明信片哦~', 1800);
@@ -653,12 +851,13 @@ function startTrip(sel) {
   save();
 }
 function renderAway() {
-  const away = !!S.trip;
+  const away = gone();
   $('#pet-zone').classList.toggle('gone', away);
   $('#pet-garden').style.visibility = away ? 'hidden' : '';
   const note = $('#away-note');
   note.classList.toggle('on', away);
-  if (away) note.innerHTML = `<b>我去旅行啦</b><small id="away-left">${leftText()}</small><div class="sign">—— ${esc(S.pet.name)}</div>`;
+  if (S.runaway) note.innerHTML = `<b>我去栗子家住几天…</b><small>生病了一直没吃到药，有点难过</small><div class="sign">—— ${esc(S.pet.name)}</div><div class="row"><button class="btn small" data-fetch="1">去接它回家</button></div>`;
+  else if (away) note.innerHTML = `<b>我去旅行啦</b><small id="away-left">${leftText()}</small><div class="sign">—— ${esc(S.pet.name)}</div>`;
 }
 function addCard(id) {
   const isNew = !S.cards[id];
@@ -684,11 +883,13 @@ function finishTrip() {
   S.trip = null;
   st.hunger = Math.max(30, st.hunger - 25); st.clean = Math.max(28, st.clean - 32);
   st.energy = Math.max(30, st.energy - 25); st.happy = Math.min(100, st.happy + 30);
+  if (!t.drink) st.thirst = Math.max(30, st.thirst - 25);   // 带了水壶就不会口渴
   S.coins += t.coins;
   let gifts = `<span>${acorns('+' + t.coins)}</span>`;
   if (t.souv) {
-    const isNew = !S.souv[t.souv]; S.souv[t.souv] = (S.souv[t.souv] || 0) + 1; if (isNew) S.albumNew = true;
-    gifts += `<span>${icon(t.souv)}${SOUVS[t.souv]}${isNew ? '<i class="new-tag">新</i>' : ''}</span>`;
+    const sv = SOUVS[t.souv], isNew = !S.souvSeen[t.souv];
+    S.souv[t.souv] = (S.souv[t.souv] || 0) + 1; S.souvSeen[t.souv] = 1; if (isNew) S.albumNew = true;
+    gifts += `<span>${icon(sv.ic)}${sv.name}${isNew ? '<i class="new-tag">新</i>' : ''}</span>`;
   }
   let extra = '';
   if (t.extra) { const isNew = addCard(t.extra); extra = pcHTML(t.extra, 'big') + (isNew ? '' : '<p class="hint">这张已经有了，换成了 5 颗橡果</p>'); }
@@ -697,6 +898,7 @@ function finishTrip() {
   Sound.sfx.trip(); confetti(); setTempMood('joy', 2500);
   openModal(`<div class="hero">${petSVG(S.pet.type, 'joy', travelWear())}</div><h2>${esc(S.pet.name)} 回来啦</h2>
     <p>它去了「${d.name}」，给你带回了：</p><div class="gift-list">${gifts}</div>${extra}
+    ${t.souv ? '<p class="hint">特产可以在“喂食”的“特产”里吃掉</p>' : ''}
     ${S.mail.length ? '<p class="hint">花园的信箱里还有它寄来的明信片，记得去看看</p>' : ''}
     <div class="row"><button class="btn" data-close>欢迎回家</button></div>`,
     { onClose: () => { if (chilly) getSick('cold'); else say(pick(['外面真好玩！不过我有点饿了…', '走了好远的路，想洗个澡~', '下次还想去更远的地方！'])); } });
@@ -735,8 +937,12 @@ function renderAlbum() {
     h = `<p class="album-note">收集到 ${got} / ${all.length} 张 · 带上不同的旅行用品，能去不同的地方</p><div class="pc-grid">` +
       all.map(id => S.cards[id] ? pcHTML(id) : `<span class="pc lock"><span class="img">？</span><span class="cap">${id.split(':')[1] === 'b' ? '珍贵风景' : '还没去过'}</span></span>`).join('') + '</div>';
   } else if (albumTab === 'souv') {
-    h = '<p class="album-note">每个地方都有自己的特产，带着最爱的便当出门一定能带回来</p><div class="souv-grid">' +
-      Object.keys(DESTS).map(d => { const k = DESTS[d].souv, n = S.souv[k] || 0; return `<div class="souv${n ? '' : ' lock'}">${icon(k, 'big')}<b>${n ? SOUVS[k] : '？？？'}</b><small>${n ? DESTS[d].name + ' ×' + n : '还没有'}</small></div>`; }).join('') + '</div>';
+    const seen = Object.keys(DESTS).filter(d => S.souvSeen[DESTS[d].souv]).length;
+    h = `<p class="album-note">见过 ${seen} / ${Object.keys(DESTS).length} 种 · 特产可以在“喂食”里吃掉，带着最爱的便当出门一定能带回来</p><div class="souv-grid">` +
+      Object.keys(DESTS).map(d => {
+        const k = DESTS[d].souv, sv = SOUVS[k], ok = S.souvSeen[k], n = S.souv[k] || 0;
+        return `<div class="souv${ok ? '' : ' lock'}">${icon(sv.ic, 'big')}<b>${ok ? sv.name : '？？？'}</b><small>${ok ? DESTS[d].name + ' ×' + n : '还没有'}</small></div>`;
+      }).join('') + '</div>';
   } else {
     h = `<p class="album-note">贴纸 ${S.stickers.length} / ${STICKERS.length} · 多照顾、多旅行、多玩耍就能得到</p><div class="souv-grid">` +
       STICKERS.map(s => { const own = S.stickers.includes(s.id); return `<div class="souv${own ? '' : ' lock'}">${icon(s.ic, 'big')}<b>${s.name}</b><small>${own ? '已获得' : '还没有'}</small></div>`; }).join('') + '</div>';
@@ -753,7 +959,7 @@ function renderGuest() {
 function tickVisitor(dt) {
   const v = S.visitor;
   if (v) { if (Date.now() > v.until) { S.visitor = null; renderGuest(); updateDots(); } return; }
-  if (Math.random() < dt / (S.trip ? 60 : 140)) {
+  if (Math.random() < dt / (gone() ? 60 : 140)) {
     const id = pick(Object.keys(FRIENDS));
     S.visitor = { id, until: Date.now() + 180000, fed: false };
     renderGuest(); updateDots(); Sound.sfx.pop();
@@ -901,12 +1107,13 @@ function renderShop() {
     `<div class="sitem">${icon(ic, 'big')}<b>${name}</b><small>${d1}</small><small>${d2}</small>` +
     (owned ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="${kind}:${id}">${acorns(price)}</button>`) + '</div>';
   let h = '';
-  if (shopTab === 'food') {
-    const fav = PETS[S.pet.type].fav;
-    for (const k in FOODS) { const f = FOODS[k]; h += card(f.ic, f.name, '饱饱+' + f.hunger + (f.happy ? ' 开心+' + f.happy : '') + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 个', f.price, 'food', k); }
-    for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
+  if (shopTab === 'food' || shopTab === 'drink') {
+    const fav = PETS[S.pet.type].fav, wantDrink = shopTab === 'drink';
+    for (const k in FOODS) { const f = FOODS[k]; if (!!f.drink !== wantDrink) continue; h += card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); }
   } else if (shopTab === 'seed') {
     for (const k in SEEDS) { const s = SEEDS[k]; h += card(s.ic, s.name + '种子', s.food ? '能结 ' + s.give + ' 个' : s.med ? '能做 ' + s.give + ' 份' + MEDS[s.med].name : '开花能换 ' + s.coins + ' 橡果', '我有 ' + (S.seeds[k] || 0) + ' 颗', s.price, 'seed', k); }
+  } else if (shopTab === 'med') {
+    for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
   } else if (shopTab === 'wear') {
     for (const k in WEARS) { const w = WEARS[k]; h += card(w.ic, w.name, '给宠物戴上', '', w.price, 'wear', k, S.owned.includes(k)); }
   } else {
@@ -923,10 +1130,10 @@ function buy(kind, id, btn) {
   else if (kind === 'seed') S.seeds[id] = (S.seeds[id] || 0) + 1;
   else if (kind === 'med') S.meds[id] = (S.meds[id] || 0) + 1;
   else if (kind === 'gear') { S.gear[id] = (S.gear[id] || 0) + 1; if (!item.once) toast('买到啦！准备行囊的时候记得带上' + item.name); }
-  else { S.owned.push(id); S.wear = id; renderPet(true); toast('买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
+  else { S.owned.push(id); S.wear = id; renderPet(true); toast(gone() ? '买到啦！等 ' + S.pet.name + ' 回家就能戴上' : '买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
   const r = btn.getBoundingClientRect();
   floatFx(icon(item.ic) + '+1', r.left + r.width / 2, r.top - 20);
-  Sound.sfx.coin(); updateHUD(); renderShop(); save();
+  Sound.sfx.coin(); updateHUD(); renderShop(); renderAlert(); save();
 }
 
 /* ---------- 每日签到、任务和贴纸 ---------- */
@@ -984,11 +1191,11 @@ function openMenu() {
   const m = openModal(`<h2>设置</h2>
     <div class="row"><button class="btn small plain" id="m-rename">改名字</button><button class="btn small green" id="m-title">回到封面</button></div>
     <h3>给爸爸妈妈的话</h3>
-    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。连续玩 20 分钟会提醒孩子休息眼睛。宠物太脏、太饿或蛋糕吃太多时，偶尔会着凉或肚子疼，吃药加休息就好，不会变重，更不会离开。</p>
+    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。连续玩 20 分钟会提醒孩子休息眼睛。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。</p>
     <div class="row"><button class="btn small gray" id="m-reset">重新领养一只</button></div>`);
   $('#m-rename', m).onclick = () => {
     const m2 = openModal(`<h2>新名字</h2><input id="rn" class="text-input" maxlength="6" value="${esc(S.pet.name)}" autocomplete="off"><div class="row"><button class="btn" id="rn-ok">好啦</button></div>`);
-    $('#rn-ok', m2).onclick = () => { const v = $('#rn', m2).value.trim().slice(0, 6); if (v) { S.pet.name = v; updateHUD(); renderAway(); save(); if (!S.trip) say('我的新名字是' + v + '！'); } closeModal(); };
+    $('#rn-ok', m2).onclick = () => { const v = $('#rn', m2).value.trim().slice(0, 6); if (v) { S.pet.name = v; updateHUD(); renderAway(); save(); if (!gone()) say('我的新名字是' + v + '！'); } closeModal(); };
   };
   $('#m-title', m).onclick = () => { closeModal(); save(); backToTitle(); };
   $('#m-reset', m).onclick = () => confirmReset();
@@ -1042,13 +1249,18 @@ function switchScene(n) {
 let ticker = null, lastTick = 0, tickN = 0, playSecs = 0, restDue = false;
 function stopTicker() { clearInterval(ticker); ticker = null; }
 function applyOffline() {
-  const el = clamp((Date.now() - (S.last || Date.now())) / 1000, 0, 8 * 3600);
+  const real = Math.max(0, (Date.now() - (S.last || Date.now())) / 1000), el = Math.min(real, 8 * 3600);
   if (el < 5) return;
-  const st = S.stats, soft = (k, rate) => { st[k] = Math.max(Math.min(st[k], 20), st[k] - el * rate * 0.2); };
-  if (!S.trip) {
-    if (S.sleeping) { st.energy = clamp(st.energy + el * 1.6, 0, 100); if (st.energy >= 100) S.sleeping = false; }
+  // 不在线时状态掉得慢，而且最低只掉到 30：回来时宠物没精神，但不会一打开就出现生病的症状
+  const st = S.stats, soft = (k, rate) => { st[k] = Math.max(Math.min(st[k], 30), st[k] - el * rate * 0.2); };
+  if (!gone()) {
+    const slept = S.sleeping;
+    if (slept) { st.energy = clamp(st.energy + el * 1.6, 0, 100); if (st.energy >= 100) S.sleeping = false; }
     else soft('energy', 0.03);
-    soft('hunger', 0.1); soft('clean', 0.045); soft('happy', 0.06);
+    soft('hunger', 0.1); soft('thirst', 0.11); soft('clean', 0.045); soft('happy', 0.06);
+    const k = S.sick;
+    if (k && !k.treated) k.age += real;   // 生病没吃药就关掉游戏，时间照样算
+    if (k && k.treated && (ILLS[k.type].rest !== 'sleep' || slept)) k.rest += el;
   }
   S.plots.forEach(p => {
     if (!p || p.growth >= 100) return;
@@ -1061,17 +1273,16 @@ function applyOffline() {
 function tick() {
   if (!S) return;
   const now = Date.now(), dt = clamp((now - lastTick) / 1000, 0, 5); lastTick = now;
-  const st = S.stats;
-  if (S.trip) { /* 旅行途中，家里的状态先不变 */ }
+  const st = S.stats, dec = (k, r) => { st[k] = clamp(st[k] - r * dt, 0, 100); };
+  if (gone()) { /* 宠物不在家，家里的状态先不变 */ }
   else if (S.sleeping) {
-    st.energy = clamp(st.energy + 1.6 * dt, 0, 100); st.hunger = clamp(st.hunger - 0.03 * dt, 0, 100);
-    if (st.energy >= 100 && !(S.sick && S.sick.type === 'cold' && S.sick.treated)) {
+    st.energy = clamp(st.energy + 1.6 * dt, 0, 100); dec('hunger', 0.03); dec('thirst', 0.03);
+    if (st.energy >= 100 && !(S.sick && S.sick.treated && ILLS[S.sick.type].rest === 'sleep')) {
       S.sleeping = false; renderPet(true); updateActions(); playSceneMusic();
       say('睡饱啦！精神满满~'); toast(S.pet.name + ' 睡醒啦');
     }
   } else if (!Games.active) {
-    st.hunger = clamp(st.hunger - 0.1 * dt, 0, 100); st.clean = clamp(st.clean - 0.045 * dt, 0, 100);
-    st.happy = clamp(st.happy - 0.06 * dt, 0, 100); st.energy = clamp(st.energy - 0.03 * dt, 0, 100);
+    dec('hunger', 0.1); dec('thirst', 0.11); dec('clean', 0.045); dec('happy', 0.06); dec('energy', 0.03);
   }
   tickGarden(dt); tickTrip(); if (S) { tickVisitor(dt); tickSick(dt); }
   updateHUD(); renderPet();
@@ -1085,6 +1296,7 @@ function tick() {
     openModal(`<div class="hero">${icon('eye')}</div><h2>眼睛休息时间到</h2><p>你已经玩了 20 分钟啦。<br>站起来动一动，看看窗外远远的地方，<br>${esc(S.pet.name)} 会在这里等你回来~</p><div class="row"><button class="btn" data-close>我休息好啦</button></div>`);
   }
 }
+
 
 /* ---------- 开始界面 ---------- */
 function initTitle() {
@@ -1123,14 +1335,14 @@ function enterGame(isNew) {
   if (!isNew) applyOffline();
   Sound.setOn(S.soundOn !== false);
   petSig = ''; tempMood = null; shopTab = 'food'; albumTab = 'cards'; playSecs = 0; restDue = false;
-  renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); renderWall(); updateDots(); switchScene('home');
+  renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); renderWall(); updateDots(); renderAlert(); switchScene('home');
   stopTicker(); lastTick = Date.now(); ticker = setInterval(tick, 1000);
   if (isNew) {
     confetti(); Sound.sfx.level(); banner('欢迎 ' + S.pet.name + ' 回家');
     say('你好呀！我是' + S.pet.name + '，以后请多多照顾~', 4200);
     setTimeout(() => { if (S) checkDaily(); }, 3000);
   } else {
-    if (!S.trip) say(pick(['你回来啦！我好想你~', '欢迎回来！今天做点什么呢？']), 3200);
+    if (!gone()) say(pick(['你回来啦！我好想你~', '欢迎回来！今天做点什么呢？']), 3200);
     setTimeout(() => { if (S) checkDaily(); }, 700);
   }
 }
@@ -1141,7 +1353,7 @@ function bindEvents() {
   $('#actions').addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
     Sound.sfx.click();
-    ({ feed: openFeed, bath: startBath, sleep: toggleSleep, talent: () => (S.sick && !S.trip ? openMeds() : talent()), dress: openWardrobe, travel: openPack })[b.dataset.act]();
+    ({ feed: openFeed, bath: startBath, sleep: toggleSleep, talent: () => (S.sick && !gone() ? openMeds() : talent()), dress: openWardrobe, travel: openPack })[b.dataset.act]();
   });
   $('#pet').addEventListener('pointerdown', patPet);
   $('#pet-garden').addEventListener('pointerdown', e => { if (!S.sleeping) { floatFx(icon('heart'), e.clientX, e.clientY - 20); Sound.sfx.pop(); } });
@@ -1150,6 +1362,8 @@ function bindEvents() {
   layer.addEventListener('click', e => { if (e.target.closest('.bath-x')) endBath(); });
   $('#plots').addEventListener('click', e => { const b = e.target.closest('.plot'); if (b) plotClick(+b.dataset.i); });
   $('#mailbox').onclick = () => openMailbox();
+  $('#alert').addEventListener('click', e => { const b = e.target.closest('[data-al]'); if (b) alertAction(b.dataset.al); });
+  $('#away-note').addEventListener('click', e => { if (e.target.closest('[data-fetch]')) { Sound.sfx.click(); openFetch(); } });
   $('#guest').onclick = () => { Sound.sfx.click(); openGuest(); };
   $('#scene-shop').addEventListener('click', e => {
     const t = e.target.closest('.tab'), b = e.target.closest('[data-buy]');
