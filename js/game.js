@@ -27,6 +27,11 @@ const FOODS = {
   strawberry: { name: '草莓',     ic: 'strawberry', hunger: 12, happy: 8, price: 7 },
   tomato:     { name: '番茄',     ic: 'tomato',     hunger: 12, thirst: 8, price: 5 },
   watermelon: { name: '西瓜',     ic: 'watermelon', hunger: 10, thirst: 22, price: 9 },
+  lettuce:    { name: '生菜',     ic: 'lettuce',    hunger: 10, thirst: 6, price: 5 },
+  potato:     { name: '土豆',     ic: 'potato',     hunger: 18, price: 6 },
+  mushroom:   { name: '蘑菇',     ic: 'mushroom',   hunger: 12, price: 6 },
+  pumpkin:    { name: '南瓜',     ic: 'pumpkin',    hunger: 18, price: 7 },
+  eggplant:   { name: '茄子',     ic: 'eggplant',   hunger: 14, price: 6 },
   bread:      { name: '小面包',   ic: 'bread',      hunger: 22, price: 8 },
   friedegg:   { name: '煎蛋',     ic: 'friedegg',   hunger: 18, energy: 6, price: 9 },
   cheese:     { name: '奶酪',     ic: 'cheese',     hunger: 16, happy: 6, price: 9 },
@@ -48,6 +53,11 @@ const SEEDS = {
   strawberry: { name: '草莓',   ic: 'strawberry', time: 90,  give: 3, food: 'strawberry', price: 8 },
   sunflower:  { name: '向日葵', ic: 'sunflower',  time: 120, give: 4, food: 'seed',       price: 9 },
   watermelon: { name: '西瓜',   ic: 'watermelon', time: 120, give: 2, food: 'watermelon', price: 10 },
+  lettuce:    { name: '生菜',   ic: 'lettuce',    time: 60,  give: 3, food: 'lettuce',    price: 5 },
+  mushroom:   { name: '蘑菇',   ic: 'mushroom',   time: 75,  give: 3, food: 'mushroom',   price: 6 },
+  potato:     { name: '土豆',   ic: 'potato',     time: 90,  give: 3, food: 'potato',     price: 6 },
+  eggplant:   { name: '茄子',   ic: 'eggplant',   time: 90,  give: 3, food: 'eggplant',   price: 7 },
+  pumpkin:    { name: '南瓜',   ic: 'pumpkin',    time: 120, give: 2, food: 'pumpkin',    price: 8 },
   tulip:      { name: '郁金香', ic: 'tulip',      time: 75,  coins: 25, price: 8 },
   rose:       { name: '玫瑰',   ic: 'rose',       time: 110, coins: 40, price: 12 },
   ginger:     { name: '生姜',   ic: 'ginger',     time: 75,  give: 2, med: 'gingertea', price: 6 },
@@ -107,6 +117,7 @@ const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow'];
 const TASKS = [
   { id: 'feed',    name: '喂宠物吃 3 次饭',   need: 3, coin: 15, ic: 'apple' },
   { id: 'drink',   name: '给宠物喝 2 次水',   need: 2, coin: 10, ic: 'water' },
+  { id: 'cook',    name: '煮 1 道菜',         need: 1, coin: 15, ic: 'pot' },
   { id: 'water',   name: '给植物浇 5 次水',   need: 5, coin: 15, ic: 'drop' },
   { id: 'game',    name: '玩 2 次小游戏',     need: 2, coin: 20, ic: 'kite' },
   { id: 'bath',    name: '给宠物洗 1 次澡',   need: 1, coin: 15, ic: 'tub' },
@@ -126,7 +137,10 @@ const STICKERS = [
   { id: 's10', ic: 'mail',      name: '明信片收藏家', c: 'cards', n: 8 },
   { id: 's11', ic: 'tea',       name: '热情小主人',   c: 'guest', n: 5 },
   { id: 's12', ic: 'crown',     name: '超级明星',     c: 'level', n: 6 },
-  { id: 's13', ic: 'med',       name: '细心小护士',   c: 'cure', n: 1 }
+  { id: 's13', ic: 'med',       name: '细心小护士',   c: 'cure', n: 1 },
+  { id: 's14', ic: 'pot',       name: '小小厨师',     c: 'cook', n: 1 },
+  { id: 's15', ic: 'pumpkin',   name: '菜谱大王',     c: 'recipes', n: 12 },
+  { id: 's16', ic: 'sofa',      name: '小小设计师',   c: 'furn', n: 8 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -136,7 +150,8 @@ function newState(type, name) {
   return {
     v: 2, pet: { type, name }, level: 1, exp: 0, coins: 60,
     stats: { hunger: 62, thirst: 68, clean: 74, happy: 70, energy: 86 },
-    inv, seeds: { carrot: 2, tulip: 1 }, owned: [], wear: null, gear: {},
+    inv, seeds: { carrot: 2, lettuce: 2, tulip: 1 }, owned: [], wear: null, gear: {},
+    floor: 1, furn: furnDefault(), wallPick: null, dishes: {}, cookbook: {},
     plots: [null, null, null, null, null, null],
     sleeping: false, last: Date.now(),
     trip: null, mail: [], cards: {}, cardLog: [], souv: {}, visitor: null, albumNew: false,
@@ -167,6 +182,9 @@ function loadState() {
     s.risk = Object.assign({ cold: 0, tummy: 0, throat: 0, fever: 0 }, d.risk);
     if (!d.souvSeen) { s.souvSeen = {}; for (const k in s.souv) if (s.souv[k]) s.souvSeen[k] = 1; }   // 旧存档：以前拿到过的特产都算见过
     if (s.runaway && !ILLS[s.runaway.type]) s.runaway = null;
+    if (!s.furn || !Array.isArray(s.furn.own) || !Array.isArray(s.furn.put)) s.furn = furnDefault();   // 旧存档：补上原来画在背景里的那几件家具
+    s.furn.put = s.furn.put.filter(p => FURNS[p.id]);
+    if (s.floor !== 2) s.floor = 1;
     if (!s.meds) s.meds = {};
     return s;
   } catch (e) { return null; }
@@ -328,7 +346,7 @@ function petCenter() { const r = $('#pet').getBoundingClientRect(); return { x: 
 
 let lastPat = 0;
 function patPet(e) {
-  if (bath || gone()) return;
+  if (bath || gone() || decor) return;
   if (S.sleeping) { say('呼… 呼…', 1500); return; }
   const now = Date.now(); if (now - lastPat < 450) return; lastPat = now;
   floatFx(icon(pick(['heart', 'heart', 'sparkle'])), e.clientX, e.clientY - 20);
@@ -349,7 +367,7 @@ const LINES = {
   parrot: ['你好！你好！', '早上好呀！', '彩虹真漂亮！', '我会说话，厉害吧！']
 };
 function autoSay() {
-  if (S.sleeping || gone() || scene !== 'home' || bath || Games.active) return;
+  if (S.sleeping || gone() || scene !== 'home' || bath || decor || Games.active) return;
   if (S.sick) { say(pick(ILLS[S.sick.type].lines[S.sick.treated ? 1 : 0])); return; }
   const s = S.stats, keys = ['hunger', 'thirst', 'clean', 'happy', 'energy'];
   const low = keys.filter(k => s[k] < 35).sort((a, b) => s[a] - s[b])[0];
@@ -364,7 +382,7 @@ function autoSay() {
 /* 在家时自己走走、看看书、喝喝茶 */
 const IDLE = { book: '今天看一本图画书~', tea: '喝口茶，歇一会儿~', note: '哼一首小曲儿 ♪' };
 function idleAct() {
-  if (S.sleeping || gone() || S.sick || bath || scene !== 'home' || Games.active || modalOpen()) return;
+  if (S.sleeping || gone() || S.sick || bath || decor || scene !== 'home' || Games.active || modalOpen()) return;
   const z = $('#pet-zone'), x = pick([30, 50, 50, 68]), prop = $('#prop');
   if ((z.dataset.x || '50') !== String(x)) { z.dataset.x = x; z.style.left = x + '%'; petAnim('walk', 1800); }
   const act = pick([null, 'book', 'tea', 'note']);
@@ -388,7 +406,12 @@ function openFeed(tab) {
   if (typeof tab === 'string') feedTab = tab;
   const fav = PETS[S.pet.type].fav;
   let body = '';
-  if (feedTab === 'souv') {
+  if (feedTab === 'dish') {
+    const ids = myDishes();
+    body = ids.length
+      ? '<div class="item-grid">' + ids.map(k => itemBtn(`data-dish="${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k])).join('') + '</div>'
+      : '<p class="empty">还没有做好的菜。<br>点“煮菜”，用两样蔬菜做一道吧~</p>';
+  } else if (feedTab === 'souv') {
     const ids = mySouvs();
     body = ids.length
       ? '<div class="item-grid">' + ids.map(k => itemBtn(`data-souv="${k}"`, SOUVS[k].ic, SOUVS[k].name, '×' + S.souv[k])).join('') + '</div>'
@@ -401,20 +424,23 @@ function openFeed(tab) {
       : noFoodHTML;
     if (feedTab === 'food' && S.meds.vitamin) body += '<h3>保健</h3><div class="item-grid">' + itemBtn('data-vit="1"', 'vitamin', '维生素软糖', '×' + S.meds.vitamin + ' 防生病') + '</div>';
   }
-  const tabs = [['food', '吃的'], ['drink', '喝的'], ['souv', '特产']];
+  const tabs = [['food', '吃的'], ['dish', '饭菜'], ['drink', '喝的'], ['souv', '特产']];
   const m = openModal('<h2>喂点什么好呢？</h2><div class="tabs">' + tabs.map(t => `<button class="tab${feedTab === t[0] ? ' on' : ''}" data-ft="${t[0]}">${t[1]}</button>`).join('') + '</div>' + body);
   m.addEventListener('click', e => {
     const t = e.target.closest('[data-ft]'), b = e.target.closest('[data-food]'), sv = e.target.closest('[data-souv]'), g = e.target.closest('[data-go]');
     if (t) { Sound.sfx.click(); openFeed(t.dataset.ft); return; }
     if (b) { closeModal(); feed(b.dataset.food); }
     if (sv) { closeModal(); feed(sv.dataset.souv, true); }
+    const dz = e.target.closest('[data-dish]');
+    if (dz) { closeModal(); feed(dz.dataset.dish, 'dish'); }
     if (e.target.closest('[data-vit]')) { closeModal(); takeVitamin(); }
     if (g) { closeModal(); shopTab = feedTab === 'drink' ? 'drink' : 'food'; switchScene(g.dataset.go); }
   });
 }
-/* isSouv 为 true 时吃的是特产 */
+/* 第二个参数：不填是普通食物，true 是特产，'dish' 是自己煮的菜 */
 function feed(id, isSouv) {
-  const it = isSouv ? SOUVS[id] : FOODS[id], stock = isSouv ? S.souv : S.inv;
+  const isDish = isSouv === 'dish'; if (isDish) isSouv = false;
+  const it = isDish ? DISHES[id] : isSouv ? SOUVS[id] : FOODS[id], stock = isDish ? S.dishes : isSouv ? S.souv : S.inv;
   if (!it || !stock[id]) return;
   if (S.stats[it.drink ? 'thirst' : 'hunger'] >= 96) { say(it.drink ? '喝得饱饱的，喝不下啦~' : '我吃得饱饱的，吃不下啦~'); return; }
   if (it.sweet && S.sick && S.sick.type === 'tummy') { say('肚子疼，现在不能吃甜的…'); return; }
@@ -423,11 +449,12 @@ function feed(id, isSouv) {
   flyIcon(it.ic, st.left + st.width / 2, st.bottom - 10, pc.x, pc.r.top + pc.r.height * .56, () => {
     Sound.sfx[it.drink ? 'water' : 'eat'](); setTempMood('eat', 1300); petAnim('chomp', 1300);
     ['hunger', 'thirst', 'happy', 'energy'].forEach(k => { if (it[k]) addStat(k, it[k]); });
-    if (isSouv) say(pick(['是旅行带回来的' + it.name + '！真好吃~', '一尝就想起那次旅行啦~']));
+    if (isDish) say(pick(['自己做的' + it.name + '，最好吃啦！', '热乎乎的，好香呀~']));
+    else if (isSouv) say(pick(['是旅行带回来的' + it.name + '！真好吃~', '一尝就想起那次旅行啦~']));
     else if (PETS[S.pet.type].fav === id) { addStat('happy', 10); say('哇！是我最爱吃的' + it.name + '！'); }
     else say(it.drink ? pick(['咕嘟咕嘟，真解渴！', '好喝！谢谢你~']) : pick(['啊呜啊呜，真好吃！', '谢谢你，好香呀~', '吃饱饱，长高高！']));
     floatFx(icon(it.drink ? 'water' : 'bowl') + '+' + (it.drink ? it.thirst : it.hunger), pc.x, pc.r.top);
-    S.counters.feed++; progress(it.drink ? 'drink' : 'feed'); addExp(isSouv ? 12 : 8); afterAction();
+    S.counters.feed++; progress(it.drink ? 'drink' : 'feed'); addExp(isSouv || isDish ? 12 : 8); afterAction();
     if (it.sweet) {   // 甜食连着吃太多会肚子疼：第二份先提醒，第三份才生病
       S.sweet = (S.sweet || 0) + 1;
       if (S.sweet >= 2.6) setTimeout(() => { if (S) getSick('tummy'); }, 1600);
@@ -519,7 +546,8 @@ function updateActions() {
   const p = PETS[S.pet.type];
   if (S.sick && !gone()) set('talent', 'med', '吃药'); else set('talent', p.talentIcon, p.talent);
   set('travel', 'backpack', S.trip ? '旅行中' : '旅行');
-  $$('.act').forEach(b => b.classList.toggle('off', gone() && !(S.trip && b.dataset.act === 'travel')));
+  set('decor', 'sofa', decor ? '摆好了' : '布置');
+  $$('.act').forEach(b => b.classList.toggle('off', b.dataset.act === 'decor' ? false : !!decor || (gone() && !(S.trip && b.dataset.act === 'travel'))));
 }
 
 /* ---------- 才艺（小鸟唱歌 / 鹦鹉学说话 / 其他宠物表演） ---------- */
@@ -800,7 +828,7 @@ function openPack() {
   if (S.stats.energy < 35) { say('有点困，睡一觉再去旅行吧~'); return; }
   if (S.stats.thirst < 30) { say('好渴呀，先喝点水再出发吧~'); return; }
   const foods = myFoods(), fav = PETS[S.pet.type].fav;
-  if (!foods.length) {
+  if (!foods.length && !myDishes().length) {
     const m0 = openModal('<h2>准备行囊</h2><p class="empty">出门要带便当，可是家里没有吃的了。</p>' + noFoodHTML.replace(/^<p.*?<\/p>/, ''));
     m0.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { closeModal(); shopTab = 'food'; switchScene(g.dataset.go); } });
     return;
@@ -809,7 +837,8 @@ function openPack() {
   const drinks = myDrinks();
   const sel = { food: null, drink: null, tool: null, bell: false };
   let html = `<h2>准备行囊</h2><p>带上便当，${esc(S.pet.name)} 会自己去远方走走，<br>路上还会寄明信片回来。</p><h3>便当（选一样）</h3><div class="item-grid">` +
-    foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') + '</div>' +
+    foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') +
+    myDishes().map(k => itemBtn(`data-pf="dish:${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k] + ' 亲手做')).join('') + '</div>' +
     (drinks.length ? '<h3>水壶（可以不带，带了回来不口渴）</h3><div class="item-grid">' + drinks.map(k => itemBtn(`data-pd="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k])).join('') + '</div>' : '') +
     '<h3>旅行用品（可以不带）</h3>';
   if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、灯笼、帐篷和潜水镜，<br>带上它们能去更远的地方。</p>';
@@ -830,10 +859,11 @@ function openPack() {
   });
 }
 function startTrip(sel) {
-  S.inv[sel.food]--;
+  const dishBento = sel.food.indexOf('dish:') === 0 ? sel.food.slice(5) : null;   // 便当也可以带自己煮的菜
+  if (dishBento) S.dishes[dishBento]--; else S.inv[sel.food]--;
   if (sel.bell) S.gear.bell--;
   if (sel.drink) S.inv[sel.drink]--;
-  const isFav = PETS[S.pet.type].fav === sel.food;
+  const isFav = !!dishBento || PETS[S.pet.type].fav === sel.food;   // 亲手做的菜和最爱的食物一样好：一定带回特产
   const to = sel.tool && GEAR[sel.tool].to;   // 带了能去远方的用品，四次里有三次会去那里
   const dest = to && Math.random() < .75 ? pick(to) : pick(BASE_DESTS);
   const rareP = .15 + (sel.bell ? .3 : 0) + (isFav ? .1 : 0) + (sel.food === 'cake' ? .1 : 0);
@@ -917,15 +947,6 @@ function openMailbox() {
   $('#to-album', m).onclick = () => { closeModal(); switchScene('album'); };
   afterAction();
 }
-/* 小屋墙上的绳子：挂最近的三张明信片 */
-function renderWall() {
-  const xs = [500, 600, 700], ys = [84, 93, 84], ids = S.cardLog.slice(-3);
-  $('#wall-cards').innerHTML = ids.map((id, i) => {
-    const p = id.split(':');
-    return `<span class="pc${p[1] === 'b' ? ' rare' : ''}" style="left:calc(50% + var(--u) * ${xs[i] - 400 - 37});top:calc(100% - var(--u) * ${500 - ys[i]});transform:rotate(${[-4, 2, 5][i]}deg)"><span class="img">${postcardSVG(id, S.pet.type, travelWear())}</span></span>`;
-  }).join('');
-}
-
 /* ---------- 旅行手帐（明信片 / 特产 / 贴纸） ---------- */
 let albumTab = 'cards';
 function renderAlbum() {
@@ -943,6 +964,10 @@ function renderAlbum() {
         const k = DESTS[d].souv, sv = SOUVS[k], ok = S.souvSeen[k], n = S.souv[k] || 0;
         return `<div class="souv${ok ? '' : ' lock'}">${icon(sv.ic, 'big')}<b>${ok ? sv.name : '？？？'}</b><small>${ok ? DESTS[d].name + ' ×' + n : '还没有'}</small></div>`;
       }).join('') + '</div>';
+  } else if (albumTab === 'cook') {
+    const keys = Object.keys(DISHES), got = keys.filter(k => S.cookbook[k]).length;
+    h = `<p class="album-note">学会 ${got} / ${keys.length} 道 · 在小屋点“煮菜”，把两样蔬菜放进锅里试试</p><div class="souv-grid">` +
+      keys.map(k => { const d = DISHES[k], ok = S.cookbook[k]; return `<div class="souv${ok ? '' : ' lock'}">${icon(d.ic, 'big')}<b>${ok ? d.name : '？？？'}</b><small>${ok ? FOODS[d.a].name + ' + ' + FOODS[d.b].name : '还没做过'}</small></div>`; }).join('') + '</div>';
   } else {
     h = `<p class="album-note">贴纸 ${S.stickers.length} / ${STICKERS.length} · 多照顾、多旅行、多玩耍就能得到</p><div class="souv-grid">` +
       STICKERS.map(s => { const own = S.stickers.includes(s.id); return `<div class="souv${own ? '' : ' lock'}">${icon(s.ic, 'big')}<b>${s.name}</b><small>${own ? '已获得' : '还没有'}</small></div>`; }).join('') + '</div>';
@@ -1116,24 +1141,32 @@ function renderShop() {
     for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
   } else if (shopTab === 'wear') {
     for (const k in WEARS) { const w = WEARS[k]; h += card(w.ic, w.name, '给宠物戴上', '', w.price, 'wear', k, S.owned.includes(k)); }
+  } else if (shopTab === 'furn') {
+    const kind = { floor: '放在地上', rug: '铺在地上', wall: '挂在墙上' };
+    for (const k in FURNS) {
+      const f = FURNS[k]; if (!f.price) continue;
+      h += `<div class="sitem"><div class="thumb">${furnSVG(k)}</div><b>${f.name}</b><small>${kind[f.type]}</small><small></small>` +
+        (S.furn.own.includes(k) ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="furn:${k}">${acorns(f.price)}</button>`) + '</div>';
+    }
   } else {
     for (const k in GEAR) { const g = GEAR[k]; h += card(g.ic, g.name, g.desc, g.once ? '用一次少一个 · 有 ' + (S.gear[k] || 0) + ' 个' : '可以一直用', g.price, 'gear', k, !g.once && !!S.gear[k]); }
   }
   $('#shop-grid').innerHTML = h;
 }
 function buy(kind, id, btn) {
-  const item = { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS }[kind][id];
+  const item = { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS, furn: FURNS }[kind][id];
   if (!item) return;
   if (S.coins < item.price) { Sound.sfx.bad(); toast('橡果不够啦，去游乐场玩游戏捡一些吧'); return; }
   S.coins -= item.price;
   if (kind === 'food') S.inv[id] = (S.inv[id] || 0) + 1;
   else if (kind === 'seed') S.seeds[id] = (S.seeds[id] || 0) + 1;
   else if (kind === 'med') S.meds[id] = (S.meds[id] || 0) + 1;
+  else if (kind === 'furn') { if (S.furn.own.includes(id)) return; S.furn.own.push(id); toast('买到啦！回小屋点“布置”，把' + item.name + '摆出来'); }
   else if (kind === 'gear') { S.gear[id] = (S.gear[id] || 0) + 1; if (!item.once) toast('买到啦！准备行囊的时候记得带上' + item.name); }
   else { S.owned.push(id); S.wear = id; renderPet(true); toast(gone() ? '买到啦！等 ' + S.pet.name + ' 回家就能戴上' : '买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
   const r = btn.getBoundingClientRect();
-  floatFx(icon(item.ic) + '+1', r.left + r.width / 2, r.top - 20);
-  Sound.sfx.coin(); updateHUD(); renderShop(); renderAlert(); save();
+  floatFx((item.ic ? icon(item.ic) : '') + '+1', r.left + r.width / 2, r.top - 20);
+  Sound.sfx.coin(); updateHUD(); renderShop(); renderAlert(); checkStickers(); save();
 }
 
 /* ---------- 每日签到、任务和贴纸 ---------- */
@@ -1158,7 +1191,7 @@ function progress(key) {
   if (before < t.need && before + 1 >= t.need) setTimeout(() => toast('任务完成：' + t.name + '，去领奖励吧'), 900);
   updateDots();
 }
-function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : (S.counters[s.c] || 0); }
+function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : (S.counters[s.c] || 0); }
 function checkStickers() {
   STICKERS.forEach(s => {
     if (!S.stickers.includes(s.id) && stickerValue(s) >= s.n) {
@@ -1209,12 +1242,238 @@ function confirmReset() {
 }
 function backToTitle() { stopTicker(); S = null; Sound.music('home'); initTitle(); showScreen('title'); }
 
+/* ---------- 煮菜：两样蔬菜放进锅里，变成一道菜 ---------- */
+/* 能下锅的蔬菜，以及它们在盘子里的颜色 */
+const VEG = {
+  carrot: '#E6A15C', corn: '#EBC66B', tomato: '#D9705F', lettuce: '#C3D69B',
+  potato: '#E2C48A', mushroom: '#D9BFA6', pumpkin: '#E9A04E', eggplant: '#9A7DB8'
+};
+const VEG_IDS = Object.keys(VEG);
+/* 菜谱：'蔬菜A+蔬菜B': [菜名, 做法]。做法决定盘子的样子和额外的好处：
+ * soup 汤（补水分）、salad 沙拉（补一点水分）、bake 烤或做成饼和泥（补精力）、stir 炒或烧（更开心） */
+const RECIPES = {
+  'carrot+carrot': ['蜜汁胡萝卜', 'stir'], 'corn+corn': ['烤玉米', 'bake'], 'tomato+tomato': ['番茄浓汤', 'soup'], 'lettuce+lettuce': ['生菜沙拉', 'salad'],
+  'potato+potato': ['土豆泥', 'bake'], 'mushroom+mushroom': ['烤蘑菇', 'bake'], 'pumpkin+pumpkin': ['南瓜粥', 'soup'], 'eggplant+eggplant': ['烤茄子', 'bake'],
+  'carrot+corn': ['玉米胡萝卜汤', 'soup'], 'carrot+tomato': ['番茄胡萝卜汤', 'soup'], 'carrot+lettuce': ['胡萝卜沙拉', 'salad'], 'carrot+potato': ['土豆炖胡萝卜', 'stir'],
+  'carrot+mushroom': ['蘑菇炒胡萝卜', 'stir'], 'carrot+pumpkin': ['金黄蔬菜泥', 'bake'], 'carrot+eggplant': ['茄子烧胡萝卜', 'stir'],
+  'corn+tomato': ['番茄玉米汤', 'soup'], 'corn+lettuce': ['玉米生菜沙拉', 'salad'], 'corn+potato': ['玉米土豆饼', 'bake'], 'corn+mushroom': ['蘑菇炒玉米', 'stir'],
+  'corn+pumpkin': ['南瓜玉米羹', 'soup'], 'corn+eggplant': ['茄子玉米粒', 'stir'],
+  'tomato+lettuce': ['番茄生菜沙拉', 'salad'], 'tomato+potato': ['番茄土豆汤', 'soup'], 'tomato+mushroom': ['番茄蘑菇汤', 'soup'], 'tomato+pumpkin': ['番茄南瓜汤', 'soup'],
+  'tomato+eggplant': ['番茄烧茄子', 'stir'],
+  'lettuce+potato': ['土豆生菜卷', 'salad'], 'lettuce+mushroom': ['蘑菇生菜汤', 'soup'], 'lettuce+pumpkin': ['南瓜生菜沙拉', 'salad'], 'lettuce+eggplant': ['茄子拌生菜', 'salad'],
+  'potato+mushroom': ['蘑菇土豆泥', 'bake'], 'potato+pumpkin': ['南瓜土豆饼', 'bake'], 'potato+eggplant': ['土豆烧茄子', 'stir'],
+  'mushroom+pumpkin': ['南瓜蘑菇汤', 'soup'], 'mushroom+eggplant': ['蘑菇炒茄子', 'stir'],
+  'pumpkin+eggplant': ['南瓜焖茄子', 'stir']
+};
+/* 每道菜的效果：比分开吃两样蔬菜更管饱，再加上做法带来的好处 */
+const DISHES = {};
+Object.keys(RECIPES).forEach(key => {
+  const ab = key.split('+'), a = FOODS[ab[0]], b = FOODS[ab[1]], kind = RECIPES[key][1];
+  DISHES[key] = {
+    name: RECIPES[key][0], ic: 'dish:' + key, kind, a: ab[0], b: ab[1],
+    hunger: Math.round((a.hunger + b.hunger) * 1.05),
+    happy: kind === 'stir' ? 16 : 10,
+    thirst: (kind === 'soup' ? 18 : kind === 'salad' ? 8 : 0) + Math.round(((a.thirst || 0) + (b.thirst || 0)) / 2),
+    energy: kind === 'bake' ? 8 : 0
+  };
+  ICONS['dish:' + key] = dishIcon(kind, VEG[ab[0]], ab[0] === ab[1] ? '#FBF5E3' : VEG[ab[1]]);
+});
+const dishKey = (a, b) => VEG_IDS.indexOf(a) <= VEG_IDS.indexOf(b) ? a + '+' + b : b + '+' + a;
+const myVeg = () => VEG_IDS.filter(k => (S.inv[k] || 0) > 0);
+const myDishes = () => Object.keys(S.dishes).filter(k => S.dishes[k] > 0 && DISHES[k]);
+
+function openCook() {
+  if (blocked() || bath) return;
+  if (S.sick) { say('生病了没力气做饭，先把病养好吧…'); return; }
+  if (S.stats.energy < 5) { say('好累呀，想先睡一觉…'); return; }
+  const sel = [];
+  const m = openModal('<div id="cook-box"></div>');
+  const left = k => (S.inv[k] || 0) - sel.filter(x => x === k).length;
+  const draw = () => {
+    const veg = myVeg(), total = veg.reduce((n, k) => n + S.inv[k], 0);
+    const slot = i => sel[i] ? `<button class="cslot full" data-cs="${i}">${icon(FOODS[sel[i]].ic)}</button>` : '<span class="cslot">？</span>';
+    let h = `<h2>${esc(S.pet.name)} 的小厨房</h2><p>选两样蔬菜放进锅里，看看能做出什么菜</p>` +
+      `<div class="pot-row">${slot(0)}<span class="plus">＋</span>${slot(1)}<span class="plus">→</span><span class="potic">${icon('pot')}</span></div>`;
+    if (veg.length) h += '<div class="item-grid">' + veg.map(k => itemBtn(`data-cv="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + left(k))).join('') + '</div>';
+    h += '<div class="row">' + (sel.length === 2 ? '<button class="btn big green" id="cook-go">开煮</button>' : '') + '</div>';
+    if (total < 2) h += '<p class="empty">蔬菜不够两样了。<br>去花园种一些，或者去商店买吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button><button class="btn small green" data-go="garden">去花园</button></div>';
+    h += `<p class="hint">已经学会 ${Object.keys(S.cookbook).length} / ${Object.keys(DISHES).length} 道菜，菜谱收在“手帐”里</p>`;
+    $('#cook-box', m).innerHTML = h;
+  };
+  draw();
+  m.addEventListener('click', e => {
+    const v = e.target.closest('[data-cv]'), c = e.target.closest('[data-cs]'), g = e.target.closest('[data-go]');
+    if (v && sel.length < 2 && left(v.dataset.cv) > 0) { sel.push(v.dataset.cv); Sound.sfx.pop(); draw(); }
+    else if (c) { sel.splice(+c.dataset.cs, 1); Sound.sfx.pop(); draw(); }
+    else if (g) { closeModal(); if (g.dataset.go === 'shop') shopTab = 'food'; switchScene(g.dataset.go); }
+    else if (e.target.closest('#cook-go') && sel.length === 2) cook(sel[0], sel[1]);
+  });
+}
+function cook(a, b) {
+  const key = dishKey(a, b), d = DISHES[key];
+  if (!d || (S.inv[a] || 0) < (a === b ? 2 : 1) || (S.inv[b] || 0) < 1) return;
+  S.inv[a]--; S.inv[b]--;
+  S.stats.energy = clamp(S.stats.energy - 3, 0, 100);
+  const isNew = !S.cookbook[key];
+  S.dishes[key] = (S.dishes[key] || 0) + 1; S.cookbook[key] = 1;
+  S.counters.cook = (S.counters.cook || 0) + 1;
+  if (isNew) { S.coins += 5; S.albumNew = true; }
+  progress('cook'); save();
+  // 先咕嘟咕嘟煮一会儿，再端出来
+  openModal(`<div class="cooking"><div class="hero">${petSVG(S.pet.type, 'joy', 'chef')}</div><h2>咕嘟咕嘟… 正在煮</h2>
+    <div class="pot-row"><span class="cslot full">${icon(FOODS[a].ic)}</span><span class="plus">＋</span><span class="cslot full">${icon(FOODS[b].ic)}</span><span class="plus">→</span><span class="potic">${icon('pot')}</span></div></div>`, { noClose: true });
+  for (let i = 0; i < 5; i++) setTimeout(() => Sound.sfx.bubble(), i * 300);
+  setTimeout(() => {
+    if (!S) return;
+    Sound.sfx.ok(); if (isNew) confetti();
+    const m = openModal(`<div class="dish-big">${icon(d.ic)}</div><h2>${d.name}${isNew ? ' <i class="new-tag">新菜谱</i>' : ''}</h2>
+      <p>${fxText(d)}${isNew ? '<br>第一次做出这道菜，奖励 5 颗橡果' : ''}</p>
+      <div class="row"><button class="btn" id="dish-eat">现在就吃</button><button class="btn plain" id="dish-more">再煮一道</button><button class="btn plain" data-close>先收起来</button></div>`);
+    $('#dish-eat', m).onclick = () => { closeModal(); feed(key, 'dish'); };
+    $('#dish-more', m).onclick = () => { closeModal(); openCook(); };
+    addExp(isNew ? 15 : 6); afterAction();
+  }, 1700);
+}
+
+/* ---------- 两层楼和家具 ----------
+ * 家具的位置用和房间背景同一把尺子（宽 800、高 500）：
+ * 地上的家具和地毯记的是“底边中点”，墙上的记的是“正中心” */
+let stageU = 1;                       // 房间里 1 个单位等于屏幕上多少像素，fitStage 里更新
+let decor = null, drag = null, floorBusy = false;
+const furnDefault = () => ({
+  own: ['rug', 'cushion', 'stump', 'cards'],
+  put: [{ id: 'rug', f: 1, x: 400, y: 494 }, { id: 'cushion', f: 1, x: 262, y: 440 }, { id: 'stump', f: 1, x: 548, y: 446 }, { id: 'cards', f: 1, x: 400, y: 150 }]
+});
+function furnStyle(p) {
+  const f = FURNS[p.id];
+  return `left:calc(50% + var(--u) * ${p.x - 400});top:calc(100% - var(--u) * ${500 - p.y});width:calc(var(--u) * ${f.w});z-index:${f.type === 'rug' ? 1 : f.type === 'wall' ? 2 : Math.round(p.y)}`;
+}
+/* 把家具限制在能看见、也合理的范围里：地上的不上墙，墙上的不落地，左右不出屏幕 */
+function clampFurn(p) {
+  const f = FURNS[p.id], st = $('#stage'), halfW = st.clientWidth / (2 * stageU), visTop = 500 - st.clientHeight / stageU;
+  const h = f.w * f.vb[1] / f.vb[0];
+  let x0 = Math.max(0, 400 - halfW) + f.w / 2, x1 = Math.min(800, 400 + halfW) - f.w / 2;
+  if (x0 > x1) x0 = x1 = 400;
+  p.x = Math.round(clamp(p.x, x0, x1));
+  if (f.type === 'wall') { const top = Math.max(40, visTop + 6) + h / 2, bot = Math.max(top, 304 - h / 2); p.y = Math.round(clamp(p.y, top, bot)); }
+  else p.y = Math.round(clamp(p.y, f.type === 'rug' ? Math.min(498, 378 + h) : 388, 498));
+}
+/* 明信片绳上的三张：自己选过就按选的贴，没选过就贴最近的三张 */
+function wallCards() { const last = S.cardLog.slice(-3); return S.wallPick || [0, 1, 2].map(i => last[i] || null); }
+function cardSlotsHTML() {
+  const xs = [50, 135, 220], ys = [24, 33, 24], ids = wallCards();
+  return ids.map((id, i) => {
+    const st = `left:${((xs[i] - 36) / 270 * 100).toFixed(1)}%;top:${(ys[i] / 112 * 100).toFixed(1)}%;transform:rotate(${[-4, 2, 5][i]}deg)`;
+    if (!id || !S.cards[id]) return `<span class="slot empty" data-slot="${i}" style="${st}">＋</span>`;
+    return `<span class="slot" data-slot="${i}" style="${st}"><span class="pc${id.split(':')[1] === 'b' ? ' rare' : ''}"><span class="img">${postcardSVG(id, S.pet.type, travelWear())}</span></span></span>`;
+  }).join('');
+}
+function renderFurn() {
+  $('#furn').innerHTML = S.furn.put.filter(p => p.f === S.floor && FURNS[p.id]).map(p =>
+    `<div class="fi ${FURNS[p.id].type}${decor && decor.sel === p.id ? ' sel' : ''}" data-fid="${p.id}" style="${furnStyle(p)}">${furnSVG(p.id)}${p.id === 'cards' ? cardSlotsHTML() : ''}<button class="stow" data-stow="${p.id}">收起来</button></div>`
+  ).join('');
+}
+function renderWall() { renderFurn(); }
+function openCardPicker(i) {
+  const have = S.cardLog.filter(id => S.cards[id]);
+  if (!have.length) { toast('还没有明信片，送' + S.pet.name + '去旅行就会有啦'); return; }
+  const cur = wallCards();
+  const m = openModal(`<h2>这里贴哪一张呢？</h2><div class="pc-grid">${have.slice().reverse().map(id => pcHTML(id, cur[i] === id ? 'on' : '')).join('')}</div>
+    <div class="row"><button class="btn plain" id="card-none">这里先空着</button></div>`);
+  const set = id => {
+    const w = wallCards().slice();
+    if (id) for (let k = 0; k < 3; k++) if (w[k] === id) w[k] = null;   // 同一张只贴一处
+    w[i] = id; S.wallPick = w;
+    closeModal(); Sound.sfx.page(); renderFurn(); save();
+  };
+  m.addEventListener('click', e => { const c = e.target.closest('.pc[data-card]'); if (c) set(c.dataset.card); });
+  $('#card-none', m).onclick = () => set(null);
+}
+
+/* 布置模式：拖动换位置，点一下选中后可以收起来；收起来的家具在下面一排，点一下摆出来 */
+function toggleDecor() {
+  if (bath) return;
+  if (decor) decor = null;
+  else { decor = { sel: null }; $('#bubble').classList.remove('show'); resetIdle(); toast('拖动家具换位置，点一下家具可以收起来'); }
+  $('#scene-home').classList.toggle('decor', !!decor); $('#screen-game').classList.toggle('decor-on', !!decor);
+  fitStage(); renderFurn(); renderDecorBar(); updateActions();
+  if (!decor) save();
+}
+function renderDecorBar() {
+  const bar = $('#decor-bar');
+  if (!decor) { bar.innerHTML = ''; return; }
+  const spare = S.furn.own.filter(id => FURNS[id] && !S.furn.put.some(p => p.id === id));
+  bar.innerHTML = '<div class="tray">' + (spare.length
+    ? spare.map(id => `<button data-place="${id}" title="${FURNS[id].name}">${furnSVG(id)}</button>`).join('')
+    : '<span class="tip">家具都摆出来了。想要更多，去商店的“家具”看看。<br>点右边的楼梯，可以去布置另一层。</span>') +
+    '</div><button class="btn small" id="decor-done">摆好了</button>';
+}
+function placeFurn(id) {
+  const f = FURNS[id]; if (!decor || !f || S.furn.put.some(p => p.id === id)) return;
+  const p = { id, f: S.floor, x: f.type === 'floor' ? 300 : 400, y: f.type === 'wall' ? 190 : f.type === 'rug' ? 494 : 444 };
+  clampFurn(p); S.furn.put.push(p); decor.sel = id;
+  Sound.sfx.pop(); renderFurn(); renderDecorBar();
+}
+function stowFurn(id) {
+  S.furn.put = S.furn.put.filter(p => p.id !== id);
+  if (decor) decor.sel = null;
+  Sound.sfx.pop(); renderFurn(); renderDecorBar();
+}
+function furnDown(e) {
+  if (!decor || e.target.closest('.stow')) return;
+  const el = e.target.closest('.fi'); if (!el) return;
+  const p = S.furn.put.find(q => q.id === el.dataset.fid); if (!p) return;
+  drag = { el, p, sx: e.clientX, sy: e.clientY, x0: p.x, y0: p.y, moved: false };
+  try { el.setPointerCapture(e.pointerId); } catch (err) { }
+  e.preventDefault();
+}
+function furnMove(e) {
+  if (!drag) return;
+  if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) < 6) return;
+  drag.moved = true;
+  drag.p.x = drag.x0 + (e.clientX - drag.sx) / stageU; drag.p.y = drag.y0 + (e.clientY - drag.sy) / stageU;
+  clampFurn(drag.p);
+  drag.el.style.cssText = furnStyle(drag.p);
+}
+function furnUp() {
+  if (!drag) return;
+  const d = drag; drag = null;
+  if (!decor) return;
+  if (d.moved) { Sound.sfx.pop(); save(); return; }
+  decor.sel = decor.sel === d.p.id ? null : d.p.id;
+  $$('#furn .fi').forEach(x => x.classList.toggle('sel', x.dataset.fid === decor.sel));
+}
+
+/* 上楼和下楼：画面和宠物一起换楼层 */
+function updateFloorBtn() {
+  $('#floor-btn').innerHTML = icon(S.floor === 1 ? 'stairsup' : 'stairsdown') + (S.floor === 1 ? '上楼' : '下楼');
+  $('#scene-home').classList.toggle('floor2', S.floor === 2);
+}
+function goFloor() {
+  if (floorBusy || bath) return;
+  if (S.sleeping && !gone()) { toast('嘘… 它在睡觉，等它醒了再一起' + (S.floor === 1 ? '上楼' : '下楼') + '吧'); return; }
+  floorBusy = true; Sound.sfx.click();
+  const z = $('#pet-zone');
+  $('#bubble').classList.remove('show'); $('#prop').classList.remove('show');
+  z.classList.add('stair');
+  setTimeout(() => {
+    floorBusy = false;
+    if (!S) return;
+    S.floor = S.floor === 1 ? 2 : 1;
+    if (decor) decor.sel = null;
+    updateFloorBtn(); renderFurn(); renderDecorBar(); resetIdle();
+    z.classList.remove('stair'); Sound.sfx.pop(); save();
+    if (!gone() && !decor) setTimeout(() => { if (S && scene === 'home') say(S.floor === 2 ? pick(['二楼好安静呀~', '从小圆窗能看到好远！']) : '还是楼下热闹~'); }, 600);
+  }, 520);
+}
+
 /* ---------- 场景切换 ---------- */
 let scene = 'home', built = false;
 const GAME_COLORS = ['#EBB0A6', '#A9CDD9', '#CBBBDD', '#EBC66B', '#B9CFA0'];
 function buildScenes() {
   if (built) return; built = true;
-  $('#scene-home .bg').innerHTML = sceneHomeSVG();
+  $('#scene-home .bg.f1').innerHTML = sceneHomeSVG();
+  $('#scene-home .bg.f2').innerHTML = sceneAtticSVG();
   $('#scene-garden .bg').innerHTML = sceneGardenSVG();
   $('#scene-play .bg').innerHTML = scenePlaySVG();
   $('#scene-shop .bg').innerHTML = sceneShopSVG();
@@ -1228,12 +1487,14 @@ function fitStage() {
   const st = $('#stage'), W = st.clientWidth, H = st.clientHeight; if (!W || !H) return;
   const u = Math.max(W / 800, H / 500), pu = Math.max(0.3, Math.min(u, (H - 44 * u - 46) / 215));
   st.style.setProperty('--u', u + 'px'); st.style.setProperty('--pu', pu + 'px'); st.style.setProperty('--stH', H + 'px');
+  stageU = u;
 }
 function playSceneMusic() {
   Sound.music({ home: S && S.sleeping ? 'night' : 'home', garden: 'garden', play: 'play', shop: 'shop', album: 'album' }[scene]);
 }
 function switchScene(n) {
   if (bath) endBath();
+  if (decor && n !== 'home') toggleDecor();
   scene = n;
   $$('.scene').forEach(el => el.classList.toggle('active', el.id === 'scene-' + n));
   $$('#nav button').forEach(b => b.classList.toggle('on', b.dataset.scene === n));
@@ -1335,7 +1596,10 @@ function enterGame(isNew) {
   if (!isNew) applyOffline();
   Sound.setOn(S.soundOn !== false);
   petSig = ''; tempMood = null; shopTab = 'food'; albumTab = 'cards'; playSecs = 0; restDue = false;
-  renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); renderWall(); updateDots(); renderAlert(); switchScene('home');
+  decor = null; drag = null; $('#scene-home').classList.remove('decor'); $('#screen-game').classList.remove('decor-on'); $('#pet-zone').classList.remove('stair');
+  renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); updateFloorBtn(); renderFurn(); renderDecorBar(); updateDots(); renderAlert(); switchScene('home');
+  // 第一次进屋时，把默认家具挪进这台设备看得见的范围（手机屏幕窄，两边会被裁掉）
+  if (!S.furn.fit) { S.furn.put.forEach(clampFurn); S.furn.fit = 1; renderFurn(); }
   stopTicker(); lastTick = Date.now(); ticker = setInterval(tick, 1000);
   if (isNew) {
     confetti(); Sound.sfx.level(); banner('欢迎 ' + S.pet.name + ' 回家');
@@ -1353,7 +1617,8 @@ function bindEvents() {
   $('#actions').addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
     Sound.sfx.click();
-    ({ feed: openFeed, bath: startBath, sleep: toggleSleep, talent: () => (S.sick && !gone() ? openMeds() : talent()), dress: openWardrobe, travel: openPack })[b.dataset.act]();
+    if (decor && b.dataset.act !== 'decor') { toast('先点“摆好了”，再做别的事'); return; }
+    ({ cook: openCook, decor: toggleDecor, feed: openFeed, bath: startBath, sleep: toggleSleep, talent: () => (S.sick && !gone() ? openMeds() : talent()), dress: openWardrobe, travel: openPack })[b.dataset.act]();
   });
   $('#pet').addEventListener('pointerdown', patPet);
   $('#pet-garden').addEventListener('pointerdown', e => { if (!S.sleeping) { floatFx(icon('heart'), e.clientX, e.clientY - 20); Sound.sfx.pop(); } });
@@ -1362,6 +1627,20 @@ function bindEvents() {
   layer.addEventListener('click', e => { if (e.target.closest('.bath-x')) endBath(); });
   $('#plots').addEventListener('click', e => { const b = e.target.closest('.plot'); if (b) plotClick(+b.dataset.i); });
   $('#mailbox').onclick = () => openMailbox();
+  const furn = $('#furn');
+  furn.addEventListener('pointerdown', furnDown); furn.addEventListener('pointermove', furnMove);
+  furn.addEventListener('pointerup', furnUp); furn.addEventListener('pointercancel', furnUp);
+  furn.addEventListener('click', e => {
+    const s = e.target.closest('[data-stow]'), c = e.target.closest('.slot');
+    if (s && decor) stowFurn(s.dataset.stow);
+    else if (c && !decor) { Sound.sfx.click(); openCardPicker(+c.dataset.slot); }
+  });
+  $('#floor-btn').onclick = () => goFloor();
+  $('#decor-bar').addEventListener('click', e => {
+    const p = e.target.closest('[data-place]');
+    if (p) placeFurn(p.dataset.place);
+    else if (e.target.closest('#decor-done')) { Sound.sfx.click(); toggleDecor(); }
+  });
   $('#alert').addEventListener('click', e => { const b = e.target.closest('[data-al]'); if (b) alertAction(b.dataset.al); });
   $('#away-note').addEventListener('click', e => { if (e.target.closest('[data-fetch]')) { Sound.sfx.click(); openFetch(); } });
   $('#guest').onclick = () => { Sound.sfx.click(); openGuest(); };

@@ -66,8 +66,9 @@
       <div id="alert"></div>
       <!-- 小屋 -->
       <div class="scene" id="scene-home">
-        <div class="bg"></div>
-        <div class="wall-cards" id="wall-cards"></div>
+        <div class="bg f1"></div>
+        <div class="bg f2"></div>
+        <div class="furn-layer" id="furn"></div>
         <div class="night-mask"></div>
         <div class="away-note" id="away-note"></div>
         <div class="pet-zone" id="pet-zone">
@@ -78,6 +79,7 @@
           <div class="zzz">Z<small>z</small><sub>z</sub></div>
         </div>
         <div id="bath-layer"></div>
+        <button class="floor-btn" id="floor-btn"></button>
       </div>
       <!-- 花园 -->
       <div class="scene" id="scene-garden">
@@ -112,6 +114,7 @@
             <button class="tab" data-tab="seed">种子</button>
             <button class="tab" data-tab="med">药品</button>
             <button class="tab" data-tab="wear">装扮</button>
+            <button class="tab" data-tab="furn">家具</button>
             <button class="tab" data-tab="gear">旅行用品</button>
           </div>
           <div class="shop-grid" id="shop-grid"></div>
@@ -123,6 +126,7 @@
           <div class="tabs" id="album-tabs">
             <button class="tab" data-tab="cards">明信片</button>
             <button class="tab" data-tab="souv">特产</button>
+            <button class="tab" data-tab="cook">菜谱</button>
             <button class="tab" data-tab="stickers">贴纸</button>
           </div>
           <div id="album-body"></div>
@@ -130,13 +134,16 @@
       </div>
     </main>
 
+    <div class="decor-bar" id="decor-bar"></div>
     <div id="actions">
       <button class="act" data-act="feed"><i data-ic="apple"></i><em>喂食</em></button>
+      <button class="act" data-act="cook"><i data-ic="pot"></i><em>煮菜</em></button>
       <button class="act" data-act="bath"><i data-ic="tub"></i><em>洗澡</em></button>
       <button class="act" data-act="sleep"><i data-ic="moon"></i><em>睡觉</em></button>
       <button class="act" data-act="talent"><i data-ic="note"></i><em>才艺</em></button>
       <button class="act" data-act="dress"><i data-ic="bow"></i><em>装扮</em></button>
       <button class="act" data-act="travel"><i data-ic="backpack"></i><em>旅行</em></button>
+      <button class="act" data-act="decor"><i data-ic="sofa"></i><em>布置</em></button>
     </div>
 
     <nav id="nav">

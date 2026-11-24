@@ -190,6 +190,8 @@ function wearSVG(id, p) {
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M8 -3 Q42 -6 47 6 Q28 1 8 4Z" fill="#6F9DB5"/><path d="M-26 0 Q-26 -27 0 -27 Q26 -27 26 0Z" fill="${C.blue}"/><circle cy="-27" r="3.200" fill="${C.cream}" stroke-width="2"/></g>`;
     case 'wizard':
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-17 -2 Q-6 -30 9 -54 Q13 -26 18 -2Z" fill="#8E7DB8"/><path d="M-33 0 Q0 -11 33 0 Q0 9 -33 0Z" fill="#7C6BA6"/><polygon points="0,-30 2,-25 7,-25 3,-21.500 4.500,-16.500 0,-19.500 -4.500,-16.500 -3,-21.500 -7,-25 -2,-25" fill="${C.yellow}" stroke-width="1.600"/></g>`;
+    case 'chef':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-20 0 v-17 q-15 -4 -9 -19 q8 -13 19 -4 q10 -13 21 0 q13 -4 12 9 q0 10 -10 14 v17z" fill="${C.white}"/><path d="M-20 -7 h40" stroke-width="2"/></g>`;
     case 'strawhat':
       return `<g transform="translate(${hx} ${hy + 12})"><ellipse rx="40" ry="10" fill="${C.sand}"/><path d="M-23 -1 Q-23 -28 0 -28 Q23 -28 23 -1" fill="${C.sand}"/><path d="M-22.5 -8 Q0 0 22.5 -8" stroke="${C.coral}" stroke-width="5"/></g>`;
   }
@@ -406,7 +408,6 @@ function sceneHomeSVG() {
     <path d="M70 78 H290" stroke-width="5"/>
     <path d="M82 80 q32 22 34 62 q-2 52 -34 76z" fill="#B9CFA0"/><path d="M278 80 q-32 22 -34 62 q2 52 34 76z" fill="#B9CFA0"/>
     <path d="M96 100 q10 30 6 70 M264 100 q-10 30 -6 70" stroke-width="1.600"/>
-    <path d="M456 66 Q600 112 744 66" stroke-width="2"/>
     <rect x="500" y="238" width="246" height="12" rx="3" fill="${C.wood}"/>
     <path d="M516 250 v18 M730 250 v18"/>
     <rect x="516" y="192" width="17" height="46" rx="2" fill="${C.blue}"/><rect x="535" y="200" width="14" height="38" rx="2" fill="${C.yellow}"/>
@@ -417,16 +418,8 @@ function sceneHomeSVG() {
     <rect y="372" width="800" height="128" fill="#DBC196" stroke="none"/>
     <path d="M0 372 H800" stroke-width="2.600"/>
     <path d="M0 414 H800 M0 458 H800 M130 374 v40 M430 374 v40 M690 374 v40 M270 414 v44 M570 414 v44 M100 458 v42 M410 458 v42 M710 458 v42" stroke="#C4A77A" stroke-width="2"/>
-    <ellipse cx="400" cy="446" rx="244" ry="48" fill="#E3B7A6"/>
-    <ellipse cx="400" cy="446" rx="204" ry="38" fill="#F1DFC4" stroke-width="1.800"/>
-    <ellipse cx="400" cy="446" rx="150" ry="26" fill="#C6D7AC" stroke-width="1.800"/>
-    <path d="M612 392 Q616 446 602 470 H744 Q730 446 734 392Z" fill="${C.dwood}"/>
-    <ellipse cx="673" cy="392" rx="64" ry="15" fill="#E2C79C"/>
-    <path d="M650 392 a22 6 0 0 0 44 0" stroke-width="1.600"/>
-    <path d="M690 386 q-2 -18 12 -18 q14 0 12 18z" fill="${C.cream}"/><path d="M714 372 q9 0 7 8 q-2 5 -8 4"/>
-    <path d="M644 388 h18 l-2 -11 h-14z" fill="${C.white}" stroke-width="2.200"/>
-    <ellipse cx="128" cy="446" rx="88" ry="30" fill="${C.purple}"/><ellipse cx="128" cy="438" rx="72" ry="21" fill="#E6DCEF" stroke-width="2"/>
-    <ellipse cx="96" cy="430" rx="30" ry="12" fill="${C.white}" stroke-width="2.200"/>
+    <path d="M700 372 V350 H726 V328 H752 V306 H778 V284 H810 V372Z" fill="#DBC196"/>
+    <path d="M704 328 L806 240" stroke-width="5"/><path d="M713 348 v-28 M739 326 v-28 M765 304 v-28 M791 282 v-28" stroke-width="2.400"/>
   </g></svg>`;
 }
 
@@ -799,3 +792,89 @@ Object.assign(CARD_BG, {
       <path d="M10 112 Q76 126 140 112" stroke-width="1.600"/>${lights}`;
   }
 });
+
+/* ---------- 第三批图标：做菜用的蔬菜、锅、楼梯、布置 ---------- */
+Object.assign(ICONS, {
+  lettuce: `<path d="M24 44 Q6 40 6 24 Q6 10 16 10 Q18 4 24 6 Q30 4 32 10 Q42 10 42 24 Q42 40 24 44Z" fill="${C.lgreen}"/><path d="M24 44 V16 M24 31 q-8 -4 -10 -12 M24 27 q8 -4 10 -10" stroke="${C.dgreen}" stroke-width="1.800"/>`,
+  potato: `<path d="M10 28 Q6 14 20 10 Q36 6 42 20 Q46 34 32 40 Q16 44 10 28Z" fill="#E2C48A"/><path d="M18 20 v.100 M30 18 v.100 M26 30 v.100 M36 28 v.100" stroke="${C.dwood}" stroke-width="3"/>`,
+  mushroom: `<path d="M18 26 h12 l3 16 q-9 4 -18 0z" fill="${C.cream}"/><path d="M4 26 Q4 6 24 6 Q44 6 44 26Z" fill="${C.coral}"/><circle cx="16" cy="17" r="3.500" fill="#fff" stroke="none"/><circle cx="30" cy="14" r="3" fill="#fff" stroke="none"/><circle cx="35" cy="21" r="2.400" fill="#fff" stroke="none"/>`,
+  pumpkin: `<path d="M24 13 q2 -6 6 -8" stroke="${C.dgreen}" stroke-width="3.500"/><ellipse cx="24" cy="28" rx="19" ry="15" fill="#E9A04E"/><path d="M24 13 q-10 15 0 30 M24 13 q10 15 0 30 M12 17 q-6 11 0 22 M36 17 q6 11 0 22" stroke-width="1.600"/>`,
+  eggplant: `<path d="M30 12 Q44 22 38 36 Q30 48 16 42 Q6 36 14 24 Q20 16 30 12Z" fill="#9A7DB8"/><path d="M30 12 q-9 -2 -11 5 q7 0 11 -5z M30 12 q7 -5 11 0 q-6 3 -11 0z" fill="${C.green}" stroke-width="1.800"/><path d="M30 12 l4 -8" stroke="${C.dgreen}" stroke-width="3"/>`,
+  pot: `<path d="M17 12 q-3 -4 0 -8 M25 11 q-3 -4 0 -8 M33 12 q-3 -4 0 -8"/><path d="M8 26 h-6 M40 26 h6" stroke-width="3.500"/><path d="M8 20 h32 v16 q0 8 -8 8 h-16 q-8 0 -8 -8z" fill="${C.gray}"/><path d="M5 20 h38" stroke-width="4"/>`,
+  stairsup: `<path d="M4 44 h10 v-10 h10 v-10 h10 v-10 h10"/><path d="M12 22 L26 8 M17 8 h9 v9" stroke="${C.dcoral || C.coral}" stroke-width="3"/>`,
+  stairsdown: `<path d="M4 14 h10 v10 h10 v10 h10 v10 h10"/><path d="M26 8 L40 22 M31 22 h9 v-9" stroke="${C.coral}" stroke-width="3"/>`,
+  sofa: `<path d="M10 26 V16 q0 -6 6 -6 h16 q6 0 6 6 v10" fill="#E9A090"/><rect x="5" y="23" width="38" height="15" rx="5" fill="${C.coral}"/><path d="M11 38 v6 M37 38 v6"/>`
+});
+
+/* 一道菜的图标：按做法（汤 / 沙拉 / 烤 / 炒）画盘子，用两种蔬菜的颜色上色 */
+function dishIcon(kind, c1, c2) {
+  if (kind === 'soup') return `<path d="M17 12 q-3 -4 0 -8 M28 12 q-3 -4 0 -8"/><path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.400" fill="${c1}" stroke-width="1.600"/><circle cx="17" cy="22" r="2.700" fill="${c2}" stroke="none"/><circle cx="27" cy="21" r="2.300" fill="${c2}" stroke="none"/><circle cx="33" cy="23" r="2" fill="${c2}" stroke="none"/>`;
+  if (kind === 'salad') return `<path d="M6 24 h36 q-2 18 -18 18 q-16 0 -18 -18z" fill="${C.wood}"/><path d="M8 24 q2 -13 10 -10 q4 -9 12 -2 q10 -3 10 12z" fill="${c1}"/><circle cx="17" cy="19" r="3.200" fill="${c2}" stroke-width="1.400"/><circle cx="29" cy="17" r="3.200" fill="${c2}" stroke-width="1.400"/><circle cx="24" cy="22" r="2.600" fill="${c2}" stroke-width="1.400"/>`;
+  if (kind === 'bake') return `<ellipse cx="24" cy="34" rx="21" ry="8" fill="${C.white}"/><ellipse cx="24" cy="27" rx="16" ry="9.500" fill="${c1}"/><path d="M14 25 q10 -6 20 0 M16 31 q8 -4 16 0" stroke="${c2}" stroke-width="3"/>`;
+  return `<ellipse cx="24" cy="34" rx="21" ry="8" fill="${C.white}"/><path d="M9 32 q2 -17 15 -17 q13 0 15 17 q-15 6 -30 0z" fill="${c1}"/><circle cx="18" cy="26" r="3.500" fill="${c2}" stroke-width="1.400"/><circle cx="29" cy="24" r="3.500" fill="${c2}" stroke-width="1.400"/><circle cx="24" cy="31" r="3" fill="${c2}" stroke-width="1.400"/>`;
+}
+
+/* ---------- 家具 ----------
+ * type：floor 放在地上，rug 是地毯（永远在最下面），wall 挂在墙上
+ * w 是在房间里的宽度（和场景同一把尺子），vb 是画的时候的画布大小 */
+const _fish = (x, y, c) => `<path d="M${x - 9} ${y} q7 -7 14 -1 l6 -4 v10 l-6 -4 q-7 6 -14 -1z" fill="${c}" stroke-width="1.400"/>`;
+const FURNS = {
+  rug:      { name: '圆地毯',   type: 'rug',   price: 0,   w: 440, vb: [440, 100], draw: () => `<ellipse cx="220" cy="50" rx="216" ry="46" fill="#E3B7A6"/><ellipse cx="220" cy="50" rx="180" ry="36" fill="#F1DFC4" stroke-width="1.800"/><ellipse cx="220" cy="50" rx="130" ry="24" fill="#C6D7AC" stroke-width="1.800"/>` },
+  cushion:  { name: '软垫子',   type: 'floor', price: 0,   w: 180, vb: [180, 72],  draw: () => `<ellipse cx="90" cy="42" rx="86" ry="27" fill="${C.purple}"/><ellipse cx="90" cy="34" rx="70" ry="20" fill="#E6DCEF" stroke-width="2"/><ellipse cx="60" cy="27" rx="28" ry="11" fill="${C.white}" stroke-width="2.200"/>` },
+  stump:    { name: '树桩茶桌', type: 'floor', price: 0,   w: 150, vb: [150, 112], draw: () => `<path d="M10 36 Q14 88 2 108 H148 Q136 88 140 36Z" fill="${C.dwood}"/><ellipse cx="75" cy="34" rx="66" ry="16" fill="#E2C79C"/><path d="M52 34 a22 6 0 0 0 44 0" stroke-width="1.600"/><path d="M92 28 q-2 -18 12 -18 q14 0 12 18z" fill="${C.cream}"/><path d="M116 14 q9 0 7 8 q-2 5 -8 4"/><path d="M46 30 h18 l-2 -11 h-14z" fill="${C.white}" stroke-width="2.200"/>` },
+  cards:    { name: '明信片绳', type: 'wall',  price: 0,   w: 270, vb: [270, 112], draw: () => `<path d="M5 9 Q135 46 265 9" stroke-width="2"/><circle cx="5" cy="9" r="3.600" fill="${C.dwood}"/><circle cx="265" cy="9" r="3.600" fill="${C.dwood}"/>` },
+  sofa:     { name: '小沙发',   type: 'floor', price: 90,  w: 200, vb: [200, 112], draw: () => `<path d="M30 98 v10 M170 98 v10"/><path d="M20 62 V26 Q20 8 40 8 H160 Q180 8 180 26 V62Z" fill="#E9A090"/><rect x="14" y="54" width="172" height="42" rx="12" fill="${C.coral}"/><rect x="4" y="40" width="28" height="58" rx="12" fill="#E9A090"/><rect x="168" y="40" width="28" height="58" rx="12" fill="#E9A090"/><path d="M100 56 v38" stroke-width="1.800"/>` },
+  desk:     { name: '小书桌',   type: 'floor', price: 70,  w: 170, vb: [170, 122], draw: () => `<path d="M16 60 V118 M154 60 V118"/><rect x="100" y="58" width="52" height="28" fill="#E2C79C"/><circle cx="126" cy="72" r="3" fill="${C.line}" stroke="none"/><rect x="4" y="46" width="162" height="13" rx="4" fill="${C.wood}"/><rect x="18" y="38" width="38" height="8" fill="${C.blue}" stroke-width="1.800"/><rect x="22" y="30" width="30" height="8" fill="${C.coral}" stroke-width="1.800"/><path d="M122 46 v-22 l-14 -10"/><path d="M92 22 l20 -15 l9 14z" fill="${C.yellow}"/>` },
+  bookcase: { name: '小书架',   type: 'floor', price: 85,  w: 120, vb: [120, 172], draw: () => {
+    let b = '', cs = [C.blue, C.yellow, C.coral, C.purple, C.green, C.orange];
+    [16, 66, 116].forEach((y, r) => { b += `<rect x="14" y="${y}" width="92" height="42" fill="#F3E6C8" stroke-width="1.800"/>`; for (let i = 0; i < 5; i++) { const h = 26 + (i * 7 + r * 5) % 13; b += `<rect x="${20 + i * 15}" y="${y + 42 - h}" width="12" height="${h}" fill="${cs[(i + r * 2) % 6]}" stroke-width="1.600"/>`; } });
+    return `<rect x="6" y="6" width="108" height="162" rx="4" fill="${C.wood}"/>${b}`; } },
+  lampf:    { name: '落地灯',   type: 'floor', price: 55,  w: 70,  vb: [70, 172],  draw: () => `<path d="M35 60 V160"/><ellipse cx="35" cy="162" rx="22" ry="7" fill="${C.dwood}"/><path d="M12 62 L22 14 H48 L58 62Z" fill="${C.yellow}"/>` },
+  plant:    { name: '大盆栽',   type: 'floor', price: 45,  w: 90,  vb: [90, 142],  draw: () => `<path d="M45 98 q-36 -20 -31 -66 q31 17 31 66z" fill="${C.green}"/><path d="M45 98 q36 -20 31 -66 q-31 17 -31 66z" fill="${C.green}"/><path d="M45 98 q-13 -52 0 -92 q13 40 0 92z" fill="${C.lgreen}"/><path d="M22 98 h46 l-6 40 h-34z" fill="${C.orange}"/>` },
+  toybox:   { name: '玩具箱',   type: 'floor', price: 60,  w: 120, vb: [120, 92],  draw: () => `<circle cx="36" cy="28" r="15" fill="${C.coral}"/><rect x="62" y="12" width="24" height="24" fill="${C.yellow}" transform="rotate(12 74 24)"/><path d="M94 36 l8 -22 l8 22z" fill="${C.green}"/><rect x="6" y="36" width="108" height="52" rx="5" fill="${C.blue}"/><path d="M6 50 h108" stroke-width="1.800"/>${_star(60, 70, 11, 5, C.yellow)}` },
+  bed:      { name: '小木床',   type: 'floor', price: 130, w: 220, vb: [220, 122], draw: () => `<path d="M34 94 v24 M206 94 v24"/><path d="M8 102 V34 Q8 14 30 14 Q52 14 52 34 V102Z" fill="${C.wood}"/><rect x="30" y="58" width="184" height="32" rx="8" fill="${C.white}"/><ellipse cx="62" cy="56" rx="24" ry="10" fill="${C.cream}"/><path d="M88 54 H214 V94 H88 Q80 74 88 54Z" fill="${C.pink}"/><path d="M110 66 v.100 M140 78 v.100 M170 64 v.100 M196 80 v.100 M126 84 v.100" stroke="#fff" stroke-width="5"/>` },
+  fishtank: { name: '小鱼缸',   type: 'floor', price: 110, w: 130, vb: [130, 132], draw: () => `<rect x="14" y="82" width="102" height="46" rx="4" fill="${C.wood}"/><path d="M14 104 h102" stroke-width="1.800"/><rect x="8" y="10" width="114" height="74" rx="8" fill="${C.sky}"/><path d="M12 24 h106" stroke="#fff" stroke-width="2"/><path d="M30 82 q-6 -14 0 -26 M38 82 q6 -12 0 -22" stroke="${C.dgreen}" stroke-width="3.500"/>${_fish(60, 44, C.orange)}${_fish(92, 62, C.yellow)}<circle cx="100" cy="36" r="3" stroke="#fff" stroke-width="1.600"/><circle cx="108" cy="26" r="2" stroke="#fff" stroke-width="1.600"/>` },
+  piano:    { name: '玩具钢琴', type: 'floor', price: 120, w: 150, vb: [150, 112], draw: () => `<path d="M22 86 v22 M128 86 v22"/><rect x="8" y="42" width="134" height="46" fill="#8C7B8C"/><rect x="4" y="30" width="142" height="14" rx="3" fill="#6F5F70"/><rect x="14" y="60" width="122" height="20" fill="${C.white}" stroke-width="1.800"/><path d="M26 60 v20 M38 60 v20 M50 60 v20 M62 60 v20 M74 60 v20 M86 60 v20 M98 60 v20 M110 60 v20 M122 60 v20" stroke-width="1.400"/><path d="M32 60 v11 M44 60 v11 M68 60 v11 M80 60 v11 M92 60 v11 M116 60 v11" stroke-width="5"/>` },
+  globe:    { name: '地球仪',   type: 'floor', price: 50,  w: 70,  vb: [70, 102],  draw: () => `<path d="M20 98 h30 M35 98 v-16"/><path d="M9 46 a27 27 0 0 0 51 9"/><circle cx="35" cy="42" r="24" fill="${C.sky}"/><path d="M24 30 q8 -6 14 0 q2 8 -6 10 q-10 0 -8 -10z M40 46 q8 -2 10 6 q-4 8 -10 4z" fill="${C.green}" stroke-width="1.600"/>` },
+  teepee:   { name: '游戏帐篷', type: 'floor', price: 100, w: 150, vb: [150, 152], draw: () => `<path d="M66 4 l18 18 M84 4 l-18 18"/><path d="M75 12 L140 146 H10Z" fill="${C.cream}"/><path d="M75 62 L100 146 H50Z" fill="${C.coral}"/><path d="M36 92 l10 8 l10 -8 l10 8 M84 100 l10 -8 l10 8 l10 -8" stroke="${C.blue}" stroke-width="3"/>` },
+  rug2:     { name: '条纹地毯', type: 'rug',   price: 50,  w: 380, vb: [380, 92],  draw: () => `<path d="M2 20 l-0 0 M10 14 v64 M370 14 v64" stroke-width="1.600"/><rect x="14" y="8" width="352" height="76" rx="26" fill="${C.blue}"/><path d="M80 9 v74 M140 9 v74 M200 9 v74 M260 9 v74 M320 9 v74" stroke="${C.cream}" stroke-width="16"/><rect x="14" y="8" width="352" height="76" rx="26"/>` },
+  rug3:     { name: '星星地毯', type: 'rug',   price: 60,  w: 300, vb: [300, 84],  draw: () => `<ellipse cx="150" cy="42" rx="146" ry="38" fill="${C.purple}"/><ellipse cx="150" cy="42" rx="120" ry="29" stroke="#fff" stroke-width="2" stroke-dasharray="6 8"/><g transform="translate(150 42) scale(1 .560)">${_star(0, 0, 44, 19, C.yellow)}</g>` },
+  clock:    { name: '小挂钟',   type: 'wall',  price: 40,  w: 70,  vb: [70, 70],   draw: () => `<circle cx="35" cy="35" r="30" fill="${C.white}"/><path d="M35 9 v5 M35 56 v5 M9 35 h5 M56 35 h5" stroke-width="2"/><path d="M35 35 V17 M35 35 L48 43"/><circle cx="35" cy="35" r="3" fill="${C.coral}"/>` },
+  painting: { name: '风景画',   type: 'wall',  price: 55,  w: 120, vb: [120, 92],  draw: () => `<rect x="4" y="4" width="112" height="84" rx="4" fill="${C.wood}"/><rect x="13" y="13" width="94" height="66" fill="${C.sky}" stroke-width="1.800"/><circle cx="86" cy="32" r="9" fill="#F3D98B" stroke-width="1.600"/><path d="M13 79 V58 Q40 40 62 60 Q84 46 107 58 V79Z" fill="${C.green}" stroke-width="1.800"/>` },
+  lights:   { name: '小灯串',   type: 'wall',  price: 65,  w: 300, vb: [300, 54],  draw: () => {
+    let b = ''; const cs = [C.coral, C.yellow, C.blue, C.pink, C.lgreen, C.purple, C.orange, C.yellow];
+    for (let i = 0; i < 8; i++) { const t = (i + .5) / 8, x = 5 + 290 * t, y = 8 + 4 * 16 * t * (1 - t) * 2.2; b += `<path d="M${x.toFixed(1)} ${y.toFixed(1)} v6" stroke-width="1.600"/><ellipse cx="${x.toFixed(1)}" cy="${(y + 13).toFixed(1)}" rx="6" ry="8" fill="${cs[i]}" stroke-width="1.800"/>`; }
+    return `<path d="M5 8 Q150 78 295 8" stroke-width="2"/>${b}`; } },
+  frame:    { name: '爱心相框', type: 'wall',  price: 45,  w: 80,  vb: [80, 92],   draw: () => `<rect x="5" y="5" width="70" height="82" rx="8" fill="${C.white}"/><rect x="5" y="5" width="70" height="82" rx="8" stroke="${C.orange}" stroke-width="6"/><path d="M40 68 q-26 -18 -18 -34 q8 -11 18 2 q10 -13 18 -2 q8 16 -18 34z" fill="${C.pink}" stroke-width="1.800"/>` },
+  shelfw:   { name: '小搁板',   type: 'wall',  price: 50,  w: 140, vb: [140, 74],  draw: () => `<path d="M20 62 v10 M120 62 v10"/><rect x="4" y="52" width="132" height="10" rx="3" fill="${C.wood}"/><path d="M22 52 l4 -20 h20 l4 20z" fill="${C.orange}"/><path d="M36 32 q-10 -14 0 -26 q10 12 0 26z" fill="${C.green}"/><path d="M70 52 q-6 -18 4 -24 h16 q10 6 4 24z" fill="#E2EFE6"/><rect x="106" y="26" width="12" height="26" fill="${C.purple}" stroke-width="1.800"/><rect x="119" y="32" width="11" height="20" fill="${C.yellow}" stroke-width="1.800"/>` }
+};
+function furnSVG(id) {
+  const f = FURNS[id]; if (!f) return '';
+  return `<svg viewBox="0 0 ${f.vb[0]} ${f.vb[1]}">${G_OPEN('wob-m', 2.6)}${f.draw()}</g></svg>`;
+}
+
+/* ---------- 二楼：小阁楼 ---------- */
+function sceneAtticSVG() {
+  let stars = '', dots = '';
+  [[372, 128], [392, 172], [430, 166], [416, 120]].forEach(p => { stars += `<circle cx="${p[0]}" cy="${p[1]}" r="2.200" fill="#FFF6C9"/>`; });
+  [[150, 250], [240, 300], [560, 300], [650, 250], [330, 330], [470, 330]].forEach(p => { dots += _star(p[0], p[1], 9, 4, '#F1DDA6'); });
+  return _SCENE_OPEN + G_OPEN('wob-l', 3) + `
+    <rect width="800" height="372" fill="#EFE6D2" stroke="none"/>
+    <g stroke-width="1.400">${dots}</g>
+    <rect width="800" height="372" fill="url(#hatch)" stroke="none"/>
+    <path d="M-10 -10 H330 L-10 250Z" fill="#DBC196"/><path d="M810 -10 H470 L810 250Z" fill="#DBC196"/>
+    <path d="M330 -10 L-10 250 M470 -10 L810 250" stroke-width="6"/>
+    <path d="M250 -10 L-10 190 M170 -10 L-10 128 M550 -10 L810 190 M630 -10 L810 128" stroke="#C4A77A" stroke-width="2"/>
+    <circle cx="400" cy="150" r="64" fill="${C.white}"/>
+    <circle class="win-sky" cx="400" cy="150" r="52" stroke="none"/>
+    <circle class="win-sun" cx="424" cy="132" r="13" stroke="none"/>
+    <g class="win-stars" stroke="none">${stars}</g>
+    <path d="M400 98 V202 M348 150 H452" stroke="${C.white}" stroke-width="6"/><path d="M400 98 V202 M348 150 H452" stroke-width="1.600"/>
+    <circle cx="400" cy="150" r="52"/>
+    <rect y="372" width="800" height="128" fill="#DBC196" stroke="none"/>
+    <path d="M0 372 H800" stroke-width="2.600"/>
+    <path d="M0 414 H800 M0 458 H800 M130 374 v40 M430 374 v40 M690 374 v40 M270 414 v44 M570 414 v44 M100 458 v42 M410 458 v42 M710 458 v42" stroke="#C4A77A" stroke-width="2"/>
+    <path d="M694 392 h100 v64 h-100z" fill="#8C6F4E"/><path d="M704 404 h80 M704 420 h80 M704 436 h80" stroke-width="2"/>
+    <path d="M694 392 v-40 M794 392 v-40 M690 352 h108" stroke-width="4"/>
+  </g></svg>`;
+}
