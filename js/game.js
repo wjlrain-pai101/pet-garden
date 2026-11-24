@@ -1221,10 +1221,10 @@ function openTasks() {
 
 /* ---------- 设置 ---------- */
 function openMenu() {
-  const m = openModal(`<h2>设置</h2>
+  const m = openModal(`<h2>设置</h2><p class="hint" style="margin:0 0 8px">这一轮已经玩了 ${Math.floor(PT.secs / 60)} 分钟，玩满 ${PLAY_LIMIT / 60} 分钟要休息 ${COOL_DOWN / 60} 分钟</p>
     <div class="row"><button class="btn small plain" id="m-rename">改名字</button><button class="btn small green" id="m-title">回到封面</button></div>
     <h3>给爸爸妈妈的话</h3>
-    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。连续玩 20 分钟会提醒孩子休息眼睛。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。</p>
+    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。每连续玩 15 分钟会强制休息 5 分钟，倒计时结束才能继续（中途离开 5 分钟以上会重新计时）。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。</p>
     <div class="row"><button class="btn small gray" id="m-reset">重新领养一只</button></div>`);
   $('#m-rename', m).onclick = () => {
     const m2 = openModal(`<h2>新名字</h2><input id="rn" class="text-input" maxlength="6" value="${esc(S.pet.name)}" autocomplete="off"><div class="row"><button class="btn" id="rn-ok">好啦</button></div>`);
@@ -1506,8 +1506,75 @@ function switchScene(n) {
   fitStage(); playSceneMusic();
 }
 
+/* ---------- 游戏计时：每玩 15 分钟，强制休息 5 分钟 ----------
+ * 计时存在浏览器里，和宠物存档分开：刷新页面、重新领养都绕不过去。
+ * 休息的 5 分钟按真实时间算，关掉游戏也照样走；中途离开 5 分钟以上，算已经休息过，重新计时。
+ * 休息期间游戏里的时间停住，不掉状态，生病的倒计时也不走。 */
+const PLAY_LIMIT = 15 * 60;   // 连续玩多少秒要休息
+const COOL_DOWN = 5 * 60;     // 休息多少秒
+const TIMER_KEY = 'mengchong_playtimer_v1';
+let restOn = false, restTimer = null;
+const PT = (() => {
+  try { const d = JSON.parse(localStorage.getItem(TIMER_KEY) || 'null'); if (d && typeof d.secs === 'number') return d; } catch (e) { }
+  return { secs: 0, last: 0, lockStart: 0, lockUntil: 0, warned: false };
+})();
+function savePT() { try { localStorage.setItem(TIMER_KEY, JSON.stringify(PT)); } catch (e) { } }
+/* 每秒记一次时间；到点了返回 true，表示已经开始休息 */
+function playTick(dt) {
+  const now = Date.now();
+  if (PT.last && now - PT.last > COOL_DOWN * 1000 / SPEED) { PT.secs = 0; PT.warned = false; }   // 已经歇够了，重新计时
+  PT.last = now; PT.secs += dt * SPEED;
+  const left = PLAY_LIMIT - PT.secs;
+  if (left <= 60 && left > 0 && !PT.warned) { PT.warned = true; toast('再玩 1 分钟就到休息时间啦', 4200); }
+  if (left <= 0 && (!Games.active || left < -60)) { startRest(); return true; }   // 正在玩小游戏就等这一局结束，最多多等 1 分钟
+  if (tickN % 5 === 0) savePT();
+  return false;
+}
+function startRest() {
+  if (restOn) return;
+  if (Games.active) Games.close();
+  closeModal();
+  if (bath) endBath();
+  if (decor) toggleDecor();
+  PT.lockStart = Date.now(); PT.lockUntil = PT.lockStart + COOL_DOWN * 1000 / SPEED;
+  PT.secs = 0; PT.warned = false; savePT();
+  if (S) save();
+  showRest();
+}
+function showRest() {
+  restOn = true; Sound.suspend();
+  $('#app').inert = true;
+  const el = $('#rest');
+  el.innerHTML = `<div class="rest-card"><div class="hero">${S ? petSVG(S.pet.type, 'sleep', S.wear) : icon('eye')}</div>
+    <h2>休息时间到啦</h2>
+    <p>已经玩了 ${Math.round(PLAY_LIMIT / 60)} 分钟。<br>让眼睛休息一下：站起来动一动，看看窗外远远的地方。</p>
+    <div class="rest-clock" id="rest-clock"></div>
+    <p class="hint" id="rest-hint">倒计时结束才能继续玩，关掉游戏时间也照样走</p>
+    <div class="row"><button class="btn big green" id="rest-go" style="display:none">休息好了，继续玩</button></div></div>`;
+  el.classList.add('on');
+  $('#rest-go').onclick = endRest;
+  clearInterval(restTimer); restTimer = setInterval(updateRest, 500); updateRest();
+}
+function updateRest() {
+  const s = Math.max(0, Math.ceil((PT.lockUntil - Date.now()) / 1000 * SPEED));
+  $('#rest-clock').textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  if (s > 0) return;
+  clearInterval(restTimer);
+  $('#rest-hint').textContent = '休息好啦，眼睛亮晶晶~';
+  $('#rest-go').style.display = '';
+}
+function endRest() {
+  if (Date.now() < PT.lockUntil) return;
+  restOn = false; clearInterval(restTimer);
+  const el = $('#rest'); el.classList.remove('on'); el.innerHTML = '';
+  $('#app').inert = false;
+  PT.secs = 0; PT.warned = false; PT.last = Date.now(); savePT();
+  Sound.resume(); lastTick = Date.now();
+  if (S) { playSceneMusic(); if (!gone() && !S.sleeping && scene === 'home') say('休息好啦？我们继续玩吧~'); }
+}
+
 /* ---------- 时间流逝 ---------- */
-let ticker = null, lastTick = 0, tickN = 0, playSecs = 0, restDue = false;
+let ticker = null, lastTick = 0, tickN = 0;
 function stopTicker() { clearInterval(ticker); ticker = null; }
 function applyOffline() {
   const real = Math.max(0, (Date.now() - (S.last || Date.now())) / 1000), el = Math.min(real, 8 * 3600);
@@ -1520,7 +1587,8 @@ function applyOffline() {
     else soft('energy', 0.03);
     soft('hunger', 0.1); soft('thirst', 0.11); soft('clean', 0.045); soft('happy', 0.06);
     const k = S.sick;
-    if (k && !k.treated) k.age += real;   // 生病没吃药就关掉游戏，时间照样算
+    const restGap = Math.max(0, Math.min(Date.now(), PT.lockUntil) - Math.max(S.last || 0, PT.lockStart)) / 1000;   // 这段离线时间里，有多少是被要求休息的
+    if (k && !k.treated) k.age += Math.max(0, real - restGap);   // 生病没吃药就关掉游戏，时间照样算（强制休息的时间除外）
     if (k && k.treated && (ILLS[k.type].rest !== 'sleep' || slept)) k.rest += el;
   }
   S.plots.forEach(p => {
@@ -1532,8 +1600,9 @@ function applyOffline() {
   if (S.visitor && Date.now() > S.visitor.until) S.visitor = null;
 }
 function tick() {
-  if (!S) return;
+  if (!S || restOn) return;   // 强制休息的时候，游戏里的时间也停住
   const now = Date.now(), dt = clamp((now - lastTick) / 1000, 0, 5); lastTick = now;
+  if (playTick(dt)) return;
   const st = S.stats, dec = (k, r) => { st[k] = clamp(st[k] - r * dt, 0, 100); };
   if (gone()) { /* 宠物不在家，家里的状态先不变 */ }
   else if (S.sleeping) {
@@ -1547,15 +1616,10 @@ function tick() {
   }
   tickGarden(dt); tickTrip(); if (S) { tickVisitor(dt); tickSick(dt); }
   updateHUD(); renderPet();
-  tickN++; playSecs += dt;
+  tickN++;
   if (tickN % 5 === 0) save();
   if (tickN % 16 === 6) autoSay();
   if (tickN % 16 === 14) idleAct();
-  if (playSecs >= 20 * 60) { playSecs = 0; restDue = true; }
-  if (restDue && !Games.active && !modalOpen() && !bath) {
-    restDue = false;
-    openModal(`<div class="hero">${icon('eye')}</div><h2>眼睛休息时间到</h2><p>你已经玩了 20 分钟啦。<br>站起来动一动，看看窗外远远的地方，<br>${esc(S.pet.name)} 会在这里等你回来~</p><div class="row"><button class="btn" data-close>我休息好啦</button></div>`);
-  }
 }
 
 
@@ -1595,7 +1659,7 @@ function enterGame(isNew) {
   showScreen('game'); buildScenes();
   if (!isNew) applyOffline();
   Sound.setOn(S.soundOn !== false);
-  petSig = ''; tempMood = null; shopTab = 'food'; albumTab = 'cards'; playSecs = 0; restDue = false;
+  petSig = ''; tempMood = null; shopTab = 'food'; albumTab = 'cards';
   decor = null; drag = null; $('#scene-home').classList.remove('decor'); $('#screen-game').classList.remove('decor-on'); $('#pet-zone').classList.remove('stair');
   renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); updateFloorBtn(); renderFurn(); renderDecorBar(); updateDots(); renderAlert(); switchScene('home');
   // 第一次进屋时，把默认家具挪进这台设备看得见的范围（手机屏幕窄，两边会被裁掉）
@@ -1663,7 +1727,7 @@ function bindEvents() {
   $('#btn-music').onclick = () => { S.soundOn = !S.soundOn; Sound.setOn(S.soundOn); updateSoundBtn(); Sound.sfx.click(); save(); };
   window.addEventListener('resize', fitStage);
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { save(); Sound.suspend(); } else { Sound.resume(); lastTick = Date.now(); }
+    if (document.hidden) { save(); savePT(); Sound.suspend(); } else { if (!restOn) Sound.resume(); lastTick = Date.now(); }
   });
   window.addEventListener('pagehide', save);
 }
@@ -1673,4 +1737,5 @@ window.addEventListener('DOMContentLoaded', () => {
   $('#title-bg').innerHTML = sceneTitleSVG();
   fillIcons(document);
   bindEvents(); initTitle();
+  if (Date.now() < PT.lockUntil) showRest();   // 休息还没结束就刷新或重新打开，接着休息
 });

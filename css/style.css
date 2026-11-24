@@ -484,3 +484,14 @@ i[data-ic] { font-style: normal; display: inline-flex; }
   .act svg.ic { width: 24px; height: 24px; }
   .floor-btn { top: 30%; }
 }
+
+/* ---------- 强制休息 ---------- */
+#rest { position: fixed; inset: 0; z-index: 94; display: none; align-items: center; justify-content: center; padding: 18px; background: #E9DFC2; }
+#rest.on { display: flex; }
+.rest-card { background: var(--paper2); border: 2.5px solid var(--line); border-radius: var(--r3); padding: 26px 22px 22px; width: 100%; max-width: 440px; text-align: center; box-shadow: 4px 7px 0 rgba(91, 70, 54, .3); }
+.rest-card .hero { width: 120px; margin: 0 auto 6px; }
+.rest-card .hero svg { width: 100%; height: auto; display: block; overflow: visible; }
+.rest-card h2 { font-size: 26px; margin-bottom: 8px; }
+.rest-card p { line-height: 1.6; }
+.rest-card .hint { font-size: 14px; opacity: .78; }
+.rest-clock { font-size: 58px; font-weight: bold; letter-spacing: .04em; margin: 8px 0 2px; font-variant-numeric: tabular-nums; }
