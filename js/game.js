@@ -39,11 +39,35 @@ const FOODS = {
   pudding:    { name: '布丁',     ic: 'pudding',    hunger: 10, happy: 14, sweet: 1, price: 12 },
   candy:      { name: '水果糖',   ic: 'candy',      hunger: 4,  happy: 12, sweet: 1, price: 6 },
   cake:       { name: '小蛋糕',   ic: 'cake',       hunger: 10, happy: 16, sweet: 1, price: 14 },
+  egg:        { name: '鸡蛋',     ic: 'eggs',       hunger: 14, price: 6 },
+  rice:       { name: '米饭',     ic: 'rice',       hunger: 22, price: 6 },
+  noodle:     { name: '面条',     ic: 'noodle',     hunger: 20, price: 7 },
+  tofu:       { name: '豆腐',     ic: 'tofu',       hunger: 14, price: 6 },
+  dumpling:   { name: '小饺子',   ic: 'dumpling',   hunger: 24, price: 10 },
+  popcorn:    { name: '爆米花',   ic: 'popcorn',    hunger: 8,  happy: 10, price: 7 },
+  donut:      { name: '甜甜圈',   ic: 'donut',      hunger: 12, happy: 14, sweet: 1, price: 11 },
+  icecream:   { name: '冰淇淋',   ic: 'icecream',   hunger: 6,  thirst: 8, happy: 16, sweet: 1, price: 12 },
+  cabbage:    { name: '白菜',     ic: 'cabbage',    hunger: 12, thirst: 6, price: 5 },
+  cucumber:   { name: '黄瓜',     ic: 'cucumber',   hunger: 8,  thirst: 12, price: 5 },
+  broccoli:   { name: '西兰花',   ic: 'broccoli',   hunger: 14, price: 6 },
+  spinach:    { name: '菠菜',     ic: 'spinach',    hunger: 10, energy: 4, price: 6 },
+  onion:      { name: '洋葱',     ic: 'onion',      hunger: 10, price: 5 },
+  sweetpotato: { name: '红薯',    ic: 'sweetpotato', hunger: 20, price: 7 },
+  pea:        { name: '豌豆',     ic: 'pea',        hunger: 12, price: 6 },
+  radish:     { name: '白萝卜',   ic: 'radish',     hunger: 12, thirst: 6, price: 5 },
+  orange:     { name: '橙子',     ic: 'orange',     hunger: 10, thirst: 10, happy: 4, price: 6 },
+  peach:      { name: '桃子',     ic: 'peach',      hunger: 12, happy: 6, price: 7 },
+  banana:     { name: '香蕉',     ic: 'banana',     hunger: 16, energy: 4, price: 6 },
+  grape:      { name: '葡萄',     ic: 'grape',      hunger: 10, thirst: 8, happy: 6, price: 8 },
   water:      { name: '清水',     ic: 'water',      drink: true, thirst: 24, price: 2 },
   milk:       { name: '牛奶',     ic: 'milk',       drink: true, thirst: 20, hunger: 8, price: 6 },
   juice:      { name: '橙汁',     ic: 'juice',      drink: true, thirst: 22, happy: 6, price: 7 },
   honey:      { name: '蜂蜜水',   ic: 'honey',      drink: true, thirst: 20, energy: 8, price: 8 },
-  cocoa:      { name: '热可可',   ic: 'cocoa',      drink: true, thirst: 14, happy: 14, sweet: 1, price: 10 }
+  cocoa:      { name: '热可可',   ic: 'cocoa',      drink: true, thirst: 14, happy: 14, sweet: 1, price: 10 },
+  soymilk:    { name: '豆浆',     ic: 'soymilk',    drink: true, thirst: 20, hunger: 6, price: 5 },
+  lemonade:   { name: '柠檬水',   ic: 'lemonade',   drink: true, thirst: 26, happy: 4, price: 6 },
+  coconut:    { name: '椰子汁',   ic: 'coconut',    drink: true, thirst: 28, energy: 4, price: 9 },
+  bubbletea:  { name: '珍珠奶茶', ic: 'bubbletea',  drink: true, thirst: 16, happy: 16, sweet: 1, price: 11 }
 };
 const SEEDS = {
   carrot:     { name: '胡萝卜', ic: 'carrot',     time: 60,  give: 3, food: 'carrot',     price: 5 },
@@ -62,7 +86,18 @@ const SEEDS = {
   rose:       { name: '玫瑰',   ic: 'rose',       time: 110, coins: 40, price: 12 },
   ginger:     { name: '生姜',   ic: 'ginger',     time: 75,  give: 2, med: 'gingertea', price: 6 },
   mint:       { name: '薄荷',   ic: 'mint',       time: 60,  give: 2, med: 'mint',      price: 6 },
-  pear:       { name: '雪梨',   ic: 'pear',       time: 90,  give: 2, med: 'pearsoup',  price: 7 }
+  pear:       { name: '雪梨',   ic: 'pear',       time: 90,  give: 2, med: 'pearsoup',  price: 7 },
+  cabbage:    { name: '白菜',   ic: 'cabbage',    time: 60,  give: 3, food: 'cabbage',    price: 5 },
+  spinach:    { name: '菠菜',   ic: 'spinach',    time: 60,  give: 3, food: 'spinach',    price: 6 },
+  cucumber:   { name: '黄瓜',   ic: 'cucumber',   time: 75,  give: 3, food: 'cucumber',   price: 6 },
+  radish:     { name: '白萝卜', ic: 'radish',     time: 75,  give: 3, food: 'radish',     price: 5 },
+  pea:        { name: '豌豆',   ic: 'pea',        time: 75,  give: 4, food: 'pea',        price: 6 },
+  onion:      { name: '洋葱',   ic: 'onion',      time: 90,  give: 3, food: 'onion',      price: 6 },
+  broccoli:   { name: '西兰花', ic: 'broccoli',   time: 90,  give: 2, food: 'broccoli',   price: 7 },
+  sweetpotato: { name: '红薯',  ic: 'sweetpotato', time: 120, give: 3, food: 'sweetpotato', price: 8 },
+  grape:      { name: '葡萄',   ic: 'grape',      time: 120, give: 4, food: 'grape',      price: 9 },
+  daisy:      { name: '小雏菊', ic: 'daisy',      time: 50,  coins: 18, price: 6 },
+  lavender:   { name: '薰衣草', ic: 'lavender',   time: 140, coins: 55, price: 14 }
 };
 /* 药。tonic 是保健品（没病时吃，预防生病）；any 是什么病都能治 */
 const MEDS = {
@@ -71,7 +106,8 @@ const MEDS = {
   pearsoup:   { name: '冰糖梨汤',   ic: 'pearsoup',   price: 9,  desc: '嗓子疼的时候喝' },
   feverpatch: { name: '退烧贴',     ic: 'feverpatch', price: 10, desc: '发烧的时候贴' },
   vitamin:    { name: '维生素软糖', ic: 'vitamin',    price: 15, desc: '没病时吃，10 分钟内不生病', tonic: true },
-  panacea:    { name: '万能药水',   ic: 'panacea',    price: 40, desc: '什么病都能马上治好', any: true }
+  panacea:    { name: '万能药水',   ic: 'panacea',    price: 40, desc: '什么病都能马上治好', any: true },
+  firstaid:   { name: '小药箱',     ic: 'firstaid',   price: 30, desc: '四种药各一份，比单买便宜', pack: ['gingertea', 'mint', 'pearsoup', 'feverpatch'] }
 };
 /* 四种小毛病：某项状态（stat）低于 below，先出现症状；一直不处理就会生病。
  * rest 是吃药以后怎么休息：sleep 要睡一觉，rest 歇一会儿就行 */
@@ -92,28 +128,37 @@ const ILLS = {
             lines: [['头好晕，脸烫烫的…', '想贴一张凉凉的退烧贴…'], ['凉凉的好舒服，想睡一觉…']] }
 };
 const WEARS = {
+  leaf:    { name: '小树叶',   ic: 'leaf',       price: 20 },
   bow:     { name: '蝴蝶结',   ic: 'bow',        price: 30 },
   star:    { name: '星星发卡', ic: 'star',       price: 30 },
   flower:  { name: '小花发夹', ic: 'flowerclip', price: 35 },
   beret:   { name: '贝雷帽',   ic: 'beret',      price: 40 },
   cap:     { name: '棒球帽',   ic: 'cap',        price: 45 },
   hat:     { name: '派对帽',   ic: 'party',      price: 50 },
+  bunny:   { name: '兔耳朵',   ic: 'bunny',      price: 55 },
   glasses: { name: '小眼镜',   ic: 'glasses',    price: 60 },
+  sunglasses: { name: '小墨镜', ic: 'sunglasses', price: 65 },
+  headphones: { name: '小耳机', ic: 'headphones', price: 70 },
   wreath:  { name: '花环',     ic: 'wreath',     price: 80 },
+  santa:   { name: '圣诞帽',   ic: 'santa',      price: 90 },
   wizard:  { name: '魔法帽',   ic: 'wizard',     price: 120 },
+  halo:    { name: '天使光环', ic: 'halo',       price: 130 },
   crown:   { name: '小皇冠',   ic: 'crown',      price: 150 }
 };
 /* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
   bell:     { name: '幸运铃铛', ic: 'bell',     price: 18, desc: '更容易遇见珍贵风景', once: true },
   strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边和沙漠', to: ['sea', 'desert'] },
-  umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布', to: ['waterfall'] },
+  umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布和蘑菇森林', to: ['waterfall', 'mushwood'] },
   lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇和乐园', to: ['bamboo', 'town', 'ferris'] },
   camera:   { name: '小相机',   ic: 'camera',   price: 70, desc: '更容易多带回一张明信片' },
   tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山和营地', to: ['snow', 'camp'] },
-  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] }
+  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] },
+  boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛和企鹅冰原', to: ['island', 'penguin'] },
+  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡', to: ['cloud'] },
+  rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面', to: ['moon'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow'];
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple'];
 const TASKS = [
   { id: 'feed',    name: '喂宠物吃 3 次饭',   need: 3, coin: 15, ic: 'apple' },
   { id: 'drink',   name: '给宠物喝 2 次水',   need: 2, coin: 10, ic: 'water' },
@@ -140,7 +185,11 @@ const STICKERS = [
   { id: 's13', ic: 'med',       name: '细心小护士',   c: 'cure', n: 1 },
   { id: 's14', ic: 'pot',       name: '小小厨师',     c: 'cook', n: 1 },
   { id: 's15', ic: 'pumpkin',   name: '菜谱大王',     c: 'recipes', n: 12 },
-  { id: 's16', ic: 'sofa',      name: '小小设计师',   c: 'furn', n: 8 }
+  { id: 's16', ic: 'sofa',      name: '小小设计师',   c: 'furn', n: 8 },
+  { id: 's17', ic: 'noodle',    name: '料理达人',     c: 'recipes', n: 40 },
+  { id: 's18', ic: 'dumpling',  name: '美食大师',     c: 'recipes', n: 100 },
+  { id: 's19', ic: 'rocket',    name: '环游世界',     c: 'trip', n: 25 },
+  { id: 's20', ic: 'camera',    name: '风景收藏家',   c: 'cards', n: 24 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -410,7 +459,7 @@ function openFeed(tab) {
     const ids = myDishes();
     body = ids.length
       ? '<div class="item-grid">' + ids.map(k => itemBtn(`data-dish="${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k])).join('') + '</div>'
-      : '<p class="empty">还没有做好的菜。<br>点“煮菜”，用两样蔬菜做一道吧~</p>';
+      : '<p class="empty">还没有做好的菜。<br>点“煮菜”，用两样食材做一道吧~</p>';
   } else if (feedTab === 'souv') {
     const ids = mySouvs();
     body = ids.length
@@ -828,7 +877,7 @@ function openPack() {
   if (S.stats.energy < 35) { say('有点困，睡一觉再去旅行吧~'); return; }
   if (S.stats.thirst < 30) { say('好渴呀，先喝点水再出发吧~'); return; }
   const foods = myFoods(), fav = PETS[S.pet.type].fav;
-  if (!foods.length && !myDishes().length) {
+  if (!foods.length && !myMeals().length) {
     const m0 = openModal('<h2>准备行囊</h2><p class="empty">出门要带便当，可是家里没有吃的了。</p>' + noFoodHTML.replace(/^<p.*?<\/p>/, ''));
     m0.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { closeModal(); shopTab = 'food'; switchScene(g.dataset.go); } });
     return;
@@ -838,10 +887,10 @@ function openPack() {
   const sel = { food: null, drink: null, tool: null, bell: false };
   let html = `<h2>准备行囊</h2><p>带上便当，${esc(S.pet.name)} 会自己去远方走走，<br>路上还会寄明信片回来。</p><h3>便当（选一样）</h3><div class="item-grid">` +
     foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') +
-    myDishes().map(k => itemBtn(`data-pf="dish:${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k] + ' 亲手做')).join('') + '</div>' +
+    myMeals().map(k => itemBtn(`data-pf="dish:${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k] + ' 亲手做')).join('') + '</div>' +
     (drinks.length ? '<h3>水壶（可以不带，带了回来不口渴）</h3><div class="item-grid">' + drinks.map(k => itemBtn(`data-pd="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k])).join('') + '</div>' : '') +
     '<h3>旅行用品（可以不带）</h3>';
-  if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、灯笼、帐篷和潜水镜，<br>带上它们能去更远的地方。</p>';
+  if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、小木船、热气球、小火箭……<br>带上它们能去更远的地方。</p>';
   else html += '<div class="item-grid">' + tools.map(k => itemBtn(`data-pt="${k}"`, GEAR[k].ic, GEAR[k].name, GEAR[k].desc)).join('') +
     (S.gear.bell ? itemBtn('data-pb="1"', 'bell', '幸运铃铛', '×' + S.gear.bell) : '') + '</div>';
   html += '<div class="row"><button class="btn big green" id="go-trip">出发</button></div>';
@@ -908,7 +957,7 @@ function tickTrip() {
 }
 function finishTrip() {
   const t = S.trip, st = S.stats, d = DESTS[t.dest];
-  const chilly = (t.dest === 'snow' || t.dest === 'camp') && !S.immune && Math.random() < .2;   // 去冷的地方，偶尔会着凉
+  const chilly = (t.dest === 'snow' || t.dest === 'camp' || t.dest === 'penguin') && !S.immune && Math.random() < .2;   // 去冷的地方，偶尔会着凉
   if (!t.mailed) S.mail.push(t.card);
   S.trip = null;
   st.hunger = Math.max(30, st.hunger - 25); st.clean = Math.max(28, st.clean - 32);
@@ -965,9 +1014,12 @@ function renderAlbum() {
         return `<div class="souv${ok ? '' : ' lock'}">${icon(sv.ic, 'big')}<b>${ok ? sv.name : '？？？'}</b><small>${ok ? DESTS[d].name + ' ×' + n : '还没有'}</small></div>`;
       }).join('') + '</div>';
   } else if (albumTab === 'cook') {
-    const keys = Object.keys(DISHES), got = keys.filter(k => S.cookbook[k]).length;
-    h = `<p class="album-note">学会 ${got} / ${keys.length} 道 · 在小屋点“煮菜”，把两样蔬菜放进锅里试试</p><div class="souv-grid">` +
-      keys.map(k => { const d = DISHES[k], ok = S.cookbook[k]; return `<div class="souv${ok ? '' : ' lock'}">${icon(d.ic, 'big')}<b>${ok ? d.name : '？？？'}</b><small>${ok ? FOODS[d.a].name + ' + ' + FOODS[d.b].name : '还没做过'}</small></div>`; }).join('') + '</div>';
+    const keys = Object.keys(DISHES), mine = Object.keys(S.cookbook).filter(k => DISHES[k]).reverse(), rest = keys.filter(k => !S.cookbook[k]);
+    const tips = []; for (let i = 0; i < 3 && rest.length; i++) { const k = rest[(dayNum() * 7 + i * 131) % rest.length]; if (!tips.includes(k)) tips.push(k); }
+    h = `<p class="album-note">学会 ${mine.length} / ${keys.length} 道 · 在小屋点“煮菜”，把两样食材放进锅里试试</p><div class="souv-grid">` +
+      tips.map(k => `<div class="souv tip">${icon('pot', 'big')}<b>今日灵感</b><small>${FOODS[DISHES[k].a].name} + ${FOODS[DISHES[k].b].name}</small></div>`).join('') +
+      mine.map(k => { const d = DISHES[k]; return `<div class="souv">${icon(d.ic, 'big')}<b>${d.name}</b><small>${FOODS[d.a].name} + ${FOODS[d.b].name}</small></div>`; }).join('') + '</div>' +
+      (rest.length ? `<p class="album-note" style="margin-top:10px">还有 ${rest.length} 道菜等你发现，换着食材多试试吧</p>` : '');
   } else {
     h = `<p class="album-note">贴纸 ${S.stickers.length} / ${STICKERS.length} · 多照顾、多旅行、多玩耍就能得到</p><div class="souv-grid">` +
       STICKERS.map(s => { const own = S.stickers.includes(s.id); return `<div class="souv${own ? '' : ' lock'}">${icon(s.ic, 'big')}<b>${s.name}</b><small>${own ? '已获得' : '还没有'}</small></div>`; }).join('') + '</div>';
@@ -1132,13 +1184,13 @@ function renderShop() {
     `<div class="sitem">${icon(ic, 'big')}<b>${name}</b><small>${d1}</small><small>${d2}</small>` +
     (owned ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="${kind}:${id}">${acorns(price)}</button>`) + '</div>';
   let h = '';
-  if (shopTab === 'food' || shopTab === 'drink') {
-    const fav = PETS[S.pet.type].fav, wantDrink = shopTab === 'drink';
-    for (const k in FOODS) { const f = FOODS[k]; if (!!f.drink !== wantDrink) continue; h += card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); }
+  if (shopTab === 'food' || shopTab === 'drink' || shopTab === 'veg') {
+    const fav = PETS[S.pet.type].fav;
+    for (const k in FOODS) { const f = FOODS[k]; if ((f.drink ? 'drink' : isProduce(k) ? 'veg' : 'food') !== shopTab) continue; h += card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); }
   } else if (shopTab === 'seed') {
     for (const k in SEEDS) { const s = SEEDS[k]; h += card(s.ic, s.name + '种子', s.food ? '能结 ' + s.give + ' 个' : s.med ? '能做 ' + s.give + ' 份' + MEDS[s.med].name : '开花能换 ' + s.coins + ' 橡果', '我有 ' + (S.seeds[k] || 0) + ' 颗', s.price, 'seed', k); }
   } else if (shopTab === 'med') {
-    for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
+    for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, m.pack ? '' : '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
   } else if (shopTab === 'wear') {
     for (const k in WEARS) { const w = WEARS[k]; h += card(w.ic, w.name, '给宠物戴上', '', w.price, 'wear', k, S.owned.includes(k)); }
   } else if (shopTab === 'furn') {
@@ -1160,7 +1212,7 @@ function buy(kind, id, btn) {
   S.coins -= item.price;
   if (kind === 'food') S.inv[id] = (S.inv[id] || 0) + 1;
   else if (kind === 'seed') S.seeds[id] = (S.seeds[id] || 0) + 1;
-  else if (kind === 'med') S.meds[id] = (S.meds[id] || 0) + 1;
+  else if (kind === 'med') { if (item.pack) { item.pack.forEach(k => { S.meds[k] = (S.meds[k] || 0) + 1; }); toast('买到啦！四种药各多了一份'); } else S.meds[id] = (S.meds[id] || 0) + 1; }
   else if (kind === 'furn') { if (S.furn.own.includes(id)) return; S.furn.own.push(id); toast('买到啦！回小屋点“布置”，把' + item.name + '摆出来'); }
   else if (kind === 'gear') { S.gear[id] = (S.gear[id] || 0) + 1; if (!item.once) toast('买到啦！准备行囊的时候记得带上' + item.name); }
   else { S.owned.push(id); S.wear = id; renderPet(true); toast(gone() ? '买到啦！等 ' + S.pet.name + ' 回家就能戴上' : '买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
@@ -1242,15 +1294,33 @@ function confirmReset() {
 }
 function backToTitle() { stopTicker(); S = null; Sound.music('home'); initTitle(); showScreen('title'); }
 
-/* ---------- 煮菜：两样蔬菜放进锅里，变成一道菜 ---------- */
-/* 能下锅的蔬菜，以及它们在盘子里的颜色 */
-const VEG = {
-  carrot: '#E6A15C', corn: '#EBC66B', tomato: '#D9705F', lettuce: '#C3D69B',
-  potato: '#E2C48A', mushroom: '#D9BFA6', pumpkin: '#E9A04E', eggplant: '#9A7DB8'
+/* ---------- 煮菜：两样食材放进锅里，变成一道菜 ---------- */
+/* 能下锅的食材。t 是种类：veg 蔬菜、pan 厨房里的食材、fruit 水果；c 是它在盘子里的颜色；
+ * n 是菜名里的叫法（不写就用食物的名字）；juicy 表示能榨成汁。
+ * 顺序不能动、新的只能加在后面：存档里的菜是按这个顺序记的 */
+const COOK = {
+  carrot:      { t: 'veg', c: '#E6A15C', juicy: 1 }, corn:     { t: 'veg', c: '#EBC66B', juicy: 1 },
+  tomato:      { t: 'veg', c: '#D9705F', juicy: 1 }, lettuce:  { t: 'veg', c: '#C3D69B', juicy: 1 },
+  potato:      { t: 'veg', c: '#E2C48A' },           mushroom: { t: 'veg', c: '#D9BFA6' },
+  pumpkin:     { t: 'veg', c: '#E9A04E', juicy: 1 }, eggplant: { t: 'veg', c: '#9A7DB8' },
+  cabbage:     { t: 'veg', c: '#DDE8BE', juicy: 1 }, cucumber: { t: 'veg', c: '#8DB574', juicy: 1 },
+  broccoli:    { t: 'veg', c: '#7FA86B' },           spinach:  { t: 'veg', c: '#6F9A66', juicy: 1 },
+  onion:       { t: 'veg', c: '#C9A3C4' },           sweetpotato: { t: 'veg', c: '#C0788A', juicy: 1 },
+  pea:         { t: 'veg', c: '#A9CC7A' },           radish:   { t: 'veg', c: '#F3EFE2', n: '萝卜' },
+  egg:         { t: 'pan', c: '#F3D56B' },           rice:     { t: 'pan', c: '#FFFDF6' },
+  noodle:      { t: 'pan', c: '#F1DDA6' },           tofu:     { t: 'pan', c: '#F6F0DC' },
+  cheese:      { t: 'pan', c: '#F0CE5A' },           milk:     { t: 'pan', c: '#FBF7EA' },
+  bread:       { t: 'pan', c: '#E2B877' },
+  apple:       { t: 'fruit', c: '#D6655A' },         strawberry: { t: 'fruit', c: '#E47C8A' },
+  watermelon:  { t: 'fruit', c: '#E0606A', juicy: 1 }, orange:  { t: 'fruit', c: '#F0A04E', juicy: 1 },
+  peach:       { t: 'fruit', c: '#F2B8A6' },         banana:   { t: 'fruit', c: '#F3DC7A' },
+  grape:       { t: 'fruit', c: '#A68BC4', juicy: 1 }
 };
-const VEG_IDS = Object.keys(VEG);
-/* 菜谱：'蔬菜A+蔬菜B': [菜名, 做法]。做法决定盘子的样子和额外的好处：
- * soup 汤（补水分）、salad 沙拉（补一点水分）、bake 烤或做成饼和泥（补精力）、stir 炒或烧（更开心） */
+const COOK_IDS = Object.keys(COOK);
+const isProduce = k => !!COOK[k] && COOK[k].t !== 'pan';   // 蔬菜和水果，商店里放在“蔬果”那一栏
+/* 菜谱：'食材A+食材B': [菜名, 做法]。做法决定盘子的样子和额外的好处：
+ * soup 汤（补水分）、salad 沙拉（补一点水分）、bake 烤或做成饼和泥（补精力）、stir 炒或烧（更开心）、
+ * rice 饭（更管饱）、noodle 面、bun 面包和三明治、juice 果汁奶昔（当饮料喝）、sweet 甜点（算甜食） */
 const RECIPES = {
   'carrot+carrot': ['蜜汁胡萝卜', 'stir'], 'corn+corn': ['烤玉米', 'bake'], 'tomato+tomato': ['番茄浓汤', 'soup'], 'lettuce+lettuce': ['生菜沙拉', 'salad'],
   'potato+potato': ['土豆泥', 'bake'], 'mushroom+mushroom': ['烤蘑菇', 'bake'], 'pumpkin+pumpkin': ['南瓜粥', 'soup'], 'eggplant+eggplant': ['烤茄子', 'bake'],
@@ -1263,24 +1333,111 @@ const RECIPES = {
   'lettuce+potato': ['土豆生菜卷', 'salad'], 'lettuce+mushroom': ['蘑菇生菜汤', 'soup'], 'lettuce+pumpkin': ['南瓜生菜沙拉', 'salad'], 'lettuce+eggplant': ['茄子拌生菜', 'salad'],
   'potato+mushroom': ['蘑菇土豆泥', 'bake'], 'potato+pumpkin': ['南瓜土豆饼', 'bake'], 'potato+eggplant': ['土豆烧茄子', 'stir'],
   'mushroom+pumpkin': ['南瓜蘑菇汤', 'soup'], 'mushroom+eggplant': ['蘑菇炒茄子', 'stir'],
-  'pumpkin+eggplant': ['南瓜焖茄子', 'stir']
+  'pumpkin+eggplant': ['南瓜焖茄子', 'stir'],
+  // 白菜
+  'carrot+cabbage': ['胡萝卜炒白菜', 'stir'], 'corn+cabbage': ['玉米白菜汤', 'soup'], 'tomato+cabbage': ['番茄白菜汤', 'soup'], 'lettuce+cabbage': ['青菜沙拉', 'salad'],
+  'potato+cabbage': ['白菜炖土豆', 'stir'], 'mushroom+cabbage': ['蘑菇扒白菜', 'stir'], 'pumpkin+cabbage': ['南瓜白菜汤', 'soup'], 'eggplant+cabbage': ['茄子炒白菜', 'stir'],
+  'cabbage+cabbage': ['醋溜白菜', 'stir'],
+  // 黄瓜
+  'carrot+cucumber': ['胡萝卜拌黄瓜', 'salad'], 'corn+cucumber': ['玉米黄瓜沙拉', 'salad'], 'tomato+cucumber': ['番茄黄瓜沙拉', 'salad'], 'lettuce+cucumber': ['黄瓜生菜沙拉', 'salad'],
+  'potato+cucumber': ['土豆黄瓜沙拉', 'salad'], 'mushroom+cucumber': ['蘑菇炒黄瓜', 'stir'], 'pumpkin+cucumber': ['南瓜黄瓜汤', 'soup'], 'eggplant+cucumber': ['茄子拌黄瓜', 'salad'],
+  'cabbage+cucumber': ['白菜拌黄瓜', 'salad'], 'cucumber+cucumber': ['拍黄瓜', 'salad'],
+  // 西兰花
+  'carrot+broccoli': ['胡萝卜炒西兰花', 'stir'], 'corn+broccoli': ['玉米炒西兰花', 'stir'], 'tomato+broccoli': ['番茄西兰花汤', 'soup'], 'lettuce+broccoli': ['西兰花生菜沙拉', 'salad'],
+  'potato+broccoli': ['土豆西兰花泥', 'bake'], 'mushroom+broccoli': ['蘑菇炒西兰花', 'stir'], 'pumpkin+broccoli': ['南瓜西兰花泥', 'bake'], 'eggplant+broccoli': ['茄子炒西兰花', 'stir'],
+  'cabbage+broccoli': ['白菜西兰花汤', 'soup'], 'cucumber+broccoli': ['黄瓜西兰花沙拉', 'salad'], 'broccoli+broccoli': ['清炒西兰花', 'stir'],
+  // 菠菜
+  'carrot+spinach': ['胡萝卜拌菠菜', 'salad'], 'corn+spinach': ['玉米菠菜汤', 'soup'], 'tomato+spinach': ['番茄菠菜汤', 'soup'], 'lettuce+spinach': ['菠菜生菜沙拉', 'salad'],
+  'potato+spinach': ['菠菜土豆泥', 'bake'], 'mushroom+spinach': ['蘑菇菠菜汤', 'soup'], 'pumpkin+spinach': ['南瓜菠菜羹', 'soup'], 'eggplant+spinach': ['茄子炒菠菜', 'stir'],
+  'cabbage+spinach': ['白菜菠菜汤', 'soup'], 'cucumber+spinach': ['黄瓜拌菠菜', 'salad'], 'broccoli+spinach': ['翡翠蔬菜泥', 'bake'], 'spinach+spinach': ['清炒菠菜', 'stir'],
+  // 洋葱
+  'carrot+onion': ['洋葱炒胡萝卜', 'stir'], 'corn+onion': ['洋葱炒玉米', 'stir'], 'tomato+onion': ['番茄洋葱汤', 'soup'], 'lettuce+onion': ['洋葱生菜沙拉', 'salad'],
+  'potato+onion': ['洋葱炒土豆', 'stir'], 'mushroom+onion': ['洋葱炒蘑菇', 'stir'], 'pumpkin+onion': ['洋葱南瓜汤', 'soup'], 'eggplant+onion': ['洋葱烧茄子', 'stir'],
+  'cabbage+onion': ['洋葱炒白菜', 'stir'], 'cucumber+onion': ['洋葱拌黄瓜', 'salad'], 'broccoli+onion': ['洋葱炒西兰花', 'stir'], 'spinach+onion': ['洋葱菠菜汤', 'soup'],
+  'onion+onion': ['烤洋葱圈', 'bake'],
+  // 红薯
+  'carrot+sweetpotato': ['胡萝卜红薯泥', 'bake'], 'corn+sweetpotato': ['玉米红薯饼', 'bake'], 'tomato+sweetpotato': ['番茄红薯汤', 'soup'], 'lettuce+sweetpotato': ['红薯生菜沙拉', 'salad'],
+  'potato+sweetpotato': ['双薯饼', 'bake'], 'mushroom+sweetpotato': ['蘑菇焖红薯', 'stir'], 'pumpkin+sweetpotato': ['南瓜红薯羹', 'soup'], 'eggplant+sweetpotato': ['茄子焖红薯', 'stir'],
+  'cabbage+sweetpotato': ['白菜红薯汤', 'soup'], 'cucumber+sweetpotato': ['黄瓜红薯沙拉', 'salad'], 'broccoli+sweetpotato': ['西兰花红薯泥', 'bake'], 'spinach+sweetpotato': ['菠菜红薯饼', 'bake'],
+  'onion+sweetpotato': ['洋葱烤红薯', 'bake'], 'sweetpotato+sweetpotato': ['烤红薯', 'bake'],
+  // 豌豆
+  'carrot+pea': ['胡萝卜炒豌豆', 'stir'], 'corn+pea': ['玉米炒豌豆', 'stir'], 'tomato+pea': ['番茄豌豆汤', 'soup'], 'lettuce+pea': ['豌豆生菜沙拉', 'salad'],
+  'potato+pea': ['豌豆土豆泥', 'bake'], 'mushroom+pea': ['蘑菇炒豌豆', 'stir'], 'pumpkin+pea': ['南瓜豌豆羹', 'soup'], 'eggplant+pea': ['茄子炒豌豆', 'stir'],
+  'cabbage+pea': ['白菜豌豆汤', 'soup'], 'cucumber+pea': ['黄瓜豌豆沙拉', 'salad'], 'broccoli+pea': ['豌豆炒西兰花', 'stir'], 'spinach+pea': ['菠菜豌豆汤', 'soup'],
+  'onion+pea': ['洋葱炒豌豆', 'stir'], 'sweetpotato+pea': ['豌豆红薯泥', 'bake'], 'pea+pea': ['豌豆浓汤', 'soup'],
+  // 白萝卜
+  'carrot+radish': ['双色萝卜汤', 'soup'], 'corn+radish': ['玉米萝卜汤', 'soup'], 'tomato+radish': ['番茄萝卜汤', 'soup'], 'lettuce+radish': ['萝卜生菜沙拉', 'salad'],
+  'potato+radish': ['土豆炖萝卜', 'stir'], 'mushroom+radish': ['蘑菇萝卜汤', 'soup'], 'pumpkin+radish': ['南瓜炖萝卜', 'stir'], 'eggplant+radish': ['茄子烧萝卜', 'stir'],
+  'cabbage+radish': ['白菜萝卜汤', 'soup'], 'cucumber+radish': ['黄瓜拌萝卜', 'salad'], 'broccoli+radish': ['西兰花萝卜汤', 'soup'], 'spinach+radish': ['菠菜萝卜汤', 'soup'],
+  'onion+radish': ['洋葱炖萝卜', 'stir'], 'sweetpotato+radish': ['红薯萝卜汤', 'soup'], 'pea+radish': ['豌豆萝卜汤', 'soup'], 'radish+radish': ['萝卜丝饼', 'bake'],
+  // 厨房里的食材互相搭配
+  'egg+egg': ['蒸蛋羹', 'bake'], 'egg+rice': ['蛋炒饭', 'rice'], 'egg+noodle': ['鸡蛋面', 'noodle'], 'egg+tofu': ['鸡蛋豆腐羹', 'soup'],
+  'egg+cheese': ['芝士蛋卷', 'bake'], 'egg+milk': ['牛奶炖蛋', 'sweet'], 'egg+bread': ['鸡蛋三明治', 'bun'],
+  'rice+rice': ['白饭团', 'rice'], 'rice+noodle': ['米线', 'noodle'], 'rice+tofu': ['豆腐盖饭', 'rice'], 'rice+cheese': ['芝士焗饭', 'rice'],
+  'rice+milk': ['牛奶粥', 'soup'], 'rice+bread': ['米饭汉堡', 'bun'],
+  'noodle+noodle': ['阳春面', 'noodle'], 'noodle+tofu': ['豆腐汤面', 'noodle'], 'noodle+cheese': ['芝士焗面', 'noodle'], 'noodle+milk': ['奶油意面', 'noodle'],
+  'noodle+bread': ['炒面面包', 'bun'],
+  'tofu+tofu': ['香煎豆腐', 'stir'], 'tofu+cheese': ['芝士豆腐', 'bake'], 'tofu+milk': ['牛奶豆花', 'sweet'], 'tofu+bread': ['豆腐汉堡', 'bun'],
+  'cheese+cheese': ['烤奶酪', 'bake'], 'cheese+milk': ['芝士奶盖', 'juice'], 'cheese+bread': ['芝士吐司', 'bun'],
+  'milk+milk': ['双皮奶', 'sweet'], 'milk+bread': ['牛奶吐司', 'bun'], 'bread+bread': ['烤吐司', 'bun'],
+  // 蔬菜 + 厨房食材里，比“按规矩起名”更好听的那些
+  'lettuce+egg': ['生菜蛋花汤', 'soup'], 'potato+egg': ['土豆蛋饼', 'bake'], 'pumpkin+egg': ['南瓜蒸蛋', 'bake'], 'cabbage+egg': ['白菜蛋花汤', 'soup'],
+  'sweetpotato+egg': ['红薯蛋饼', 'bake'], 'radish+egg': ['萝卜丝蛋汤', 'soup'],
+  'tomato+rice': ['番茄烩饭', 'rice'], 'lettuce+rice': ['生菜包饭', 'rice'], 'potato+rice': ['土豆焖饭', 'rice'], 'mushroom+rice': ['蘑菇烩饭', 'rice'],
+  'pumpkin+rice': ['南瓜焖饭', 'rice'], 'eggplant+rice': ['茄子盖饭', 'rice'], 'cabbage+rice': ['白菜泡饭', 'rice'], 'cucumber+rice': ['黄瓜饭卷', 'rice'],
+  'spinach+rice': ['菠菜粥', 'soup'], 'sweetpotato+rice': ['红薯粥', 'soup'], 'pea+rice': ['豌豆焖饭', 'rice'], 'radish+rice': ['萝卜粥', 'soup'],
+  'corn+noodle': ['玉米汤面', 'noodle'], 'tomato+noodle': ['番茄汤面', 'noodle'], 'lettuce+noodle': ['生菜汤面', 'noodle'], 'mushroom+noodle': ['蘑菇汤面', 'noodle'],
+  'pumpkin+noodle': ['南瓜汤面', 'noodle'], 'eggplant+noodle': ['茄子拌面', 'noodle'], 'cabbage+noodle': ['白菜汤面', 'noodle'], 'cucumber+noodle': ['黄瓜凉面', 'noodle'],
+  'spinach+noodle': ['菠菜面', 'noodle'], 'sweetpotato+noodle': ['红薯粉', 'noodle'], 'pea+noodle': ['豌豆面', 'noodle'], 'radish+noodle': ['萝卜汤面', 'noodle'],
+  'corn+tofu': ['玉米豆腐羹', 'soup'], 'tomato+tofu': ['番茄豆腐汤', 'soup'], 'lettuce+tofu': ['生菜豆腐汤', 'soup'], 'pumpkin+tofu': ['南瓜豆腐羹', 'soup'],
+  'cabbage+tofu': ['白菜炖豆腐', 'stir'], 'cucumber+tofu': ['黄瓜拌豆腐', 'salad'], 'spinach+tofu': ['菠菜豆腐汤', 'soup'], 'sweetpotato+tofu': ['红薯豆腐羹', 'soup'],
+  'radish+tofu': ['萝卜豆腐汤', 'soup'],
+  'corn+cheese': ['芝士玉米', 'bake'], 'lettuce+cheese': ['芝士生菜卷', 'salad'], 'cucumber+cheese': ['黄瓜芝士卷', 'salad'], 'onion+cheese': ['芝士洋葱圈', 'bake'],
+  'eggplant+milk': ['奶油焗茄子', 'bake'], 'cabbage+milk': ['奶油白菜', 'stir'], 'cucumber+milk': ['黄瓜牛奶汁', 'juice'], 'sweetpotato+milk': ['红薯牛奶', 'juice'],
+  'carrot+bread': ['胡萝卜面包', 'bun'], 'corn+bread': ['玉米面包', 'bun'], 'potato+bread': ['土豆泥三明治', 'bun'], 'pumpkin+bread': ['南瓜面包', 'bun'],
+  'sweetpotato+bread': ['红薯面包', 'bun'],
+  // 水果
+  'apple+apple': ['苹果酱', 'sweet'], 'watermelon+watermelon': ['西瓜冰沙', 'juice'], 'banana+banana': ['烤香蕉', 'bake']
 };
-/* 每道菜的效果：比分开吃两样蔬菜更管饱，再加上做法带来的好处 */
+/* 没有专门起名字的搭配，按食材的种类来定菜名和做法 */
+const PAN_RULE = {    // 蔬菜 + 厨房食材
+  egg: v => [v + '炒蛋', 'stir'], rice: v => [v + '炒饭', 'rice'], noodle: v => [v + '炒面', 'noodle'], tofu: v => [v + '烧豆腐', 'stir'],
+  cheese: v => ['芝士焗' + v, 'bake'], milk: v => ['奶油' + v + '汤', 'soup'], bread: v => [v + '三明治', 'bun']
+};
+const FRUIT_RULE = {  // 厨房食材 + 水果
+  egg: f => [f + '蛋糕', 'sweet'], rice: f => [f + '甜粥', 'soup'], noodle: f => [f + '凉面', 'noodle'], tofu: f => [f + '豆花', 'sweet'],
+  cheese: f => [f + '奶酪杯', 'sweet'], milk: f => [f + '奶昔', 'juice'], bread: f => [f + '吐司', 'bun']
+};
+function recipeOf(a, b) {   // a 排在 b 前面
+  if (RECIPES[a + '+' + b]) return RECIPES[a + '+' + b];
+  const A = COOK[a], B = COOK[b], na = A.n || FOODS[a].name, nb = B.n || FOODS[b].name;
+  if (A.t === 'veg' && B.t === 'pan') return PAN_RULE[b](na);
+  if (A.t === 'veg' && B.t === 'fruit') return A.juicy ? [na + nb + '汁', 'juice'] : [nb + na + '沙拉', 'salad'];
+  if (A.t === 'pan' && B.t === 'fruit') return FRUIT_RULE[a](nb);
+  if (A.t === 'fruit' && B.t === 'fruit') return a === b ? [na + '果酱', 'sweet'] : A.juicy || B.juicy ? [na + nb + '汁', 'juice'] : [na + nb + '水果杯', 'salad'];
+  return [na + nb + '大杂烩', 'stir'];
+}
+/* 每道菜的效果：比分开吃两样食材更管饱，再加上做法带来的好处 */
 const DISHES = {};
-Object.keys(RECIPES).forEach(key => {
-  const ab = key.split('+'), a = FOODS[ab[0]], b = FOODS[ab[1]], kind = RECIPES[key][1];
-  DISHES[key] = {
-    name: RECIPES[key][0], ic: 'dish:' + key, kind, a: ab[0], b: ab[1],
-    hunger: Math.round((a.hunger + b.hunger) * 1.05),
-    happy: kind === 'stir' ? 16 : 10,
-    thirst: (kind === 'soup' ? 18 : kind === 'salad' ? 8 : 0) + Math.round(((a.thirst || 0) + (b.thirst || 0)) / 2),
-    energy: kind === 'bake' ? 8 : 0
+COOK_IDS.forEach((a, i) => COOK_IDS.slice(i).forEach(b => {
+  const key = a + '+' + b, rc = recipeOf(a, b), kind = rc[1], fa = FOODS[a], fb = FOODS[b];
+  const base = (fa.hunger || 0) + (fb.hunger || 0), wet = Math.round(((fa.thirst || 0) + (fb.thirst || 0)) / 2);
+  const d = DISHES[key] = {
+    name: rc[0], ic: 'dish:' + key, kind, a, b,
+    hunger: Math.round(base * ({ rice: 1.2, bun: 1.15, noodle: 1.1, juice: .5 }[kind] || 1.05)),
+    happy: { stir: 16, sweet: 20, juice: 12 }[kind] || 10,
+    thirst: ({ soup: 18, salad: 8, noodle: 8, juice: 18 }[kind] || 0) + wet,
+    energy: { bake: 8, bun: 5, rice: 5 }[kind] || 0
   };
-  ICONS['dish:' + key] = dishIcon(kind, VEG[ab[0]], ab[0] === ab[1] ? '#FBF5E3' : VEG[ab[1]]);
-});
-const dishKey = (a, b) => VEG_IDS.indexOf(a) <= VEG_IDS.indexOf(b) ? a + '+' + b : b + '+' + a;
-const myVeg = () => VEG_IDS.filter(k => (S.inv[k] || 0) > 0);
+  if (kind === 'juice') d.drink = true;   // 果汁和奶昔当饮料喝
+  if (kind === 'sweet') d.sweet = 1;      // 甜点算甜食，连着吃太多会肚子疼
+  const fruitFirst = kind === 'juice' && COOK[a].t === 'pan' && a !== b;   // 奶昔的颜色跟着水果走，不跟着牛奶
+  ICONS[d.ic] = fruitFirst ? dishIcon(kind, COOK[b].c, COOK[a].c) : dishIcon(kind, COOK[a].c, a === b ? '#FBF5E3' : COOK[b].c);
+}));
+const dishKey = (a, b) => COOK_IDS.indexOf(a) <= COOK_IDS.indexOf(b) ? a + '+' + b : b + '+' + a;
+const myCookables = () => COOK_IDS.filter(k => (S.inv[k] || 0) > 0);
 const myDishes = () => Object.keys(S.dishes).filter(k => S.dishes[k] > 0 && DISHES[k]);
+const myMeals = () => myDishes().filter(k => !DISHES[k].drink);   // 能当便当带出门的（果汁不算）
 
 function openCook() {
   if (blocked() || bath) return;
@@ -1290,13 +1447,16 @@ function openCook() {
   const m = openModal('<div id="cook-box"></div>');
   const left = k => (S.inv[k] || 0) - sel.filter(x => x === k).length;
   const draw = () => {
-    const veg = myVeg(), total = veg.reduce((n, k) => n + S.inv[k], 0);
+    const have = myCookables(), total = have.reduce((n, k) => n + S.inv[k], 0);
     const slot = i => sel[i] ? `<button class="cslot full" data-cs="${i}">${icon(FOODS[sel[i]].ic)}</button>` : '<span class="cslot">？</span>';
-    let h = `<h2>${esc(S.pet.name)} 的小厨房</h2><p>选两样蔬菜放进锅里，看看能做出什么菜</p>` +
+    let h = `<h2>${esc(S.pet.name)} 的小厨房</h2><p>选两样食材放进锅里，看看能做出什么菜</p>` +
       `<div class="pot-row">${slot(0)}<span class="plus">＋</span>${slot(1)}<span class="plus">→</span><span class="potic">${icon('pot')}</span></div>`;
-    if (veg.length) h += '<div class="item-grid">' + veg.map(k => itemBtn(`data-cv="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + left(k))).join('') + '</div>';
-    h += '<div class="row">' + (sel.length === 2 ? '<button class="btn big green" id="cook-go">开煮</button>' : '') + '</div>';
-    if (total < 2) h += '<p class="empty">蔬菜不够两样了。<br>去花园种一些，或者去商店买吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button><button class="btn small green" data-go="garden">去花园</button></div>';
+    if (sel.length === 2) {   // 选好两样就告诉她：做过没有。开煮的按钮放在食材上面，食材再多也不用往下翻
+      const k2 = dishKey(sel[0], sel[1]);
+      h += `<p class="hint" style="margin:-2px 0 8px">${S.cookbook[k2] ? '做过这道：' + DISHES[k2].name : '新搭配，还没试过哦'}</p><div class="row" style="margin-bottom:10px"><button class="btn big green" id="cook-go">开煮</button></div>`;
+    }
+    if (have.length) h += '<div class="item-grid">' + have.map(k => itemBtn(`data-cv="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + left(k))).join('') + '</div>';
+    if (total < 2) h += '<p class="empty">食材不够两样了。<br>去花园种一些，或者去商店买吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button><button class="btn small green" data-go="garden">去花园</button></div>';
     h += `<p class="hint">已经学会 ${Object.keys(S.cookbook).length} / ${Object.keys(DISHES).length} 道菜，菜谱收在“手帐”里</p>`;
     $('#cook-box', m).innerHTML = h;
   };
@@ -1305,7 +1465,7 @@ function openCook() {
     const v = e.target.closest('[data-cv]'), c = e.target.closest('[data-cs]'), g = e.target.closest('[data-go]');
     if (v && sel.length < 2 && left(v.dataset.cv) > 0) { sel.push(v.dataset.cv); Sound.sfx.pop(); draw(); }
     else if (c) { sel.splice(+c.dataset.cs, 1); Sound.sfx.pop(); draw(); }
-    else if (g) { closeModal(); if (g.dataset.go === 'shop') shopTab = 'food'; switchScene(g.dataset.go); }
+    else if (g) { closeModal(); if (g.dataset.go === 'shop') shopTab = 'veg'; switchScene(g.dataset.go); }
     else if (e.target.closest('#cook-go') && sel.length === 2) cook(sel[0], sel[1]);
   });
 }

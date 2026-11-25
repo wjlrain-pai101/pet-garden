@@ -266,6 +266,7 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .souv { background: var(--paper); border: 2px solid var(--line); border-radius: var(--r3); padding: 8px 4px; text-align: center; font-size: 14px; }
 .souv small { display: block; opacity: .75; font-size: 12.5px; }
 .souv.lock { opacity: .5; border-style: dashed; }
+.souv.tip { border-style: dashed; background: #FBEFC4; }
 .souv.lock svg.ic { filter: grayscale(1) brightness(1.15); opacity: .5; }
 .album-note { text-align: center; font-size: 14.5px; opacity: .8; margin: 2px 0 10px; }
 
@@ -609,6 +610,7 @@ i[data-ic] { font-style: normal; display: inline-flex; }
         <div class="panel">
           <div class="tabs" id="shop-tabs">
             <button class="tab" data-tab="food">食物</button>
+            <button class="tab" data-tab="veg">蔬果</button>
             <button class="tab" data-tab="drink">饮料</button>
             <button class="tab" data-tab="seed">种子</button>
             <button class="tab" data-tab="med">药品</button>
@@ -868,6 +870,18 @@ function wearSVG(id, p) {
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-17 -2 Q-6 -30 9 -54 Q13 -26 18 -2Z" fill="#8E7DB8"/><path d="M-33 0 Q0 -11 33 0 Q0 9 -33 0Z" fill="#7C6BA6"/><polygon points="0,-30 2,-25 7,-25 3,-21.500 4.500,-16.500 0,-19.500 -4.500,-16.500 -3,-21.500 -7,-25 -2,-25" fill="${C.yellow}" stroke-width="1.600"/></g>`;
     case 'chef':
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-20 0 v-17 q-15 -4 -9 -19 q8 -13 19 -4 q10 -13 21 0 q13 -4 12 9 q0 10 -10 14 v17z" fill="${C.white}"/><path d="M-20 -7 h40" stroke-width="2"/></g>`;
+    case 'leaf':
+      return `<g transform="translate(${hx + 4} ${hy + 9}) rotate(-18)"><path d="M0 0 Q-22 -8 -17 -32 Q7 -27 0 0Z" fill="${C.green}"/><path d="M0 0 L-11 -23" stroke-width="2"/></g>`;
+    case 'bunny':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-17 -2 Q-31 -44 -19 -50 Q-7 -46 -6 -6Z" fill="${C.white}"/><path d="M17 -2 Q31 -44 19 -50 Q7 -46 6 -6Z" fill="${C.white}"/><path d="M-15 -14 Q-21 -34 -17 -40 M15 -14 Q21 -34 17 -40" stroke="${C.pink}" stroke-width="5"/><path d="M-30 6 Q0 -12 30 6" stroke-width="9"/><path d="M-30 6 Q0 -12 30 6" stroke="${C.coral}" stroke-width="5"/></g>`;
+    case 'sunglasses':
+      return `<g fill="#5B4636" stroke-width="3"><path d="M${e[0] + 15} ${e[2] - 6} L${e[1] - 15} ${e[2] - 6}"/><path d="M${e[0] - 15} ${e[2] - 9} h30 v8 q0 13 -15 13 q-15 0 -15 -13z"/><path d="M${e[1] - 15} ${e[2] - 9} h30 v8 q0 13 -15 13 q-15 0 -15 -13z"/></g><path d="M${e[0] - 9} ${e[2] - 2} l6 -3 M${e[1] - 9} ${e[2] - 2} l6 -3" stroke="#fff" stroke-width="2.400"/>`;
+    case 'headphones':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-40 34 Q-42 -12 0 -12 Q42 -12 40 34" stroke-width="9.500"/><path d="M-40 34 Q-42 -12 0 -12 Q42 -12 40 34" stroke="#8C7B8C" stroke-width="5"/><rect x="-51" y="22" width="17" height="27" rx="7.500" fill="${C.coral}"/><rect x="34" y="22" width="17" height="27" rx="7.500" fill="${C.coral}"/></g>`;
+    case 'santa':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-24 -2 Q-22 -36 8 -42 Q30 -40 34 -18 Q26 -26 18 -22 Q24 -12 24 -2Z" fill="${C.red}"/><rect x="-30" y="-8" width="60" height="13" rx="6.500" fill="${C.white}"/><circle cx="35" cy="-14" r="7" fill="${C.white}"/></g>`;
+    case 'halo':
+      return `<g transform="translate(${hx} ${hy - 18})"><ellipse rx="27" ry="8" stroke-width="9.500"/><ellipse rx="27" ry="8" stroke="${C.yellow}" stroke-width="5"/></g>`;
     case 'strawhat':
       return `<g transform="translate(${hx} ${hy + 12})"><ellipse rx="40" ry="10" fill="${C.sand}"/><path d="M-23 -1 Q-23 -28 0 -28 Q23 -28 23 -1" fill="${C.sand}"/><path d="M-22.5 -8 Q0 0 22.5 -8" stroke="${C.coral}" stroke-width="5"/></g>`;
   }
@@ -1484,6 +1498,7 @@ Object.assign(ICONS, {
 
 /* 一道菜的图标：按做法（汤 / 沙拉 / 烤 / 炒）画盘子，用两种蔬菜的颜色上色 */
 function dishIcon(kind, c1, c2) {
+  const more = _dishIconMore(kind, c1, c2); if (more) return more;
   if (kind === 'soup') return `<path d="M17 12 q-3 -4 0 -8 M28 12 q-3 -4 0 -8"/><path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.400" fill="${c1}" stroke-width="1.600"/><circle cx="17" cy="22" r="2.700" fill="${c2}" stroke="none"/><circle cx="27" cy="21" r="2.300" fill="${c2}" stroke="none"/><circle cx="33" cy="23" r="2" fill="${c2}" stroke="none"/>`;
   if (kind === 'salad') return `<path d="M6 24 h36 q-2 18 -18 18 q-16 0 -18 -18z" fill="${C.wood}"/><path d="M8 24 q2 -13 10 -10 q4 -9 12 -2 q10 -3 10 12z" fill="${c1}"/><circle cx="17" cy="19" r="3.200" fill="${c2}" stroke-width="1.400"/><circle cx="29" cy="17" r="3.200" fill="${c2}" stroke-width="1.400"/><circle cx="24" cy="22" r="2.600" fill="${c2}" stroke-width="1.400"/>`;
   if (kind === 'bake') return `<ellipse cx="24" cy="34" rx="21" ry="8" fill="${C.white}"/><ellipse cx="24" cy="27" rx="16" ry="9.500" fill="${c1}"/><path d="M14 25 q10 -6 20 0 M16 31 q8 -4 16 0" stroke="${c2}" stroke-width="3"/>`;
@@ -1554,6 +1569,219 @@ function sceneAtticSVG() {
     <path d="M694 392 v-40 M794 392 v-40 M690 352 h108" stroke-width="4"/>
   </g></svg>`;
 }
+
+/* ==========================================================
+ *  第四批：更多蔬菜和食材、零食饮料、装扮、家具、旅行用品、景点
+ * ========================================================== */
+const _dots = (pts, r, fill) => pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="${r}" fill="${fill}" stroke="none"/>`).join('');
+Object.assign(ICONS, {
+  // 蔬菜
+  cabbage: `<path d="M24 45 Q10 44 12 26 Q6 16 14 8 Q19 3 24 8 Q29 3 34 8 Q42 16 36 26 Q38 44 24 45Z" fill="${C.lgreen}"/><path d="M24 45 Q15 42 17 27 Q20 17 24 15 Q28 17 31 27 Q33 42 24 45Z" fill="${C.white}"/><path d="M24 41 V21" stroke-width="1.600"/>`,
+  cucumber: `<g transform="rotate(-38 24 24)"><rect x="3" y="16" width="42" height="16" rx="8" fill="#8DB574"/><path d="M12 21 v.100 M20 27 v.100 M28 21 v.100 M36 27 v.100" stroke="${C.dgreen}" stroke-width="3"/></g>`,
+  broccoli: `<path d="M19 28 h10 l2 16 h-14z" fill="${C.lgreen}"/><path d="M8 27 a8 8 0 0 1 3 -15 a10 10 0 0 1 17 -4 a9 9 0 0 1 12 9 a7.500 7.500 0 0 1 -1 12 q-15 5 -31 -2z" fill="#7FA86B"/><path d="M17 19 q2 -3 5 -3 M28 15 q3 0 4 3" stroke-width="1.600"/>`,
+  spinach: `<path d="M24 44 Q8 30 12 10 Q22 14 24 44Z" fill="#6F9A66"/><path d="M24 44 Q40 30 36 10 Q26 14 24 44Z" fill="#6F9A66"/><path d="M24 44 Q16 22 24 4 Q32 22 24 44Z" fill="${C.green}"/><path d="M24 38 V12" stroke-width="1.600"/><path d="M21 44.500 h6" stroke="${C.coral}" stroke-width="4"/>`,
+  onion: `<path d="M24 13 q-2 -5 -6 -9 M24 13 q1 -5 5 -9"/><path d="M24 12 Q42 18 40 32 Q36 44 24 44 Q12 44 8 32 Q6 18 24 12Z" fill="#C9A3C4"/><path d="M24 14 Q16 28 22 43 M24 14 Q32 28 26 43" stroke-width="1.600"/>`,
+  sweetpotato: `<path d="M3 30 Q10 14 24 14 Q38 12 45 20 Q40 36 26 38 Q12 42 3 30Z" fill="#C0788A"/><path d="M14 27 l5 1 M25 21 l5 1 M30 31 l5 -1" stroke-width="1.600"/>`,
+  pea: `<path d="M44 22 q3 -5 2 -9"/><path d="M4 22 Q24 6 44 22 Q24 42 4 22Z" fill="${C.green}"/><circle cx="14" cy="23" r="5" fill="${C.lgreen}" stroke-width="1.600"/><circle cx="24" cy="24" r="5.500" fill="${C.lgreen}" stroke-width="1.600"/><circle cx="34" cy="23" r="5" fill="${C.lgreen}" stroke-width="1.600"/>`,
+  radish: `<path d="M24 15 v-11"/><path d="M22 14 Q12 4 8 6 Q10 14 20 16Z" fill="${C.green}"/><path d="M26 14 Q34 2 40 5 Q38 14 28 16Z" fill="${C.green}"/><path d="M14 18 Q24 10 34 18 Q36 34 24 46 Q12 34 14 18Z" fill="${C.white}"/><path d="M18 24 h5 M26 31 h5" stroke-width="1.600"/>`,
+  // 厨房里的食材
+  eggs: `<path d="M24 5 Q38 12 38 29 Q36 44 24 44 Q12 44 10 29 Q10 12 24 5Z" fill="#F3DFC0"/><path d="M16 28 q1 7 6 9" stroke="#fff" stroke-width="2.200"/>`,
+  rice: `<path d="M9 24 Q10 8 24 8 Q38 8 39 24Z" fill="${C.white}"/><path d="M17 16 v.100 M24 13 v.100 M30 17 v.100 M21 20 v.100" stroke-width="2.600"/><path d="M5 24 h38 q-2 18 -19 18 q-17 0 -19 -18z" fill="${C.blue}"/><path d="M17 42.500 h14"/>`,
+  noodle: `<path d="M30 4 L38 22 M36 3 L42 21" stroke="${C.dwood}" stroke-width="2.600"/><path d="M8 24 q4 -9 9 -4 q4 -8 9 -2 q5 -7 9 0 q4 -3 5 6z" fill="#F1DDA6"/><path d="M5 24 h38 q-2 18 -19 18 q-17 0 -19 -18z" fill="${C.coral}"/><path d="M17 42.500 h14"/>`,
+  tofu: `<path d="M6 20 L24 11 L42 20 V36 L24 45 L6 36Z" fill="${C.white}"/><path d="M6 20 L24 29 L42 20 M24 29 V45" stroke-width="1.800"/><path d="M19 18 q5 -3 10 0" stroke="${C.green}" stroke-width="3"/>`,
+  // 水果
+  banana: `<path d="M14 8 l-2 -5" stroke-width="3.500"/><path d="M8 14 Q10 36 30 40 Q42 40 44 32 Q30 34 20 24 Q14 16 14 8 Q10 8 8 14Z" fill="#F3DC7A"/><path d="M13 16 Q18 30 34 35" stroke-width="1.500"/>`,
+  grape: `<path d="M24 13 V4"/><path d="M24 7 q8 -6 13 0 q-6 6 -13 0z" fill="${C.green}"/>` + [[15, 19], [24, 18], [33, 19], [19.5, 27], [28.5, 27], [24, 35.5]].map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="5.500" fill="#A68BC4" stroke-width="1.600"/>`).join(''),
+  // 零食
+  icecream: `<path d="M14 24 L24 46 L34 24Z" fill="#E2B877"/><path d="M18 30 l9 6 M30 30 l-8 6" stroke-width="1.400"/><path d="M11 24 Q9 8 24 6 Q39 8 37 24 Q30 28 24 24 Q18 28 11 24Z" fill="${C.pink}"/><circle cx="24" cy="6" r="3.500" fill="${C.red}"/>`,
+  donut: `<circle cx="24" cy="25" r="18" fill="#D9A866"/><path d="M7 22 Q8 7 24 7 Q40 7 41 22 Q38 28 34 24 Q30 30 26 25 Q21 30 17 25 Q12 29 7 22Z" fill="${C.pink}"/><circle cx="24" cy="24" r="5.500" fill="${C.paper}"/><path d="M14 15 l2 2 M24 11 v3 M33 15 l-2 2" stroke="#fff" stroke-width="2.400"/>`,
+  popcorn: `<path d="M10 20 a6 6 0 0 1 6 -8 a7 7 0 0 1 12 -3 a6 6 0 0 1 10 5 a5 5 0 0 1 0 8z" fill="#FBEFC4"/><path d="M9 20 h30 l-4 24 h-22z" fill="${C.white}"/><path d="M17 21 l2 22 M24 21 v23 M31 21 l-2 22" stroke="${C.red}" stroke-width="3"/><path d="M9 20 h30 l-4 24 h-22z"/>`,
+  dumpling: `<path d="M4 34 Q6 14 24 12 Q42 14 44 34 Q24 42 4 34Z" fill="${C.cream}"/><path d="M10 20 q4 3 3 7 M17 15 q4 3 3 7 M24 13 q3 4 1 8 M31 15 q2 4 -1 7 M38 20 q0 4 -3 6" stroke-width="1.600"/>`,
+  // 饮料
+  soymilk: _glass('#F1E3C0') + `<ellipse cx="38" cy="38" rx="6" ry="4.500" fill="#E2C48A" stroke-width="1.800" transform="rotate(-20 38 38)"/>`,
+  lemonade: _glass('#F3E9A8') + `<path d="M20 3 l5 28" stroke="${C.green}" stroke-width="3"/><circle cx="37" cy="9" r="7" fill="${C.yellow}" stroke-width="1.800"/><path d="M37 9 v-7 M37 9 l6 3.500 M37 9 l-6 3.500" stroke-width="1.200"/>`,
+  bubbletea: `<path d="M27 2 l-3 26" stroke="${C.coral}" stroke-width="3.500"/><path d="M11 12 h26 l-3 30 q0 2 -3 2 h-14 q-3 0 -3 -2z" fill="#E6C9A8"/><path d="M8 12 h32" stroke-width="4"/>` + _dots([[19, 37], [26, 39], [30, 34], [22, 32]], 2.600, C.line),
+  coconut: `<circle cx="24" cy="28" r="17" fill="${C.dwood}"/><ellipse cx="24" cy="17" rx="11" ry="4.500" fill="${C.white}" stroke-width="1.800"/><path d="M28 17 L34 2" stroke="${C.coral}" stroke-width="3.200"/><path d="M14 31 q2 6 8 8" stroke-width="1.600"/>`,
+  // 花
+  lavender: _stem + `<path d="M24 26 V8"/>` + [5, 10, 15, 20].map((y, i) => `<ellipse cx="${24 + (i % 2 ? 3.5 : -3.5)}" cy="${y}" rx="4.800" ry="3.600" fill="${C.purple}" stroke-width="1.600"/>`).join(''),
+  daisy: _stem + _petals(24, 15, 8, 8, 3.400, 5.500, C.white) + `<circle cx="24" cy="15" r="4.500" fill="${C.yellow}"/>`,
+  // 药
+  firstaid: `<path d="M17 12 v-4 q0 -3 3 -3 h8 q3 0 3 3 v4"/><rect x="5" y="12" width="38" height="30" rx="5" fill="${C.white}"/><path d="M24 19 v16 M16 27 h16" stroke="${C.red}" stroke-width="5"/>`,
+  // 装扮
+  leaf: `<path d="M8 40 Q6 12 40 8 Q42 40 8 40Z" fill="${C.green}"/><path d="M8 40 L32 16" stroke-width="1.800"/>`,
+  bunny: `<path d="M14 30 Q6 6 14 4 Q22 6 20 27Z" fill="${C.white}"/><path d="M34 30 Q42 6 34 4 Q26 6 28 27Z" fill="${C.white}"/><path d="M15 24 Q12 12 15 9 M33 24 Q36 12 33 9" stroke="${C.pink}" stroke-width="3"/><path d="M6 41 Q24 22 42 41" stroke="${C.coral}" stroke-width="4"/>`,
+  sunglasses: `<path d="M3 20 h42"/><path d="M5 20 h17 v6 q0 9 -8.500 9 q-8.500 0 -8.500 -9z" fill="#5B4636"/><path d="M26 20 h17 v6 q0 9 -8.500 9 q-8.500 0 -8.500 -9z" fill="#5B4636"/><path d="M9 25 l4 -2 M30 25 l4 -2" stroke="#fff" stroke-width="2"/>`,
+  headphones: `<path d="M8 30 Q8 8 24 8 Q40 8 40 30" stroke-width="4"/><rect x="3" y="26" width="11" height="16" rx="5" fill="${C.coral}"/><rect x="34" y="26" width="11" height="16" rx="5" fill="${C.coral}"/>`,
+  santa: `<path d="M8 36 Q10 12 30 8 Q42 10 42 22 Q36 16 32 20 Q38 28 38 36Z" fill="${C.red}"/><rect x="4" y="33" width="38" height="10" rx="5" fill="${C.white}"/><circle cx="42" cy="24" r="5" fill="${C.white}"/>`,
+  halo: `<ellipse cx="24" cy="18" rx="18" ry="7" stroke-width="7.500"/><ellipse cx="24" cy="18" rx="18" ry="7" stroke="${C.yellow}" stroke-width="3.600"/>` + _star(24, 38, 6, 2.600, C.yellow),
+  // 旅行用品
+  boat: `<path d="M24 6 V30"/><path d="M25 8 L40 28 H25Z" fill="${C.cream}"/><path d="M22 12 L10 28 H22Z" fill="${C.coral}"/><path d="M4 31 h40 l-6 11 h-28z" fill="${C.wood}"/>`,
+  hotair: `<path d="M18 34 l1 6 M30 34 l-1 6"/><path d="M24 4 Q42 4 42 20 Q40 30 30 34 H18 Q8 30 6 20 Q6 4 24 4Z" fill="${C.coral}"/><path d="M24 4 Q14 18 18 34 M24 4 Q34 18 30 34" stroke-width="1.600"/><rect x="18" y="39" width="12" height="7" rx="2" fill="${C.wood}"/>`,
+  rocket: `<path d="M19 33 Q24 48 29 33Z" fill="${C.yellow}"/><path d="M15 26 L7 38 L16 34Z M33 26 L41 38 L32 34Z" fill="${C.coral}"/><path d="M24 3 Q35 14 33 33 H15 Q13 14 24 3Z" fill="${C.white}"/><circle cx="24" cy="18" r="5" fill="${C.sky}"/>`,
+  // 特产
+  lotussoup: `<path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.200" fill="#F6EBD0" stroke-width="1.600"/><circle cx="15" cy="22" r="2.400" fill="${C.cream}" stroke-width="1.200"/><circle cx="33" cy="22.500" r="2.400" fill="${C.cream}" stroke-width="1.200"/><path d="M24 20 q-7 -8 0 -16 q7 8 0 16z" fill="${C.pink}" stroke-width="1.600"/>`,
+  applepie: `<circle cx="24" cy="25" r="19" fill="#E2B877"/><circle cx="24" cy="25" r="13" fill="${C.red}" stroke-width="1.600"/><path d="M13 19 L35 31 M13 31 L35 19 M24 12 V38" stroke="#E2B877" stroke-width="4"/>`,
+  pancake: `<ellipse cx="24" cy="36" rx="19" ry="6" fill="#E2B877"/><ellipse cx="24" cy="29" rx="19" ry="6" fill="#E2B877"/><ellipse cx="24" cy="22" rx="19" ry="6" fill="#EBC98F"/><path d="M10 22 Q14 30 18 24 Q24 34 30 24 Q34 28 38 22 Q24 14 10 22Z" fill="${C.dwood}" stroke-width="1.600"/><rect x="20" y="15" width="8" height="6" rx="1.500" fill="${C.yellow}" stroke-width="1.600"/>`,
+  mushcookie: `<path d="M19 26 h10 l2 16 q-7 3 -14 0z" fill="#EBD3A6"/><path d="M5 26 Q5 7 24 7 Q43 7 43 26Z" fill="${C.dwood}"/><path d="M14 18 v.100 M24 13 v.100 M33 19 v.100" stroke="${C.cream}" stroke-width="4"/>`,
+  cocojelly: `<path d="M34 21 L40 5" stroke="${C.coral}" stroke-width="3"/><path d="M5 22 h38 q-1 21 -19 21 q-18 0 -19 -21z" fill="${C.dwood}"/><ellipse cx="24" cy="22" rx="19" ry="6" fill="${C.white}"/><path d="M14 22 q4 -3 8 0" stroke="${C.sky}" stroke-width="2"/>`,
+  popsicle: `<path d="M24 34 V46" stroke-width="6.500"/><path d="M24 34 V45" stroke="${C.wood}" stroke-width="3.200"/><path d="M12 34 V16 Q12 4 24 4 Q36 4 36 16 V34Z" fill="${C.sky}"/><path d="M12 23 Q24 29 36 23" stroke="#fff" stroke-width="3"/><path d="M19 12 v.100 M29 12 v.100" stroke-width="3.400"/><path d="M22 17 h4" stroke="${C.orange}" stroke-width="3"/>`,
+  cloudbread: _cloud('#F3DDB0') + `<path d="M18 25 v.100 M30 25 v.100" stroke-width="3"/><path d="M22 28 q2 2 4 0" stroke-width="1.600"/>`,
+  mooncake: `<circle cx="24" cy="24" r="19" fill="#D9A05C"/><circle cx="24" cy="24" r="13.500" stroke-width="1.600"/><path d="M19 28 A7 7 0 1 1 28 18 A5.500 5.500 0 0 0 19 28Z" fill="${C.yellow}" stroke-width="1.400"/>`
+});
+
+/* 新的做法：果汁、甜点、三明治、盖饭、面 */
+function _dishIconMore(kind, c1, c2) {
+  const bowl = f => `<path d="M5 24 h38 q-2 18 -19 18 q-17 0 -19 -18z" fill="${f}"/>`;
+  if (kind === 'juice') return `<path d="M29 3 l-6 30" stroke="${C.coral}" stroke-width="3"/>` + _glass(c1) + `<circle cx="38" cy="10" r="6" fill="${c2}" stroke-width="1.800"/>`;
+  if (kind === 'sweet') return `<ellipse cx="24" cy="38" rx="21" ry="6" fill="${C.white}"/><path d="M9 22 v13 q15 6 30 0 v-13z" fill="#F3E3B8"/><path d="M9.500 29 q14.500 6 29 0" stroke="${c2}" stroke-width="3"/><ellipse cx="24" cy="22" rx="15" ry="5.500" fill="${c1}"/><circle cx="24" cy="18" r="4" fill="${c2}" stroke-width="1.600"/>`;
+  if (kind === 'bun') return `<path d="M6 37 h36 v4 q0 3 -3 3 h-30 q-3 0 -3 -3z" fill="#E9C98F"/><path d="M4 30 h40 v4 q-5 6 -10 2 q-5 5 -10 0 q-5 5 -10 0 q-5 4 -10 -2z" fill="${c2}"/><path d="M4 26 h40 v5 h-40z" fill="${c1}"/><path d="M5 26 L24 7 L43 26Z" fill="#E9C98F"/>`;
+  if (kind === 'rice') return `<path d="M9 24 Q10 8 24 8 Q38 8 39 24Z" fill="${C.white}"/><circle cx="18" cy="17" r="4.200" fill="${c1}" stroke-width="1.400"/><circle cx="29" cy="15" r="4.200" fill="${c2}" stroke-width="1.400"/><circle cx="25" cy="21" r="3" fill="${c1}" stroke-width="1.400"/>` + bowl(C.blue);
+  if (kind === 'noodle') return `<path d="M31 3 L37 20 M37 2 L41 19" stroke="${C.dwood}" stroke-width="2.400"/><path d="M8 24 q4 -9 9 -4 q4 -8 9 -2 q5 -7 9 0 q4 -3 5 6z" fill="#F1DDA6"/><circle cx="17" cy="19" r="3.600" fill="${c1}" stroke-width="1.400"/><circle cx="29" cy="18" r="3.600" fill="${c2}" stroke-width="1.400"/>` + bowl(C.coral);
+  return '';
+}
+
+/* ---------- 新家具 ---------- */
+Object.assign(FURNS, {
+  stove:    { name: '小灶台',   type: 'floor', price: 95,  w: 130, vb: [130, 132], draw: () => `<path d="M56 22 q-4 -6 0 -12 M72 22 q-4 -6 0 -12"/><path d="M40 28 h50 v12 q0 6 -6 6 h-38 q-6 0 -6 -6z" fill="${C.gray}"/><path d="M32 30 h66" stroke-width="3.500"/><rect x="8" y="46" width="114" height="82" rx="5" fill="${C.white}"/><rect x="20" y="70" width="90" height="46" rx="4" fill="#C9D6E0" stroke-width="2"/><path d="M34 62 h62" stroke-width="4"/><circle cx="24" cy="57" r="3" fill="${C.coral}" stroke="none"/><circle cx="106" cy="57" r="3" fill="${C.coral}" stroke="none"/><path d="M4 46 h122" stroke-width="5"/>` },
+  fridge:   { name: '小冰箱',   type: 'floor', price: 100, w: 90,  vb: [90, 172],  draw: () => `<path d="M18 164 v6 M72 164 v6"/><rect x="8" y="6" width="74" height="158" rx="8" fill="${C.sky}"/><path d="M8 62 h74"/><path d="M20 26 v22 M20 76 v34" stroke-width="4"/><rect x="46" y="82" width="15" height="13" fill="${C.yellow}" stroke-width="1.800"/><circle cx="64" cy="110" r="6.500" fill="${C.coral}" stroke-width="1.800"/>` },
+  table:    { name: '小餐桌',   type: 'floor', price: 75,  w: 170, vb: [170, 112], draw: () => `<path d="M40 62 v46 M130 62 v46"/><path d="M14 44 h142 l-10 26 h-122z" fill="${C.pink}"/><ellipse cx="85" cy="42" rx="78" ry="14" fill="${C.cream}"/><circle cx="76" cy="31" r="7.500" fill="${C.red}" stroke-width="1.800"/><circle cx="93" cy="30" r="7.500" fill="${C.orange}" stroke-width="1.800"/><path d="M62 36 h46 q-2 12 -23 12 q-21 0 -23 -12z" fill="${C.blue}" stroke-width="2"/>` },
+  horse:    { name: '小木马',   type: 'floor', price: 85,  w: 140, vb: [140, 122], draw: () => `<path d="M110 54 q14 2 14 22" stroke="${C.dwood}" stroke-width="5"/><path d="M44 66 h12 l-6 40 h-10z M84 66 h12 l8 40 h-10z" fill="${C.wood}"/><path d="M8 98 Q70 122 132 98 L128 107 Q70 131 12 107Z" fill="${C.wood}"/><path d="M34 50 Q36 38 52 40 H92 Q112 40 110 58 Q108 72 90 72 H52 Q36 72 34 50Z" fill="${C.orange}"/><path d="M40 54 Q28 32 30 14 Q44 8 52 22 L54 44Z" fill="${C.orange}"/><path d="M35 14 l-2 -9 l8 6"/><path d="M51 20 q8 8 5 20" stroke="${C.dwood}" stroke-width="4"/><circle cx="38" cy="24" r="2.200" fill="${C.line}" stroke="none"/><path d="M62 40 h24 v10 q-12 6 -24 0z" fill="${C.coral}" stroke-width="2"/>` },
+  beanbag:  { name: '懒人沙发', type: 'floor', price: 65,  w: 130, vb: [130, 102], draw: () => `<path d="M10 80 Q4 40 40 30 Q64 6 92 28 Q126 38 120 80 Q112 98 66 98 Q18 98 10 80Z" fill="${C.lgreen}"/><path d="M34 52 Q64 70 98 50" stroke-width="2"/><circle cx="66" cy="24" r="3" fill="${C.line}" stroke="none"/>` },
+  rug4:     { name: '草莓地毯', type: 'rug',   price: 70,  w: 320, vb: [320, 92],  draw: () => `<ellipse cx="160" cy="46" rx="156" ry="42" fill="${C.pink}"/><ellipse cx="160" cy="46" rx="128" ry="31" fill="${C.cream}" stroke-width="1.800"/>` +
+    [92, 160, 228].map(x => `<g transform="translate(${x} 44) scale(1 .620)"><path d="M0 -14 Q18 -18 16 0 Q12 16 0 22 Q-12 16 -16 0 Q-18 -18 0 -14Z" fill="${C.red}" stroke-width="2"/><path d="M0 -13 l-9 -7 h18z" fill="${C.green}" stroke-width="1.600"/></g>`).join('') },
+  mirror:   { name: '小镜子',   type: 'wall',  price: 45,  w: 70,  vb: [70, 92],   draw: () => `<ellipse cx="35" cy="46" rx="29" ry="40" fill="${C.wood}"/><ellipse cx="35" cy="46" rx="22" ry="33" fill="${C.sky}" stroke-width="1.800"/><path d="M24 30 q4 -8 12 -10 M21 42 q1 -3 3 -5" stroke="#fff" stroke-width="3"/>` },
+  balloons: { name: '气球束',   type: 'wall',  price: 40,  w: 90,  vb: [90, 132],  draw: () => `<path d="M28 52 Q40 90 46 126 M62 48 Q52 90 46 126 M46 40 V126" stroke-width="1.600"/><ellipse cx="26" cy="32" rx="18" ry="22" fill="${C.coral}"/><ellipse cx="64" cy="28" rx="18" ry="22" fill="${C.blue}"/><ellipse cx="46" cy="22" rx="17" ry="20" fill="${C.yellow}"/>` },
+  map:      { name: '世界地图', type: 'wall',  price: 60,  w: 150, vb: [150, 102], draw: () => `<rect x="4" y="6" width="142" height="90" rx="3" fill="#F3E6C8"/><path d="M22 30 q14 -12 30 -4 q4 12 -8 16 q-4 14 -14 12 q-12 -8 -8 -24z M78 26 q20 -10 44 2 q8 16 -6 26 q-14 4 -18 -8 q-16 0 -20 -20z M98 66 q12 -4 16 8 q-10 8 -16 -8z" fill="${C.green}" stroke-width="1.600"/><path d="M4 6 h142" stroke-width="7"/><circle cx="62" cy="66" r="3.500" fill="${C.red}" stroke="none"/>` }
+});
+
+/* ---------- 第三批旅行目的地 ---------- */
+Object.assign(DESTS, {
+  lake:     { name: '荷花池塘', time: 150, souv: 'lotussoup',  pet: [70, 84, .42] },
+  orchard:  { name: '苹果果园', time: 150, souv: 'applepie',   pet: [30, 104, .42] },
+  maple:    { name: '枫叶山谷', time: 180, souv: 'pancake',    pet: [108, 104, .42] },
+  mushwood: { name: '蘑菇森林', time: 210, souv: 'mushcookie', pet: [100, 104, .42] },
+  island:   { name: '椰子小岛', time: 240, souv: 'cocojelly',  pet: [84, 82, .42] },
+  penguin:  { name: '企鹅冰原', time: 270, souv: 'popsicle',   pet: [60, 100, .42] },
+  cloud:    { name: '云上城堡', time: 270, souv: 'cloudbread', pet: [70, 84, .42] },
+  moon:     { name: '月亮上面', time: 300, souv: 'mooncake',   pet: [86, 90, .42] }
+});
+Object.assign(SOUVS, {
+  lotussoup:  { name: '莲子羹',   ic: 'lotussoup',  hunger: 20, thirst: 22 },
+  applepie:   { name: '苹果派',   ic: 'applepie',   hunger: 28, happy: 14 },
+  pancake:    { name: '枫糖松饼', ic: 'pancake',    hunger: 26, energy: 12 },
+  mushcookie: { name: '蘑菇饼干', ic: 'mushcookie', hunger: 18, happy: 16 },
+  cocojelly:  { name: '椰子冻',   ic: 'cocojelly',  drink: true, thirst: 30, hunger: 8, happy: 10 },
+  popsicle:   { name: '企鹅雪糕', ic: 'popsicle',   drink: true, thirst: 20, happy: 20, sweet: 1 },
+  cloudbread: { name: '云朵面包', ic: 'cloudbread', hunger: 34, happy: 8 },
+  mooncake:   { name: '小月饼',   ic: 'mooncake',   hunger: 24, happy: 18, sweet: 1 }
+});
+Object.assign(CARD_BG, {
+  lake(r) {
+    const leaf = (x, y, s) => `<ellipse cx="${x}" cy="${y}" rx="${22 * s}" ry="${8 * s}" fill="${C.green}"/><path d="M${x} ${y} l${14 * s} ${-3 * s}" stroke-width="1.600"/>`;
+    const bloom = (x, y) => `<path d="M${x} ${y} q-13 -5 -11 -17 q9 2 11 17z M${x} ${y} q13 -5 11 -17 q-9 2 -11 17z" fill="#F2B8C0" stroke-width="1.600"/><path d="M${x} ${y} q-7 -12 0 -24 q7 12 0 24z" fill="${C.pink}" stroke-width="1.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 222 : 248}" cy="${r ? 62 : 36}" r="${r ? 24 : 16}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 104 Q70 66 150 92 T300 78 V110 H0Z', r ? '#C9B79A' : '#C4D9B4')}
+      <rect y="104" width="300" height="100" fill="${r ? '#A9C2CC' : C.sky}" stroke="none"/><path d="M0 104 H300"/>
+      <path d="M22 122 q10 -6 20 0 M196 120 q10 -6 20 0 M222 190 q10 -6 20 0" stroke="#fff" stroke-width="2.200"/>
+      ${leaf(252, 130, .9)}${leaf(262, 174, 1.2)}${leaf(196, 186, .9)}${leaf(34, 138, .8)}${bloom(258, 124)}${bloom(274, 164)}
+      ${r ? `<g transform="translate(168 108) scale(.34)">${FRIEND_DRAW.duck()}</g>` : ''}
+      <path d="M40 170 v26 M150 170 v26"/><path d="M-6 158 H172 V170 H-6Z" fill="${C.wood}"/><path d="M52 158 v12 M112 158 v12" stroke-width="1.600"/>`;
+  },
+  orchard(r) {
+    const tree = (x, y, s) => `<path d="M${x} ${y} v${-34 * s}" stroke="${C.dwood}" stroke-width="${7 * s}"/><circle cx="${x}" cy="${y - 54 * s}" r="${28 * s}" fill="${C.green}"/>` +
+      [[-12, -62], [10, -68], [-2, -46], [15, -48], [-17, -44]].map(q => `<circle cx="${x + q[0] * s}" cy="${y + q[1] * s}" r="${4.4 * s}" fill="${C.red}" stroke-width="1.400"/>`).join('');
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 60 : 52}" cy="${r ? 58 : 36}" r="${r ? 24 : 16}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 118 Q90 84 170 110 T300 96 V200 H0Z', '#CFE0B6')}${tree(128, 128, .7)}${tree(184, 122, .6)}
+      ${_hill('M0 142 Q150 124 300 140 V200 H0Z', '#A9C987')}${tree(250, 162, 1.1)}
+      <circle cx="202" cy="170" r="6.500" fill="${C.red}" stroke-width="1.600"/><circle cx="213" cy="166" r="6.500" fill="${C.red}" stroke-width="1.600"/><circle cx="223" cy="170" r="6.500" fill="${C.red}" stroke-width="1.600"/>
+      <path d="M190 172 h44 l-5 21 h-34z" fill="${C.wood}"/><path d="M193 180 h38" stroke-width="1.600"/>
+      ${r ? `<g transform="translate(112 126) scale(.34)">${FRIEND_DRAW.hedgehog()}</g>` : ''}`;
+  },
+  maple(r) {
+    let lv = '';
+    for (let i = 0, n = r ? 26 : 9; i < n; i++) { const x = (i * 47 + 23) % 288, y = (i * 31 + 15) % 140 + 20; lv += `<path d="M${x} ${y} l4 -6 l4 6 l-4 5z" fill="${i % 2 ? C.orange : C.red}" stroke="none" transform="rotate(${i * 50} ${x + 4} ${y})"/>`; }
+    const tree = (x, s, c) => `<path d="M${x} 150 q-3 -26 2 -${46 * s}" stroke="${C.dwood}" stroke-width="${7 * s}"/>` +
+      `<path d="M${x + 2 - 32 * s} ${150 - 48 * s} a${17 * s} ${15 * s} 0 0 1 ${13 * s} -${23 * s} a${21 * s} ${19 * s} 0 0 1 ${38 * s} 0 a${17 * s} ${15 * s} 0 0 1 ${13 * s} ${23 * s} a${32 * s} ${15 * s} 0 0 1 -${64 * s} 0z" fill="${c}"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#EFE9D6'}" stroke="none"/><circle cx="150" cy="${r ? 50 : 34}" r="${r ? 22 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 112 L70 62 L130 104 L200 56 L260 100 L300 84 V200 H0Z', '#D9B58C')}
+      ${_hill('M0 126 Q90 100 170 122 T300 110 V200 H0Z', '#E3C98F')}${tree(196, .75, C.orange)}${tree(56, 1, C.red)}${tree(254, 1.1, '#E9A04E')}
+      ${_hill('M0 148 Q150 132 300 146 V200 H0Z', '#D6B46F')}
+      <path d="M118 200 Q140 172 150 150 Q160 172 184 200Z" fill="#EFE3C4"/>${lv}`;
+  },
+  mushwood(r) {
+    const mush = (x, y, s, c) => `<path d="M${x - 9 * s} ${y} q${3 * s} -${22 * s} 0 -${42 * s} h${18 * s} q-${3 * s} ${20 * s} 0 ${42 * s}z" fill="${C.cream}"/><path d="M${x - 36 * s} ${y - 38 * s} Q${x - 34 * s} ${y - 80 * s} ${x} ${y - 80 * s} Q${x + 34 * s} ${y - 80 * s} ${x + 36 * s} ${y - 38 * s}Z" fill="${c}"/>` +
+      [[-16, -53, 5], [2, -65, 6], [18, -51, 4.5]].map(q => `<circle cx="${x + q[0] * s}" cy="${y + q[1] * s}" r="${q[2] * s}" fill="#fff" stroke="none"/>`).join('');
+    return `<rect width="300" height="200" fill="${r ? '#3E4A6A' : '#DDE8D2'}" stroke="none"/>
+      ${r ? `<path d="M40 22 A14 14 0 1 0 53 46 A11 11 0 0 1 40 22Z" fill="#FFF6C9"/>` + _dots([[96, 24], [150, 44], [200, 20], [272, 40], [120, 70]], 2, '#FFF6C9') : `<circle cx="46" cy="34" r="15" fill="#F3D98B"/>`}
+      ${_hill('M0 112 Q80 84 150 104 T300 92 V200 H0Z', r ? '#4F6B5E' : '#B9D0A4')}
+      ${mush(238, 152, 1.5, C.coral)}${mush(48, 148, 1.15, C.purple)}${mush(160, 138, .7, C.orange)}
+      ${_hill('M0 148 Q150 134 300 146 V200 H0Z', r ? '#56755A' : '#A9C987')}
+      ${mush(274, 192, .45, C.yellow)}${mush(24, 192, .4, C.coral)}
+      ${r ? _dots([[76, 96], [128, 62], [196, 88], [222, 60], [168, 112], [98, 132], [284, 108]], 3, C.yellow) + `<g transform="translate(184 138) scale(.36)">${FRIEND_DRAW.snail()}</g>` : ''}`;
+  },
+  island(r) {
+    const palm = (x, y, h, lean) => { const tx = x + lean / 2, ty = y - h; return `<path d="M${x} ${y} q${-lean} -${h / 2} ${lean / 2} -${h}" stroke="${C.dwood}" stroke-width="6"/>` +
+      `<path d="M${tx} ${ty} q-26 -12 -38 6 q22 -6 38 -6z M${tx} ${ty} q-10 -24 -32 -20 q18 6 32 20z M${tx} ${ty} q22 -14 36 2 q-20 -4 -36 -2z M${tx} ${ty} q8 -22 28 -22 q-14 8 -28 22z" fill="${C.green}" stroke-width="1.800"/>` +
+      `<circle cx="${tx - 4}" cy="${ty + 6}" r="4" fill="${C.dwood}" stroke-width="1.400"/><circle cx="${tx + 5}" cy="${ty + 7}" r="4" fill="${C.dwood}" stroke-width="1.400"/>`; };
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="254" cy="${r ? 76 : 32}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <rect y="96" width="300" height="110" fill="${C.blue}" stroke="none"/><path d="M0 96 H300"/>
+      <path d="M16 126 q10 -6 20 0 M250 118 q10 -6 20 0 M150 110 q10 -6 20 0 M6 184 q10 -6 20 0 M268 186 q10 -6 20 0" stroke="#fff" stroke-width="2.200"/>
+      ${r ? `<path d="M12 106 Q30 66 62 92 l9 -5 l-3 12 Q48 82 22 108Z" fill="#6F9DB5"/><circle cx="28" cy="92" r="1.600" fill="${C.line}" stroke="none"/>` : `<path d="M22 96 h34 l-7 9 h-20z" fill="${C.wood}"/><path d="M38 96 V70 L56 92Z" fill="${C.cream}"/>`}
+      <path d="M28 170 Q150 112 272 170 Q150 198 28 170Z" fill="${C.sand}"/>
+      ${palm(216, 152, 70, 10)}${palm(240, 156, 48, -10)}
+      <path d="M186 172 l5 -8 l5 8 l-10 -5 h10z" fill="${C.pink}" stroke-width="1.600"/>`;
+  },
+  penguin(r) {
+    const pg = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-5 0 l-6 3 M5 0 l6 3" stroke="${C.orange}" stroke-width="4"/>` +
+      `<path d="M-12 0 Q-17 -22 -10 -35 Q0 -47 10 -35 Q17 -22 12 0Z" fill="#4A5568"/><path d="M-13 -22 q-7 7 -5 15 M13 -22 q7 7 5 15" stroke-width="3"/>` +
+      `<path d="M-7 0 Q-10 -17 -5 -25 Q0 -30 5 -25 Q10 -17 7 0Z" fill="${C.white}" stroke-width="1.400"/><circle cx="-4" cy="-34" r="1.700" fill="#fff" stroke="none"/><circle cx="4" cy="-34" r="1.700" fill="#fff" stroke="none"/>` +
+      `<path d="M-3 -30 h6 l-3 5z" fill="${C.orange}" stroke-width="1"/></g>`;
+    return `<rect width="300" height="200" fill="${r ? '#F2D5D0' : '#DCE9EF'}" stroke="none"/>
+      <circle cx="150" cy="${r ? 58 : 36}" r="${r ? 22 : 15}" fill="${r ? C.coral : '#F3D98B'}"/>
+      <path d="M8 118 L40 58 L64 92 L84 70 L114 118Z" fill="#C9DCE6"/><path d="M176 118 L206 74 L226 100 L246 82 L274 118Z" fill="#D6E5EC"/>
+      <rect y="116" width="300" height="30" fill="${C.blue}" stroke="none"/><path d="M0 116 H300"/>
+      ${_hill('M0 142 Q150 128 300 140 V200 H0Z', C.white)}
+      <path d="M198 170 q0 -34 36 -34 q36 0 36 34z" fill="${C.white}"/><path d="M224 170 v-12 a10 10 0 0 1 20 0 v12" fill="#8FA9B8"/>
+      <path d="M201 154 h66 M211 144 h46 M234 136 v8 M220 144 v10 M248 144 v10" stroke-width="1.400"/>
+      ${pg(160, 182, 1)}${pg(186, 190, .8)}
+      ${r ? pg(24, 178, .9) + pg(46, 188, .7) + _dots([[30, 30], [70, 62], [110, 24], [196, 44], [236, 22], [276, 58], [56, 100], [262, 100]], 2.600, '#fff') : ''}`;
+  },
+  cloud(r) {
+    const cl = (x, y, s) => `<path d="M${x} ${y} a${8 * s} ${8 * s} 0 0 1 ${2 * s} -${16 * s} a${11 * s} ${11 * s} 0 0 1 ${21 * s} -${s} a${8.5 * s} ${8.5 * s} 0 0 1 ${s} ${17 * s}z" fill="#fff"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#D9D2E6' : '#CFE4EC'}" stroke="none"/>
+      ${r ? _arcBow(196, 150, 104) : `<circle cx="46" cy="36" r="16" fill="#F3D98B"/>`}
+      ${cl(92, 62, 1.6)}${cl(16, 112, 1.3)}
+      <rect x="186" y="84" width="64" height="66" fill="${C.cream}"/>
+      <rect x="174" y="66" width="22" height="84" fill="${C.cream}"/><rect x="240" y="66" width="22" height="84" fill="${C.cream}"/>
+      <path d="M170 66 L185 38 L200 66Z" fill="${C.coral}"/><path d="M236 66 L251 38 L266 66Z" fill="${C.coral}"/>
+      <rect x="207" y="56" width="22" height="30" fill="${C.cream}"/><path d="M203 56 L218 28 L233 56Z" fill="${C.purple}"/>
+      <path d="M218 28 v-14 l12 5 l-12 5" fill="${C.yellow}" stroke-width="1.600"/>
+      <path d="M208 150 v-24 a10 10 0 0 1 20 0 v24" fill="${C.wood}"/>
+      <rect x="180" y="86" width="10" height="13" rx="5" fill="${C.sky}" stroke-width="1.600"/><rect x="246" y="86" width="10" height="13" rx="5" fill="${C.sky}" stroke-width="1.600"/><rect x="213" y="64" width="10" height="13" rx="5" fill="${C.sky}" stroke-width="1.600"/>
+      <path d="M-10 206 V152 q20 -22 44 -8 q16 -22 44 -6 q22 -20 50 -2 q24 -18 48 0 q26 -16 50 2 q24 -14 44 4 q20 -8 40 6 V206Z" fill="${C.white}"/>
+      ${r ? _burst(40, 44, C.yellow, .7) + _burst(110, 30, C.pink, .6) : ''}`;
+  },
+  cloudFront() {
+    return `<path d="M52 206 V180 q16 -16 36 -4 q18 -14 38 0 q18 -10 34 6 V206Z" fill="${C.white}"/>`;
+  },
+  moon(r) {
+    let st = '';
+    for (let i = 0; i < 16; i++) st += `<circle cx="${(i * 61 + 19) % 296}" cy="${(i * 29 + 11) % 110 + 6}" r="${i % 3 ? 1.6 : 2.4}" fill="#FFF6C9"/>`;
+    return `<rect width="300" height="200" fill="#2B3560" stroke="none"/><g stroke="none">${st}</g>
+      <circle cx="56" cy="50" r="24" fill="#8FC0D4"/><path d="M42 38 q8 -8 16 -2 q2 8 -6 12 q-10 2 -10 -10z M60 56 q10 -2 12 6 q-4 8 -12 6z" fill="${C.green}" stroke-width="1.600"/>
+      ${r ? `<ellipse cx="170" cy="38" rx="30" ry="8" stroke="${C.yellow}" stroke-width="3" transform="rotate(-18 170 38)"/><circle cx="170" cy="38" r="14" fill="${C.orange}"/><path d="M96 16 l34 17 M230 22 l28 14" stroke="#FFF6C9" stroke-width="2.400"/>` : ''}
+      <g transform="translate(0 16)"><path d="M238 118 v10 M254 118 v10"/><path d="M233 104 L220 126 L234 118Z M259 104 L272 126 L258 118Z" fill="${C.coral}"/><path d="M246 60 Q262 78 259 118 H233 Q230 78 246 60Z" fill="${C.white}"/><circle cx="246" cy="86" r="7" fill="${C.sky}"/></g>
+      ${_hill('M-6 150 Q150 122 306 150 V206 H-6Z', '#D9D4C4')}
+      <ellipse cx="46" cy="176" rx="20" ry="6" fill="#C2BCAA"/><ellipse cx="214" cy="184" rx="26" ry="7" fill="#C2BCAA"/><ellipse cx="270" cy="162" rx="12" ry="4" fill="#C2BCAA"/>
+      <path d="M190 142 v-42"/><path d="M190 100 h24 l-6 8 l6 8 h-24z" fill="${C.coral}"/>`;
+  },
+  moonFront() {
+    return `<circle cx="128" cy="128" r="50" fill="rgba(255,255,255,.16)" stroke="#fff" stroke-width="2.600"/><path d="M96 102 q8 -15 23 -19" stroke="#fff" stroke-width="3.200"/>`;
+  }
+});
 
 </script>
 <script>
@@ -1748,11 +1976,35 @@ const FOODS = {
   pudding:    { name: '布丁',     ic: 'pudding',    hunger: 10, happy: 14, sweet: 1, price: 12 },
   candy:      { name: '水果糖',   ic: 'candy',      hunger: 4,  happy: 12, sweet: 1, price: 6 },
   cake:       { name: '小蛋糕',   ic: 'cake',       hunger: 10, happy: 16, sweet: 1, price: 14 },
+  egg:        { name: '鸡蛋',     ic: 'eggs',       hunger: 14, price: 6 },
+  rice:       { name: '米饭',     ic: 'rice',       hunger: 22, price: 6 },
+  noodle:     { name: '面条',     ic: 'noodle',     hunger: 20, price: 7 },
+  tofu:       { name: '豆腐',     ic: 'tofu',       hunger: 14, price: 6 },
+  dumpling:   { name: '小饺子',   ic: 'dumpling',   hunger: 24, price: 10 },
+  popcorn:    { name: '爆米花',   ic: 'popcorn',    hunger: 8,  happy: 10, price: 7 },
+  donut:      { name: '甜甜圈',   ic: 'donut',      hunger: 12, happy: 14, sweet: 1, price: 11 },
+  icecream:   { name: '冰淇淋',   ic: 'icecream',   hunger: 6,  thirst: 8, happy: 16, sweet: 1, price: 12 },
+  cabbage:    { name: '白菜',     ic: 'cabbage',    hunger: 12, thirst: 6, price: 5 },
+  cucumber:   { name: '黄瓜',     ic: 'cucumber',   hunger: 8,  thirst: 12, price: 5 },
+  broccoli:   { name: '西兰花',   ic: 'broccoli',   hunger: 14, price: 6 },
+  spinach:    { name: '菠菜',     ic: 'spinach',    hunger: 10, energy: 4, price: 6 },
+  onion:      { name: '洋葱',     ic: 'onion',      hunger: 10, price: 5 },
+  sweetpotato: { name: '红薯',    ic: 'sweetpotato', hunger: 20, price: 7 },
+  pea:        { name: '豌豆',     ic: 'pea',        hunger: 12, price: 6 },
+  radish:     { name: '白萝卜',   ic: 'radish',     hunger: 12, thirst: 6, price: 5 },
+  orange:     { name: '橙子',     ic: 'orange',     hunger: 10, thirst: 10, happy: 4, price: 6 },
+  peach:      { name: '桃子',     ic: 'peach',      hunger: 12, happy: 6, price: 7 },
+  banana:     { name: '香蕉',     ic: 'banana',     hunger: 16, energy: 4, price: 6 },
+  grape:      { name: '葡萄',     ic: 'grape',      hunger: 10, thirst: 8, happy: 6, price: 8 },
   water:      { name: '清水',     ic: 'water',      drink: true, thirst: 24, price: 2 },
   milk:       { name: '牛奶',     ic: 'milk',       drink: true, thirst: 20, hunger: 8, price: 6 },
   juice:      { name: '橙汁',     ic: 'juice',      drink: true, thirst: 22, happy: 6, price: 7 },
   honey:      { name: '蜂蜜水',   ic: 'honey',      drink: true, thirst: 20, energy: 8, price: 8 },
-  cocoa:      { name: '热可可',   ic: 'cocoa',      drink: true, thirst: 14, happy: 14, sweet: 1, price: 10 }
+  cocoa:      { name: '热可可',   ic: 'cocoa',      drink: true, thirst: 14, happy: 14, sweet: 1, price: 10 },
+  soymilk:    { name: '豆浆',     ic: 'soymilk',    drink: true, thirst: 20, hunger: 6, price: 5 },
+  lemonade:   { name: '柠檬水',   ic: 'lemonade',   drink: true, thirst: 26, happy: 4, price: 6 },
+  coconut:    { name: '椰子汁',   ic: 'coconut',    drink: true, thirst: 28, energy: 4, price: 9 },
+  bubbletea:  { name: '珍珠奶茶', ic: 'bubbletea',  drink: true, thirst: 16, happy: 16, sweet: 1, price: 11 }
 };
 const SEEDS = {
   carrot:     { name: '胡萝卜', ic: 'carrot',     time: 60,  give: 3, food: 'carrot',     price: 5 },
@@ -1771,7 +2023,18 @@ const SEEDS = {
   rose:       { name: '玫瑰',   ic: 'rose',       time: 110, coins: 40, price: 12 },
   ginger:     { name: '生姜',   ic: 'ginger',     time: 75,  give: 2, med: 'gingertea', price: 6 },
   mint:       { name: '薄荷',   ic: 'mint',       time: 60,  give: 2, med: 'mint',      price: 6 },
-  pear:       { name: '雪梨',   ic: 'pear',       time: 90,  give: 2, med: 'pearsoup',  price: 7 }
+  pear:       { name: '雪梨',   ic: 'pear',       time: 90,  give: 2, med: 'pearsoup',  price: 7 },
+  cabbage:    { name: '白菜',   ic: 'cabbage',    time: 60,  give: 3, food: 'cabbage',    price: 5 },
+  spinach:    { name: '菠菜',   ic: 'spinach',    time: 60,  give: 3, food: 'spinach',    price: 6 },
+  cucumber:   { name: '黄瓜',   ic: 'cucumber',   time: 75,  give: 3, food: 'cucumber',   price: 6 },
+  radish:     { name: '白萝卜', ic: 'radish',     time: 75,  give: 3, food: 'radish',     price: 5 },
+  pea:        { name: '豌豆',   ic: 'pea',        time: 75,  give: 4, food: 'pea',        price: 6 },
+  onion:      { name: '洋葱',   ic: 'onion',      time: 90,  give: 3, food: 'onion',      price: 6 },
+  broccoli:   { name: '西兰花', ic: 'broccoli',   time: 90,  give: 2, food: 'broccoli',   price: 7 },
+  sweetpotato: { name: '红薯',  ic: 'sweetpotato', time: 120, give: 3, food: 'sweetpotato', price: 8 },
+  grape:      { name: '葡萄',   ic: 'grape',      time: 120, give: 4, food: 'grape',      price: 9 },
+  daisy:      { name: '小雏菊', ic: 'daisy',      time: 50,  coins: 18, price: 6 },
+  lavender:   { name: '薰衣草', ic: 'lavender',   time: 140, coins: 55, price: 14 }
 };
 /* 药。tonic 是保健品（没病时吃，预防生病）；any 是什么病都能治 */
 const MEDS = {
@@ -1780,7 +2043,8 @@ const MEDS = {
   pearsoup:   { name: '冰糖梨汤',   ic: 'pearsoup',   price: 9,  desc: '嗓子疼的时候喝' },
   feverpatch: { name: '退烧贴',     ic: 'feverpatch', price: 10, desc: '发烧的时候贴' },
   vitamin:    { name: '维生素软糖', ic: 'vitamin',    price: 15, desc: '没病时吃，10 分钟内不生病', tonic: true },
-  panacea:    { name: '万能药水',   ic: 'panacea',    price: 40, desc: '什么病都能马上治好', any: true }
+  panacea:    { name: '万能药水',   ic: 'panacea',    price: 40, desc: '什么病都能马上治好', any: true },
+  firstaid:   { name: '小药箱',     ic: 'firstaid',   price: 30, desc: '四种药各一份，比单买便宜', pack: ['gingertea', 'mint', 'pearsoup', 'feverpatch'] }
 };
 /* 四种小毛病：某项状态（stat）低于 below，先出现症状；一直不处理就会生病。
  * rest 是吃药以后怎么休息：sleep 要睡一觉，rest 歇一会儿就行 */
@@ -1801,28 +2065,37 @@ const ILLS = {
             lines: [['头好晕，脸烫烫的…', '想贴一张凉凉的退烧贴…'], ['凉凉的好舒服，想睡一觉…']] }
 };
 const WEARS = {
+  leaf:    { name: '小树叶',   ic: 'leaf',       price: 20 },
   bow:     { name: '蝴蝶结',   ic: 'bow',        price: 30 },
   star:    { name: '星星发卡', ic: 'star',       price: 30 },
   flower:  { name: '小花发夹', ic: 'flowerclip', price: 35 },
   beret:   { name: '贝雷帽',   ic: 'beret',      price: 40 },
   cap:     { name: '棒球帽',   ic: 'cap',        price: 45 },
   hat:     { name: '派对帽',   ic: 'party',      price: 50 },
+  bunny:   { name: '兔耳朵',   ic: 'bunny',      price: 55 },
   glasses: { name: '小眼镜',   ic: 'glasses',    price: 60 },
+  sunglasses: { name: '小墨镜', ic: 'sunglasses', price: 65 },
+  headphones: { name: '小耳机', ic: 'headphones', price: 70 },
   wreath:  { name: '花环',     ic: 'wreath',     price: 80 },
+  santa:   { name: '圣诞帽',   ic: 'santa',      price: 90 },
   wizard:  { name: '魔法帽',   ic: 'wizard',     price: 120 },
+  halo:    { name: '天使光环', ic: 'halo',       price: 130 },
   crown:   { name: '小皇冠',   ic: 'crown',      price: 150 }
 };
 /* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
   bell:     { name: '幸运铃铛', ic: 'bell',     price: 18, desc: '更容易遇见珍贵风景', once: true },
   strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边和沙漠', to: ['sea', 'desert'] },
-  umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布', to: ['waterfall'] },
+  umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布和蘑菇森林', to: ['waterfall', 'mushwood'] },
   lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇和乐园', to: ['bamboo', 'town', 'ferris'] },
   camera:   { name: '小相机',   ic: 'camera',   price: 70, desc: '更容易多带回一张明信片' },
   tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山和营地', to: ['snow', 'camp'] },
-  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] }
+  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] },
+  boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛和企鹅冰原', to: ['island', 'penguin'] },
+  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡', to: ['cloud'] },
+  rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面', to: ['moon'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow'];
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple'];
 const TASKS = [
   { id: 'feed',    name: '喂宠物吃 3 次饭',   need: 3, coin: 15, ic: 'apple' },
   { id: 'drink',   name: '给宠物喝 2 次水',   need: 2, coin: 10, ic: 'water' },
@@ -1849,7 +2122,11 @@ const STICKERS = [
   { id: 's13', ic: 'med',       name: '细心小护士',   c: 'cure', n: 1 },
   { id: 's14', ic: 'pot',       name: '小小厨师',     c: 'cook', n: 1 },
   { id: 's15', ic: 'pumpkin',   name: '菜谱大王',     c: 'recipes', n: 12 },
-  { id: 's16', ic: 'sofa',      name: '小小设计师',   c: 'furn', n: 8 }
+  { id: 's16', ic: 'sofa',      name: '小小设计师',   c: 'furn', n: 8 },
+  { id: 's17', ic: 'noodle',    name: '料理达人',     c: 'recipes', n: 40 },
+  { id: 's18', ic: 'dumpling',  name: '美食大师',     c: 'recipes', n: 100 },
+  { id: 's19', ic: 'rocket',    name: '环游世界',     c: 'trip', n: 25 },
+  { id: 's20', ic: 'camera',    name: '风景收藏家',   c: 'cards', n: 24 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -2119,7 +2396,7 @@ function openFeed(tab) {
     const ids = myDishes();
     body = ids.length
       ? '<div class="item-grid">' + ids.map(k => itemBtn(`data-dish="${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k])).join('') + '</div>'
-      : '<p class="empty">还没有做好的菜。<br>点“煮菜”，用两样蔬菜做一道吧~</p>';
+      : '<p class="empty">还没有做好的菜。<br>点“煮菜”，用两样食材做一道吧~</p>';
   } else if (feedTab === 'souv') {
     const ids = mySouvs();
     body = ids.length
@@ -2537,7 +2814,7 @@ function openPack() {
   if (S.stats.energy < 35) { say('有点困，睡一觉再去旅行吧~'); return; }
   if (S.stats.thirst < 30) { say('好渴呀，先喝点水再出发吧~'); return; }
   const foods = myFoods(), fav = PETS[S.pet.type].fav;
-  if (!foods.length && !myDishes().length) {
+  if (!foods.length && !myMeals().length) {
     const m0 = openModal('<h2>准备行囊</h2><p class="empty">出门要带便当，可是家里没有吃的了。</p>' + noFoodHTML.replace(/^<p.*?<\/p>/, ''));
     m0.addEventListener('click', e => { const g = e.target.closest('[data-go]'); if (g) { closeModal(); shopTab = 'food'; switchScene(g.dataset.go); } });
     return;
@@ -2547,10 +2824,10 @@ function openPack() {
   const sel = { food: null, drink: null, tool: null, bell: false };
   let html = `<h2>准备行囊</h2><p>带上便当，${esc(S.pet.name)} 会自己去远方走走，<br>路上还会寄明信片回来。</p><h3>便当（选一样）</h3><div class="item-grid">` +
     foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') +
-    myDishes().map(k => itemBtn(`data-pf="dish:${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k] + ' 亲手做')).join('') + '</div>' +
+    myMeals().map(k => itemBtn(`data-pf="dish:${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k] + ' 亲手做')).join('') + '</div>' +
     (drinks.length ? '<h3>水壶（可以不带，带了回来不口渴）</h3><div class="item-grid">' + drinks.map(k => itemBtn(`data-pd="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k])).join('') + '</div>' : '') +
     '<h3>旅行用品（可以不带）</h3>';
-  if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、灯笼、帐篷和潜水镜，<br>带上它们能去更远的地方。</p>';
+  if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、小木船、热气球、小火箭……<br>带上它们能去更远的地方。</p>';
   else html += '<div class="item-grid">' + tools.map(k => itemBtn(`data-pt="${k}"`, GEAR[k].ic, GEAR[k].name, GEAR[k].desc)).join('') +
     (S.gear.bell ? itemBtn('data-pb="1"', 'bell', '幸运铃铛', '×' + S.gear.bell) : '') + '</div>';
   html += '<div class="row"><button class="btn big green" id="go-trip">出发</button></div>';
@@ -2617,7 +2894,7 @@ function tickTrip() {
 }
 function finishTrip() {
   const t = S.trip, st = S.stats, d = DESTS[t.dest];
-  const chilly = (t.dest === 'snow' || t.dest === 'camp') && !S.immune && Math.random() < .2;   // 去冷的地方，偶尔会着凉
+  const chilly = (t.dest === 'snow' || t.dest === 'camp' || t.dest === 'penguin') && !S.immune && Math.random() < .2;   // 去冷的地方，偶尔会着凉
   if (!t.mailed) S.mail.push(t.card);
   S.trip = null;
   st.hunger = Math.max(30, st.hunger - 25); st.clean = Math.max(28, st.clean - 32);
@@ -2674,9 +2951,12 @@ function renderAlbum() {
         return `<div class="souv${ok ? '' : ' lock'}">${icon(sv.ic, 'big')}<b>${ok ? sv.name : '？？？'}</b><small>${ok ? DESTS[d].name + ' ×' + n : '还没有'}</small></div>`;
       }).join('') + '</div>';
   } else if (albumTab === 'cook') {
-    const keys = Object.keys(DISHES), got = keys.filter(k => S.cookbook[k]).length;
-    h = `<p class="album-note">学会 ${got} / ${keys.length} 道 · 在小屋点“煮菜”，把两样蔬菜放进锅里试试</p><div class="souv-grid">` +
-      keys.map(k => { const d = DISHES[k], ok = S.cookbook[k]; return `<div class="souv${ok ? '' : ' lock'}">${icon(d.ic, 'big')}<b>${ok ? d.name : '？？？'}</b><small>${ok ? FOODS[d.a].name + ' + ' + FOODS[d.b].name : '还没做过'}</small></div>`; }).join('') + '</div>';
+    const keys = Object.keys(DISHES), mine = Object.keys(S.cookbook).filter(k => DISHES[k]).reverse(), rest = keys.filter(k => !S.cookbook[k]);
+    const tips = []; for (let i = 0; i < 3 && rest.length; i++) { const k = rest[(dayNum() * 7 + i * 131) % rest.length]; if (!tips.includes(k)) tips.push(k); }
+    h = `<p class="album-note">学会 ${mine.length} / ${keys.length} 道 · 在小屋点“煮菜”，把两样食材放进锅里试试</p><div class="souv-grid">` +
+      tips.map(k => `<div class="souv tip">${icon('pot', 'big')}<b>今日灵感</b><small>${FOODS[DISHES[k].a].name} + ${FOODS[DISHES[k].b].name}</small></div>`).join('') +
+      mine.map(k => { const d = DISHES[k]; return `<div class="souv">${icon(d.ic, 'big')}<b>${d.name}</b><small>${FOODS[d.a].name} + ${FOODS[d.b].name}</small></div>`; }).join('') + '</div>' +
+      (rest.length ? `<p class="album-note" style="margin-top:10px">还有 ${rest.length} 道菜等你发现，换着食材多试试吧</p>` : '');
   } else {
     h = `<p class="album-note">贴纸 ${S.stickers.length} / ${STICKERS.length} · 多照顾、多旅行、多玩耍就能得到</p><div class="souv-grid">` +
       STICKERS.map(s => { const own = S.stickers.includes(s.id); return `<div class="souv${own ? '' : ' lock'}">${icon(s.ic, 'big')}<b>${s.name}</b><small>${own ? '已获得' : '还没有'}</small></div>`; }).join('') + '</div>';
@@ -2841,13 +3121,13 @@ function renderShop() {
     `<div class="sitem">${icon(ic, 'big')}<b>${name}</b><small>${d1}</small><small>${d2}</small>` +
     (owned ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="${kind}:${id}">${acorns(price)}</button>`) + '</div>';
   let h = '';
-  if (shopTab === 'food' || shopTab === 'drink') {
-    const fav = PETS[S.pet.type].fav, wantDrink = shopTab === 'drink';
-    for (const k in FOODS) { const f = FOODS[k]; if (!!f.drink !== wantDrink) continue; h += card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); }
+  if (shopTab === 'food' || shopTab === 'drink' || shopTab === 'veg') {
+    const fav = PETS[S.pet.type].fav;
+    for (const k in FOODS) { const f = FOODS[k]; if ((f.drink ? 'drink' : isProduce(k) ? 'veg' : 'food') !== shopTab) continue; h += card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); }
   } else if (shopTab === 'seed') {
     for (const k in SEEDS) { const s = SEEDS[k]; h += card(s.ic, s.name + '种子', s.food ? '能结 ' + s.give + ' 个' : s.med ? '能做 ' + s.give + ' 份' + MEDS[s.med].name : '开花能换 ' + s.coins + ' 橡果', '我有 ' + (S.seeds[k] || 0) + ' 颗', s.price, 'seed', k); }
   } else if (shopTab === 'med') {
-    for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
+    for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, m.pack ? '' : '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
   } else if (shopTab === 'wear') {
     for (const k in WEARS) { const w = WEARS[k]; h += card(w.ic, w.name, '给宠物戴上', '', w.price, 'wear', k, S.owned.includes(k)); }
   } else if (shopTab === 'furn') {
@@ -2869,7 +3149,7 @@ function buy(kind, id, btn) {
   S.coins -= item.price;
   if (kind === 'food') S.inv[id] = (S.inv[id] || 0) + 1;
   else if (kind === 'seed') S.seeds[id] = (S.seeds[id] || 0) + 1;
-  else if (kind === 'med') S.meds[id] = (S.meds[id] || 0) + 1;
+  else if (kind === 'med') { if (item.pack) { item.pack.forEach(k => { S.meds[k] = (S.meds[k] || 0) + 1; }); toast('买到啦！四种药各多了一份'); } else S.meds[id] = (S.meds[id] || 0) + 1; }
   else if (kind === 'furn') { if (S.furn.own.includes(id)) return; S.furn.own.push(id); toast('买到啦！回小屋点“布置”，把' + item.name + '摆出来'); }
   else if (kind === 'gear') { S.gear[id] = (S.gear[id] || 0) + 1; if (!item.once) toast('买到啦！准备行囊的时候记得带上' + item.name); }
   else { S.owned.push(id); S.wear = id; renderPet(true); toast(gone() ? '买到啦！等 ' + S.pet.name + ' 回家就能戴上' : '买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
@@ -2951,15 +3231,33 @@ function confirmReset() {
 }
 function backToTitle() { stopTicker(); S = null; Sound.music('home'); initTitle(); showScreen('title'); }
 
-/* ---------- 煮菜：两样蔬菜放进锅里，变成一道菜 ---------- */
-/* 能下锅的蔬菜，以及它们在盘子里的颜色 */
-const VEG = {
-  carrot: '#E6A15C', corn: '#EBC66B', tomato: '#D9705F', lettuce: '#C3D69B',
-  potato: '#E2C48A', mushroom: '#D9BFA6', pumpkin: '#E9A04E', eggplant: '#9A7DB8'
+/* ---------- 煮菜：两样食材放进锅里，变成一道菜 ---------- */
+/* 能下锅的食材。t 是种类：veg 蔬菜、pan 厨房里的食材、fruit 水果；c 是它在盘子里的颜色；
+ * n 是菜名里的叫法（不写就用食物的名字）；juicy 表示能榨成汁。
+ * 顺序不能动、新的只能加在后面：存档里的菜是按这个顺序记的 */
+const COOK = {
+  carrot:      { t: 'veg', c: '#E6A15C', juicy: 1 }, corn:     { t: 'veg', c: '#EBC66B', juicy: 1 },
+  tomato:      { t: 'veg', c: '#D9705F', juicy: 1 }, lettuce:  { t: 'veg', c: '#C3D69B', juicy: 1 },
+  potato:      { t: 'veg', c: '#E2C48A' },           mushroom: { t: 'veg', c: '#D9BFA6' },
+  pumpkin:     { t: 'veg', c: '#E9A04E', juicy: 1 }, eggplant: { t: 'veg', c: '#9A7DB8' },
+  cabbage:     { t: 'veg', c: '#DDE8BE', juicy: 1 }, cucumber: { t: 'veg', c: '#8DB574', juicy: 1 },
+  broccoli:    { t: 'veg', c: '#7FA86B' },           spinach:  { t: 'veg', c: '#6F9A66', juicy: 1 },
+  onion:       { t: 'veg', c: '#C9A3C4' },           sweetpotato: { t: 'veg', c: '#C0788A', juicy: 1 },
+  pea:         { t: 'veg', c: '#A9CC7A' },           radish:   { t: 'veg', c: '#F3EFE2', n: '萝卜' },
+  egg:         { t: 'pan', c: '#F3D56B' },           rice:     { t: 'pan', c: '#FFFDF6' },
+  noodle:      { t: 'pan', c: '#F1DDA6' },           tofu:     { t: 'pan', c: '#F6F0DC' },
+  cheese:      { t: 'pan', c: '#F0CE5A' },           milk:     { t: 'pan', c: '#FBF7EA' },
+  bread:       { t: 'pan', c: '#E2B877' },
+  apple:       { t: 'fruit', c: '#D6655A' },         strawberry: { t: 'fruit', c: '#E47C8A' },
+  watermelon:  { t: 'fruit', c: '#E0606A', juicy: 1 }, orange:  { t: 'fruit', c: '#F0A04E', juicy: 1 },
+  peach:       { t: 'fruit', c: '#F2B8A6' },         banana:   { t: 'fruit', c: '#F3DC7A' },
+  grape:       { t: 'fruit', c: '#A68BC4', juicy: 1 }
 };
-const VEG_IDS = Object.keys(VEG);
-/* 菜谱：'蔬菜A+蔬菜B': [菜名, 做法]。做法决定盘子的样子和额外的好处：
- * soup 汤（补水分）、salad 沙拉（补一点水分）、bake 烤或做成饼和泥（补精力）、stir 炒或烧（更开心） */
+const COOK_IDS = Object.keys(COOK);
+const isProduce = k => !!COOK[k] && COOK[k].t !== 'pan';   // 蔬菜和水果，商店里放在“蔬果”那一栏
+/* 菜谱：'食材A+食材B': [菜名, 做法]。做法决定盘子的样子和额外的好处：
+ * soup 汤（补水分）、salad 沙拉（补一点水分）、bake 烤或做成饼和泥（补精力）、stir 炒或烧（更开心）、
+ * rice 饭（更管饱）、noodle 面、bun 面包和三明治、juice 果汁奶昔（当饮料喝）、sweet 甜点（算甜食） */
 const RECIPES = {
   'carrot+carrot': ['蜜汁胡萝卜', 'stir'], 'corn+corn': ['烤玉米', 'bake'], 'tomato+tomato': ['番茄浓汤', 'soup'], 'lettuce+lettuce': ['生菜沙拉', 'salad'],
   'potato+potato': ['土豆泥', 'bake'], 'mushroom+mushroom': ['烤蘑菇', 'bake'], 'pumpkin+pumpkin': ['南瓜粥', 'soup'], 'eggplant+eggplant': ['烤茄子', 'bake'],
@@ -2972,24 +3270,111 @@ const RECIPES = {
   'lettuce+potato': ['土豆生菜卷', 'salad'], 'lettuce+mushroom': ['蘑菇生菜汤', 'soup'], 'lettuce+pumpkin': ['南瓜生菜沙拉', 'salad'], 'lettuce+eggplant': ['茄子拌生菜', 'salad'],
   'potato+mushroom': ['蘑菇土豆泥', 'bake'], 'potato+pumpkin': ['南瓜土豆饼', 'bake'], 'potato+eggplant': ['土豆烧茄子', 'stir'],
   'mushroom+pumpkin': ['南瓜蘑菇汤', 'soup'], 'mushroom+eggplant': ['蘑菇炒茄子', 'stir'],
-  'pumpkin+eggplant': ['南瓜焖茄子', 'stir']
+  'pumpkin+eggplant': ['南瓜焖茄子', 'stir'],
+  // 白菜
+  'carrot+cabbage': ['胡萝卜炒白菜', 'stir'], 'corn+cabbage': ['玉米白菜汤', 'soup'], 'tomato+cabbage': ['番茄白菜汤', 'soup'], 'lettuce+cabbage': ['青菜沙拉', 'salad'],
+  'potato+cabbage': ['白菜炖土豆', 'stir'], 'mushroom+cabbage': ['蘑菇扒白菜', 'stir'], 'pumpkin+cabbage': ['南瓜白菜汤', 'soup'], 'eggplant+cabbage': ['茄子炒白菜', 'stir'],
+  'cabbage+cabbage': ['醋溜白菜', 'stir'],
+  // 黄瓜
+  'carrot+cucumber': ['胡萝卜拌黄瓜', 'salad'], 'corn+cucumber': ['玉米黄瓜沙拉', 'salad'], 'tomato+cucumber': ['番茄黄瓜沙拉', 'salad'], 'lettuce+cucumber': ['黄瓜生菜沙拉', 'salad'],
+  'potato+cucumber': ['土豆黄瓜沙拉', 'salad'], 'mushroom+cucumber': ['蘑菇炒黄瓜', 'stir'], 'pumpkin+cucumber': ['南瓜黄瓜汤', 'soup'], 'eggplant+cucumber': ['茄子拌黄瓜', 'salad'],
+  'cabbage+cucumber': ['白菜拌黄瓜', 'salad'], 'cucumber+cucumber': ['拍黄瓜', 'salad'],
+  // 西兰花
+  'carrot+broccoli': ['胡萝卜炒西兰花', 'stir'], 'corn+broccoli': ['玉米炒西兰花', 'stir'], 'tomato+broccoli': ['番茄西兰花汤', 'soup'], 'lettuce+broccoli': ['西兰花生菜沙拉', 'salad'],
+  'potato+broccoli': ['土豆西兰花泥', 'bake'], 'mushroom+broccoli': ['蘑菇炒西兰花', 'stir'], 'pumpkin+broccoli': ['南瓜西兰花泥', 'bake'], 'eggplant+broccoli': ['茄子炒西兰花', 'stir'],
+  'cabbage+broccoli': ['白菜西兰花汤', 'soup'], 'cucumber+broccoli': ['黄瓜西兰花沙拉', 'salad'], 'broccoli+broccoli': ['清炒西兰花', 'stir'],
+  // 菠菜
+  'carrot+spinach': ['胡萝卜拌菠菜', 'salad'], 'corn+spinach': ['玉米菠菜汤', 'soup'], 'tomato+spinach': ['番茄菠菜汤', 'soup'], 'lettuce+spinach': ['菠菜生菜沙拉', 'salad'],
+  'potato+spinach': ['菠菜土豆泥', 'bake'], 'mushroom+spinach': ['蘑菇菠菜汤', 'soup'], 'pumpkin+spinach': ['南瓜菠菜羹', 'soup'], 'eggplant+spinach': ['茄子炒菠菜', 'stir'],
+  'cabbage+spinach': ['白菜菠菜汤', 'soup'], 'cucumber+spinach': ['黄瓜拌菠菜', 'salad'], 'broccoli+spinach': ['翡翠蔬菜泥', 'bake'], 'spinach+spinach': ['清炒菠菜', 'stir'],
+  // 洋葱
+  'carrot+onion': ['洋葱炒胡萝卜', 'stir'], 'corn+onion': ['洋葱炒玉米', 'stir'], 'tomato+onion': ['番茄洋葱汤', 'soup'], 'lettuce+onion': ['洋葱生菜沙拉', 'salad'],
+  'potato+onion': ['洋葱炒土豆', 'stir'], 'mushroom+onion': ['洋葱炒蘑菇', 'stir'], 'pumpkin+onion': ['洋葱南瓜汤', 'soup'], 'eggplant+onion': ['洋葱烧茄子', 'stir'],
+  'cabbage+onion': ['洋葱炒白菜', 'stir'], 'cucumber+onion': ['洋葱拌黄瓜', 'salad'], 'broccoli+onion': ['洋葱炒西兰花', 'stir'], 'spinach+onion': ['洋葱菠菜汤', 'soup'],
+  'onion+onion': ['烤洋葱圈', 'bake'],
+  // 红薯
+  'carrot+sweetpotato': ['胡萝卜红薯泥', 'bake'], 'corn+sweetpotato': ['玉米红薯饼', 'bake'], 'tomato+sweetpotato': ['番茄红薯汤', 'soup'], 'lettuce+sweetpotato': ['红薯生菜沙拉', 'salad'],
+  'potato+sweetpotato': ['双薯饼', 'bake'], 'mushroom+sweetpotato': ['蘑菇焖红薯', 'stir'], 'pumpkin+sweetpotato': ['南瓜红薯羹', 'soup'], 'eggplant+sweetpotato': ['茄子焖红薯', 'stir'],
+  'cabbage+sweetpotato': ['白菜红薯汤', 'soup'], 'cucumber+sweetpotato': ['黄瓜红薯沙拉', 'salad'], 'broccoli+sweetpotato': ['西兰花红薯泥', 'bake'], 'spinach+sweetpotato': ['菠菜红薯饼', 'bake'],
+  'onion+sweetpotato': ['洋葱烤红薯', 'bake'], 'sweetpotato+sweetpotato': ['烤红薯', 'bake'],
+  // 豌豆
+  'carrot+pea': ['胡萝卜炒豌豆', 'stir'], 'corn+pea': ['玉米炒豌豆', 'stir'], 'tomato+pea': ['番茄豌豆汤', 'soup'], 'lettuce+pea': ['豌豆生菜沙拉', 'salad'],
+  'potato+pea': ['豌豆土豆泥', 'bake'], 'mushroom+pea': ['蘑菇炒豌豆', 'stir'], 'pumpkin+pea': ['南瓜豌豆羹', 'soup'], 'eggplant+pea': ['茄子炒豌豆', 'stir'],
+  'cabbage+pea': ['白菜豌豆汤', 'soup'], 'cucumber+pea': ['黄瓜豌豆沙拉', 'salad'], 'broccoli+pea': ['豌豆炒西兰花', 'stir'], 'spinach+pea': ['菠菜豌豆汤', 'soup'],
+  'onion+pea': ['洋葱炒豌豆', 'stir'], 'sweetpotato+pea': ['豌豆红薯泥', 'bake'], 'pea+pea': ['豌豆浓汤', 'soup'],
+  // 白萝卜
+  'carrot+radish': ['双色萝卜汤', 'soup'], 'corn+radish': ['玉米萝卜汤', 'soup'], 'tomato+radish': ['番茄萝卜汤', 'soup'], 'lettuce+radish': ['萝卜生菜沙拉', 'salad'],
+  'potato+radish': ['土豆炖萝卜', 'stir'], 'mushroom+radish': ['蘑菇萝卜汤', 'soup'], 'pumpkin+radish': ['南瓜炖萝卜', 'stir'], 'eggplant+radish': ['茄子烧萝卜', 'stir'],
+  'cabbage+radish': ['白菜萝卜汤', 'soup'], 'cucumber+radish': ['黄瓜拌萝卜', 'salad'], 'broccoli+radish': ['西兰花萝卜汤', 'soup'], 'spinach+radish': ['菠菜萝卜汤', 'soup'],
+  'onion+radish': ['洋葱炖萝卜', 'stir'], 'sweetpotato+radish': ['红薯萝卜汤', 'soup'], 'pea+radish': ['豌豆萝卜汤', 'soup'], 'radish+radish': ['萝卜丝饼', 'bake'],
+  // 厨房里的食材互相搭配
+  'egg+egg': ['蒸蛋羹', 'bake'], 'egg+rice': ['蛋炒饭', 'rice'], 'egg+noodle': ['鸡蛋面', 'noodle'], 'egg+tofu': ['鸡蛋豆腐羹', 'soup'],
+  'egg+cheese': ['芝士蛋卷', 'bake'], 'egg+milk': ['牛奶炖蛋', 'sweet'], 'egg+bread': ['鸡蛋三明治', 'bun'],
+  'rice+rice': ['白饭团', 'rice'], 'rice+noodle': ['米线', 'noodle'], 'rice+tofu': ['豆腐盖饭', 'rice'], 'rice+cheese': ['芝士焗饭', 'rice'],
+  'rice+milk': ['牛奶粥', 'soup'], 'rice+bread': ['米饭汉堡', 'bun'],
+  'noodle+noodle': ['阳春面', 'noodle'], 'noodle+tofu': ['豆腐汤面', 'noodle'], 'noodle+cheese': ['芝士焗面', 'noodle'], 'noodle+milk': ['奶油意面', 'noodle'],
+  'noodle+bread': ['炒面面包', 'bun'],
+  'tofu+tofu': ['香煎豆腐', 'stir'], 'tofu+cheese': ['芝士豆腐', 'bake'], 'tofu+milk': ['牛奶豆花', 'sweet'], 'tofu+bread': ['豆腐汉堡', 'bun'],
+  'cheese+cheese': ['烤奶酪', 'bake'], 'cheese+milk': ['芝士奶盖', 'juice'], 'cheese+bread': ['芝士吐司', 'bun'],
+  'milk+milk': ['双皮奶', 'sweet'], 'milk+bread': ['牛奶吐司', 'bun'], 'bread+bread': ['烤吐司', 'bun'],
+  // 蔬菜 + 厨房食材里，比“按规矩起名”更好听的那些
+  'lettuce+egg': ['生菜蛋花汤', 'soup'], 'potato+egg': ['土豆蛋饼', 'bake'], 'pumpkin+egg': ['南瓜蒸蛋', 'bake'], 'cabbage+egg': ['白菜蛋花汤', 'soup'],
+  'sweetpotato+egg': ['红薯蛋饼', 'bake'], 'radish+egg': ['萝卜丝蛋汤', 'soup'],
+  'tomato+rice': ['番茄烩饭', 'rice'], 'lettuce+rice': ['生菜包饭', 'rice'], 'potato+rice': ['土豆焖饭', 'rice'], 'mushroom+rice': ['蘑菇烩饭', 'rice'],
+  'pumpkin+rice': ['南瓜焖饭', 'rice'], 'eggplant+rice': ['茄子盖饭', 'rice'], 'cabbage+rice': ['白菜泡饭', 'rice'], 'cucumber+rice': ['黄瓜饭卷', 'rice'],
+  'spinach+rice': ['菠菜粥', 'soup'], 'sweetpotato+rice': ['红薯粥', 'soup'], 'pea+rice': ['豌豆焖饭', 'rice'], 'radish+rice': ['萝卜粥', 'soup'],
+  'corn+noodle': ['玉米汤面', 'noodle'], 'tomato+noodle': ['番茄汤面', 'noodle'], 'lettuce+noodle': ['生菜汤面', 'noodle'], 'mushroom+noodle': ['蘑菇汤面', 'noodle'],
+  'pumpkin+noodle': ['南瓜汤面', 'noodle'], 'eggplant+noodle': ['茄子拌面', 'noodle'], 'cabbage+noodle': ['白菜汤面', 'noodle'], 'cucumber+noodle': ['黄瓜凉面', 'noodle'],
+  'spinach+noodle': ['菠菜面', 'noodle'], 'sweetpotato+noodle': ['红薯粉', 'noodle'], 'pea+noodle': ['豌豆面', 'noodle'], 'radish+noodle': ['萝卜汤面', 'noodle'],
+  'corn+tofu': ['玉米豆腐羹', 'soup'], 'tomato+tofu': ['番茄豆腐汤', 'soup'], 'lettuce+tofu': ['生菜豆腐汤', 'soup'], 'pumpkin+tofu': ['南瓜豆腐羹', 'soup'],
+  'cabbage+tofu': ['白菜炖豆腐', 'stir'], 'cucumber+tofu': ['黄瓜拌豆腐', 'salad'], 'spinach+tofu': ['菠菜豆腐汤', 'soup'], 'sweetpotato+tofu': ['红薯豆腐羹', 'soup'],
+  'radish+tofu': ['萝卜豆腐汤', 'soup'],
+  'corn+cheese': ['芝士玉米', 'bake'], 'lettuce+cheese': ['芝士生菜卷', 'salad'], 'cucumber+cheese': ['黄瓜芝士卷', 'salad'], 'onion+cheese': ['芝士洋葱圈', 'bake'],
+  'eggplant+milk': ['奶油焗茄子', 'bake'], 'cabbage+milk': ['奶油白菜', 'stir'], 'cucumber+milk': ['黄瓜牛奶汁', 'juice'], 'sweetpotato+milk': ['红薯牛奶', 'juice'],
+  'carrot+bread': ['胡萝卜面包', 'bun'], 'corn+bread': ['玉米面包', 'bun'], 'potato+bread': ['土豆泥三明治', 'bun'], 'pumpkin+bread': ['南瓜面包', 'bun'],
+  'sweetpotato+bread': ['红薯面包', 'bun'],
+  // 水果
+  'apple+apple': ['苹果酱', 'sweet'], 'watermelon+watermelon': ['西瓜冰沙', 'juice'], 'banana+banana': ['烤香蕉', 'bake']
 };
-/* 每道菜的效果：比分开吃两样蔬菜更管饱，再加上做法带来的好处 */
+/* 没有专门起名字的搭配，按食材的种类来定菜名和做法 */
+const PAN_RULE = {    // 蔬菜 + 厨房食材
+  egg: v => [v + '炒蛋', 'stir'], rice: v => [v + '炒饭', 'rice'], noodle: v => [v + '炒面', 'noodle'], tofu: v => [v + '烧豆腐', 'stir'],
+  cheese: v => ['芝士焗' + v, 'bake'], milk: v => ['奶油' + v + '汤', 'soup'], bread: v => [v + '三明治', 'bun']
+};
+const FRUIT_RULE = {  // 厨房食材 + 水果
+  egg: f => [f + '蛋糕', 'sweet'], rice: f => [f + '甜粥', 'soup'], noodle: f => [f + '凉面', 'noodle'], tofu: f => [f + '豆花', 'sweet'],
+  cheese: f => [f + '奶酪杯', 'sweet'], milk: f => [f + '奶昔', 'juice'], bread: f => [f + '吐司', 'bun']
+};
+function recipeOf(a, b) {   // a 排在 b 前面
+  if (RECIPES[a + '+' + b]) return RECIPES[a + '+' + b];
+  const A = COOK[a], B = COOK[b], na = A.n || FOODS[a].name, nb = B.n || FOODS[b].name;
+  if (A.t === 'veg' && B.t === 'pan') return PAN_RULE[b](na);
+  if (A.t === 'veg' && B.t === 'fruit') return A.juicy ? [na + nb + '汁', 'juice'] : [nb + na + '沙拉', 'salad'];
+  if (A.t === 'pan' && B.t === 'fruit') return FRUIT_RULE[a](nb);
+  if (A.t === 'fruit' && B.t === 'fruit') return a === b ? [na + '果酱', 'sweet'] : A.juicy || B.juicy ? [na + nb + '汁', 'juice'] : [na + nb + '水果杯', 'salad'];
+  return [na + nb + '大杂烩', 'stir'];
+}
+/* 每道菜的效果：比分开吃两样食材更管饱，再加上做法带来的好处 */
 const DISHES = {};
-Object.keys(RECIPES).forEach(key => {
-  const ab = key.split('+'), a = FOODS[ab[0]], b = FOODS[ab[1]], kind = RECIPES[key][1];
-  DISHES[key] = {
-    name: RECIPES[key][0], ic: 'dish:' + key, kind, a: ab[0], b: ab[1],
-    hunger: Math.round((a.hunger + b.hunger) * 1.05),
-    happy: kind === 'stir' ? 16 : 10,
-    thirst: (kind === 'soup' ? 18 : kind === 'salad' ? 8 : 0) + Math.round(((a.thirst || 0) + (b.thirst || 0)) / 2),
-    energy: kind === 'bake' ? 8 : 0
+COOK_IDS.forEach((a, i) => COOK_IDS.slice(i).forEach(b => {
+  const key = a + '+' + b, rc = recipeOf(a, b), kind = rc[1], fa = FOODS[a], fb = FOODS[b];
+  const base = (fa.hunger || 0) + (fb.hunger || 0), wet = Math.round(((fa.thirst || 0) + (fb.thirst || 0)) / 2);
+  const d = DISHES[key] = {
+    name: rc[0], ic: 'dish:' + key, kind, a, b,
+    hunger: Math.round(base * ({ rice: 1.2, bun: 1.15, noodle: 1.1, juice: .5 }[kind] || 1.05)),
+    happy: { stir: 16, sweet: 20, juice: 12 }[kind] || 10,
+    thirst: ({ soup: 18, salad: 8, noodle: 8, juice: 18 }[kind] || 0) + wet,
+    energy: { bake: 8, bun: 5, rice: 5 }[kind] || 0
   };
-  ICONS['dish:' + key] = dishIcon(kind, VEG[ab[0]], ab[0] === ab[1] ? '#FBF5E3' : VEG[ab[1]]);
-});
-const dishKey = (a, b) => VEG_IDS.indexOf(a) <= VEG_IDS.indexOf(b) ? a + '+' + b : b + '+' + a;
-const myVeg = () => VEG_IDS.filter(k => (S.inv[k] || 0) > 0);
+  if (kind === 'juice') d.drink = true;   // 果汁和奶昔当饮料喝
+  if (kind === 'sweet') d.sweet = 1;      // 甜点算甜食，连着吃太多会肚子疼
+  const fruitFirst = kind === 'juice' && COOK[a].t === 'pan' && a !== b;   // 奶昔的颜色跟着水果走，不跟着牛奶
+  ICONS[d.ic] = fruitFirst ? dishIcon(kind, COOK[b].c, COOK[a].c) : dishIcon(kind, COOK[a].c, a === b ? '#FBF5E3' : COOK[b].c);
+}));
+const dishKey = (a, b) => COOK_IDS.indexOf(a) <= COOK_IDS.indexOf(b) ? a + '+' + b : b + '+' + a;
+const myCookables = () => COOK_IDS.filter(k => (S.inv[k] || 0) > 0);
 const myDishes = () => Object.keys(S.dishes).filter(k => S.dishes[k] > 0 && DISHES[k]);
+const myMeals = () => myDishes().filter(k => !DISHES[k].drink);   // 能当便当带出门的（果汁不算）
 
 function openCook() {
   if (blocked() || bath) return;
@@ -2999,13 +3384,16 @@ function openCook() {
   const m = openModal('<div id="cook-box"></div>');
   const left = k => (S.inv[k] || 0) - sel.filter(x => x === k).length;
   const draw = () => {
-    const veg = myVeg(), total = veg.reduce((n, k) => n + S.inv[k], 0);
+    const have = myCookables(), total = have.reduce((n, k) => n + S.inv[k], 0);
     const slot = i => sel[i] ? `<button class="cslot full" data-cs="${i}">${icon(FOODS[sel[i]].ic)}</button>` : '<span class="cslot">？</span>';
-    let h = `<h2>${esc(S.pet.name)} 的小厨房</h2><p>选两样蔬菜放进锅里，看看能做出什么菜</p>` +
+    let h = `<h2>${esc(S.pet.name)} 的小厨房</h2><p>选两样食材放进锅里，看看能做出什么菜</p>` +
       `<div class="pot-row">${slot(0)}<span class="plus">＋</span>${slot(1)}<span class="plus">→</span><span class="potic">${icon('pot')}</span></div>`;
-    if (veg.length) h += '<div class="item-grid">' + veg.map(k => itemBtn(`data-cv="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + left(k))).join('') + '</div>';
-    h += '<div class="row">' + (sel.length === 2 ? '<button class="btn big green" id="cook-go">开煮</button>' : '') + '</div>';
-    if (total < 2) h += '<p class="empty">蔬菜不够两样了。<br>去花园种一些，或者去商店买吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button><button class="btn small green" data-go="garden">去花园</button></div>';
+    if (sel.length === 2) {   // 选好两样就告诉她：做过没有。开煮的按钮放在食材上面，食材再多也不用往下翻
+      const k2 = dishKey(sel[0], sel[1]);
+      h += `<p class="hint" style="margin:-2px 0 8px">${S.cookbook[k2] ? '做过这道：' + DISHES[k2].name : '新搭配，还没试过哦'}</p><div class="row" style="margin-bottom:10px"><button class="btn big green" id="cook-go">开煮</button></div>`;
+    }
+    if (have.length) h += '<div class="item-grid">' + have.map(k => itemBtn(`data-cv="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + left(k))).join('') + '</div>';
+    if (total < 2) h += '<p class="empty">食材不够两样了。<br>去花园种一些，或者去商店买吧~</p><div class="row"><button class="btn small" data-go="shop">去商店</button><button class="btn small green" data-go="garden">去花园</button></div>';
     h += `<p class="hint">已经学会 ${Object.keys(S.cookbook).length} / ${Object.keys(DISHES).length} 道菜，菜谱收在“手帐”里</p>`;
     $('#cook-box', m).innerHTML = h;
   };
@@ -3014,7 +3402,7 @@ function openCook() {
     const v = e.target.closest('[data-cv]'), c = e.target.closest('[data-cs]'), g = e.target.closest('[data-go]');
     if (v && sel.length < 2 && left(v.dataset.cv) > 0) { sel.push(v.dataset.cv); Sound.sfx.pop(); draw(); }
     else if (c) { sel.splice(+c.dataset.cs, 1); Sound.sfx.pop(); draw(); }
-    else if (g) { closeModal(); if (g.dataset.go === 'shop') shopTab = 'food'; switchScene(g.dataset.go); }
+    else if (g) { closeModal(); if (g.dataset.go === 'shop') shopTab = 'veg'; switchScene(g.dataset.go); }
     else if (e.target.closest('#cook-go') && sel.length === 2) cook(sel[0], sel[1]);
   });
 }

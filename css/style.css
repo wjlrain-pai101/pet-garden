@@ -259,6 +259,7 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .souv { background: var(--paper); border: 2px solid var(--line); border-radius: var(--r3); padding: 8px 4px; text-align: center; font-size: 14px; }
 .souv small { display: block; opacity: .75; font-size: 12.5px; }
 .souv.lock { opacity: .5; border-style: dashed; }
+.souv.tip { border-style: dashed; background: #FBEFC4; }
 .souv.lock svg.ic { filter: grayscale(1) brightness(1.15); opacity: .5; }
 .album-note { text-align: center; font-size: 14.5px; opacity: .8; margin: 2px 0 10px; }
 

@@ -192,6 +192,18 @@ function wearSVG(id, p) {
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-17 -2 Q-6 -30 9 -54 Q13 -26 18 -2Z" fill="#8E7DB8"/><path d="M-33 0 Q0 -11 33 0 Q0 9 -33 0Z" fill="#7C6BA6"/><polygon points="0,-30 2,-25 7,-25 3,-21.500 4.500,-16.500 0,-19.500 -4.500,-16.500 -3,-21.500 -7,-25 -2,-25" fill="${C.yellow}" stroke-width="1.600"/></g>`;
     case 'chef':
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-20 0 v-17 q-15 -4 -9 -19 q8 -13 19 -4 q10 -13 21 0 q13 -4 12 9 q0 10 -10 14 v17z" fill="${C.white}"/><path d="M-20 -7 h40" stroke-width="2"/></g>`;
+    case 'leaf':
+      return `<g transform="translate(${hx + 4} ${hy + 9}) rotate(-18)"><path d="M0 0 Q-22 -8 -17 -32 Q7 -27 0 0Z" fill="${C.green}"/><path d="M0 0 L-11 -23" stroke-width="2"/></g>`;
+    case 'bunny':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-17 -2 Q-31 -44 -19 -50 Q-7 -46 -6 -6Z" fill="${C.white}"/><path d="M17 -2 Q31 -44 19 -50 Q7 -46 6 -6Z" fill="${C.white}"/><path d="M-15 -14 Q-21 -34 -17 -40 M15 -14 Q21 -34 17 -40" stroke="${C.pink}" stroke-width="5"/><path d="M-30 6 Q0 -12 30 6" stroke-width="9"/><path d="M-30 6 Q0 -12 30 6" stroke="${C.coral}" stroke-width="5"/></g>`;
+    case 'sunglasses':
+      return `<g fill="#5B4636" stroke-width="3"><path d="M${e[0] + 15} ${e[2] - 6} L${e[1] - 15} ${e[2] - 6}"/><path d="M${e[0] - 15} ${e[2] - 9} h30 v8 q0 13 -15 13 q-15 0 -15 -13z"/><path d="M${e[1] - 15} ${e[2] - 9} h30 v8 q0 13 -15 13 q-15 0 -15 -13z"/></g><path d="M${e[0] - 9} ${e[2] - 2} l6 -3 M${e[1] - 9} ${e[2] - 2} l6 -3" stroke="#fff" stroke-width="2.400"/>`;
+    case 'headphones':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-40 34 Q-42 -12 0 -12 Q42 -12 40 34" stroke-width="9.500"/><path d="M-40 34 Q-42 -12 0 -12 Q42 -12 40 34" stroke="#8C7B8C" stroke-width="5"/><rect x="-51" y="22" width="17" height="27" rx="7.500" fill="${C.coral}"/><rect x="34" y="22" width="17" height="27" rx="7.500" fill="${C.coral}"/></g>`;
+    case 'santa':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-24 -2 Q-22 -36 8 -42 Q30 -40 34 -18 Q26 -26 18 -22 Q24 -12 24 -2Z" fill="${C.red}"/><rect x="-30" y="-8" width="60" height="13" rx="6.500" fill="${C.white}"/><circle cx="35" cy="-14" r="7" fill="${C.white}"/></g>`;
+    case 'halo':
+      return `<g transform="translate(${hx} ${hy - 18})"><ellipse rx="27" ry="8" stroke-width="9.500"/><ellipse rx="27" ry="8" stroke="${C.yellow}" stroke-width="5"/></g>`;
     case 'strawhat':
       return `<g transform="translate(${hx} ${hy + 12})"><ellipse rx="40" ry="10" fill="${C.sand}"/><path d="M-23 -1 Q-23 -28 0 -28 Q23 -28 23 -1" fill="${C.sand}"/><path d="M-22.5 -8 Q0 0 22.5 -8" stroke="${C.coral}" stroke-width="5"/></g>`;
   }
@@ -808,6 +820,7 @@ Object.assign(ICONS, {
 
 /* 一道菜的图标：按做法（汤 / 沙拉 / 烤 / 炒）画盘子，用两种蔬菜的颜色上色 */
 function dishIcon(kind, c1, c2) {
+  const more = _dishIconMore(kind, c1, c2); if (more) return more;
   if (kind === 'soup') return `<path d="M17 12 q-3 -4 0 -8 M28 12 q-3 -4 0 -8"/><path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.400" fill="${c1}" stroke-width="1.600"/><circle cx="17" cy="22" r="2.700" fill="${c2}" stroke="none"/><circle cx="27" cy="21" r="2.300" fill="${c2}" stroke="none"/><circle cx="33" cy="23" r="2" fill="${c2}" stroke="none"/>`;
   if (kind === 'salad') return `<path d="M6 24 h36 q-2 18 -18 18 q-16 0 -18 -18z" fill="${C.wood}"/><path d="M8 24 q2 -13 10 -10 q4 -9 12 -2 q10 -3 10 12z" fill="${c1}"/><circle cx="17" cy="19" r="3.200" fill="${c2}" stroke-width="1.400"/><circle cx="29" cy="17" r="3.200" fill="${c2}" stroke-width="1.400"/><circle cx="24" cy="22" r="2.600" fill="${c2}" stroke-width="1.400"/>`;
   if (kind === 'bake') return `<ellipse cx="24" cy="34" rx="21" ry="8" fill="${C.white}"/><ellipse cx="24" cy="27" rx="16" ry="9.500" fill="${c1}"/><path d="M14 25 q10 -6 20 0 M16 31 q8 -4 16 0" stroke="${c2}" stroke-width="3"/>`;
@@ -878,3 +891,216 @@ function sceneAtticSVG() {
     <path d="M694 392 v-40 M794 392 v-40 M690 352 h108" stroke-width="4"/>
   </g></svg>`;
 }
+
+/* ==========================================================
+ *  第四批：更多蔬菜和食材、零食饮料、装扮、家具、旅行用品、景点
+ * ========================================================== */
+const _dots = (pts, r, fill) => pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="${r}" fill="${fill}" stroke="none"/>`).join('');
+Object.assign(ICONS, {
+  // 蔬菜
+  cabbage: `<path d="M24 45 Q10 44 12 26 Q6 16 14 8 Q19 3 24 8 Q29 3 34 8 Q42 16 36 26 Q38 44 24 45Z" fill="${C.lgreen}"/><path d="M24 45 Q15 42 17 27 Q20 17 24 15 Q28 17 31 27 Q33 42 24 45Z" fill="${C.white}"/><path d="M24 41 V21" stroke-width="1.600"/>`,
+  cucumber: `<g transform="rotate(-38 24 24)"><rect x="3" y="16" width="42" height="16" rx="8" fill="#8DB574"/><path d="M12 21 v.100 M20 27 v.100 M28 21 v.100 M36 27 v.100" stroke="${C.dgreen}" stroke-width="3"/></g>`,
+  broccoli: `<path d="M19 28 h10 l2 16 h-14z" fill="${C.lgreen}"/><path d="M8 27 a8 8 0 0 1 3 -15 a10 10 0 0 1 17 -4 a9 9 0 0 1 12 9 a7.500 7.500 0 0 1 -1 12 q-15 5 -31 -2z" fill="#7FA86B"/><path d="M17 19 q2 -3 5 -3 M28 15 q3 0 4 3" stroke-width="1.600"/>`,
+  spinach: `<path d="M24 44 Q8 30 12 10 Q22 14 24 44Z" fill="#6F9A66"/><path d="M24 44 Q40 30 36 10 Q26 14 24 44Z" fill="#6F9A66"/><path d="M24 44 Q16 22 24 4 Q32 22 24 44Z" fill="${C.green}"/><path d="M24 38 V12" stroke-width="1.600"/><path d="M21 44.500 h6" stroke="${C.coral}" stroke-width="4"/>`,
+  onion: `<path d="M24 13 q-2 -5 -6 -9 M24 13 q1 -5 5 -9"/><path d="M24 12 Q42 18 40 32 Q36 44 24 44 Q12 44 8 32 Q6 18 24 12Z" fill="#C9A3C4"/><path d="M24 14 Q16 28 22 43 M24 14 Q32 28 26 43" stroke-width="1.600"/>`,
+  sweetpotato: `<path d="M3 30 Q10 14 24 14 Q38 12 45 20 Q40 36 26 38 Q12 42 3 30Z" fill="#C0788A"/><path d="M14 27 l5 1 M25 21 l5 1 M30 31 l5 -1" stroke-width="1.600"/>`,
+  pea: `<path d="M44 22 q3 -5 2 -9"/><path d="M4 22 Q24 6 44 22 Q24 42 4 22Z" fill="${C.green}"/><circle cx="14" cy="23" r="5" fill="${C.lgreen}" stroke-width="1.600"/><circle cx="24" cy="24" r="5.500" fill="${C.lgreen}" stroke-width="1.600"/><circle cx="34" cy="23" r="5" fill="${C.lgreen}" stroke-width="1.600"/>`,
+  radish: `<path d="M24 15 v-11"/><path d="M22 14 Q12 4 8 6 Q10 14 20 16Z" fill="${C.green}"/><path d="M26 14 Q34 2 40 5 Q38 14 28 16Z" fill="${C.green}"/><path d="M14 18 Q24 10 34 18 Q36 34 24 46 Q12 34 14 18Z" fill="${C.white}"/><path d="M18 24 h5 M26 31 h5" stroke-width="1.600"/>`,
+  // 厨房里的食材
+  eggs: `<path d="M24 5 Q38 12 38 29 Q36 44 24 44 Q12 44 10 29 Q10 12 24 5Z" fill="#F3DFC0"/><path d="M16 28 q1 7 6 9" stroke="#fff" stroke-width="2.200"/>`,
+  rice: `<path d="M9 24 Q10 8 24 8 Q38 8 39 24Z" fill="${C.white}"/><path d="M17 16 v.100 M24 13 v.100 M30 17 v.100 M21 20 v.100" stroke-width="2.600"/><path d="M5 24 h38 q-2 18 -19 18 q-17 0 -19 -18z" fill="${C.blue}"/><path d="M17 42.500 h14"/>`,
+  noodle: `<path d="M30 4 L38 22 M36 3 L42 21" stroke="${C.dwood}" stroke-width="2.600"/><path d="M8 24 q4 -9 9 -4 q4 -8 9 -2 q5 -7 9 0 q4 -3 5 6z" fill="#F1DDA6"/><path d="M5 24 h38 q-2 18 -19 18 q-17 0 -19 -18z" fill="${C.coral}"/><path d="M17 42.500 h14"/>`,
+  tofu: `<path d="M6 20 L24 11 L42 20 V36 L24 45 L6 36Z" fill="${C.white}"/><path d="M6 20 L24 29 L42 20 M24 29 V45" stroke-width="1.800"/><path d="M19 18 q5 -3 10 0" stroke="${C.green}" stroke-width="3"/>`,
+  // 水果
+  banana: `<path d="M14 8 l-2 -5" stroke-width="3.500"/><path d="M8 14 Q10 36 30 40 Q42 40 44 32 Q30 34 20 24 Q14 16 14 8 Q10 8 8 14Z" fill="#F3DC7A"/><path d="M13 16 Q18 30 34 35" stroke-width="1.500"/>`,
+  grape: `<path d="M24 13 V4"/><path d="M24 7 q8 -6 13 0 q-6 6 -13 0z" fill="${C.green}"/>` + [[15, 19], [24, 18], [33, 19], [19.5, 27], [28.5, 27], [24, 35.5]].map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="5.500" fill="#A68BC4" stroke-width="1.600"/>`).join(''),
+  // 零食
+  icecream: `<path d="M14 24 L24 46 L34 24Z" fill="#E2B877"/><path d="M18 30 l9 6 M30 30 l-8 6" stroke-width="1.400"/><path d="M11 24 Q9 8 24 6 Q39 8 37 24 Q30 28 24 24 Q18 28 11 24Z" fill="${C.pink}"/><circle cx="24" cy="6" r="3.500" fill="${C.red}"/>`,
+  donut: `<circle cx="24" cy="25" r="18" fill="#D9A866"/><path d="M7 22 Q8 7 24 7 Q40 7 41 22 Q38 28 34 24 Q30 30 26 25 Q21 30 17 25 Q12 29 7 22Z" fill="${C.pink}"/><circle cx="24" cy="24" r="5.500" fill="${C.paper}"/><path d="M14 15 l2 2 M24 11 v3 M33 15 l-2 2" stroke="#fff" stroke-width="2.400"/>`,
+  popcorn: `<path d="M10 20 a6 6 0 0 1 6 -8 a7 7 0 0 1 12 -3 a6 6 0 0 1 10 5 a5 5 0 0 1 0 8z" fill="#FBEFC4"/><path d="M9 20 h30 l-4 24 h-22z" fill="${C.white}"/><path d="M17 21 l2 22 M24 21 v23 M31 21 l-2 22" stroke="${C.red}" stroke-width="3"/><path d="M9 20 h30 l-4 24 h-22z"/>`,
+  dumpling: `<path d="M4 34 Q6 14 24 12 Q42 14 44 34 Q24 42 4 34Z" fill="${C.cream}"/><path d="M10 20 q4 3 3 7 M17 15 q4 3 3 7 M24 13 q3 4 1 8 M31 15 q2 4 -1 7 M38 20 q0 4 -3 6" stroke-width="1.600"/>`,
+  // 饮料
+  soymilk: _glass('#F1E3C0') + `<ellipse cx="38" cy="38" rx="6" ry="4.500" fill="#E2C48A" stroke-width="1.800" transform="rotate(-20 38 38)"/>`,
+  lemonade: _glass('#F3E9A8') + `<path d="M20 3 l5 28" stroke="${C.green}" stroke-width="3"/><circle cx="37" cy="9" r="7" fill="${C.yellow}" stroke-width="1.800"/><path d="M37 9 v-7 M37 9 l6 3.500 M37 9 l-6 3.500" stroke-width="1.200"/>`,
+  bubbletea: `<path d="M27 2 l-3 26" stroke="${C.coral}" stroke-width="3.500"/><path d="M11 12 h26 l-3 30 q0 2 -3 2 h-14 q-3 0 -3 -2z" fill="#E6C9A8"/><path d="M8 12 h32" stroke-width="4"/>` + _dots([[19, 37], [26, 39], [30, 34], [22, 32]], 2.600, C.line),
+  coconut: `<circle cx="24" cy="28" r="17" fill="${C.dwood}"/><ellipse cx="24" cy="17" rx="11" ry="4.500" fill="${C.white}" stroke-width="1.800"/><path d="M28 17 L34 2" stroke="${C.coral}" stroke-width="3.200"/><path d="M14 31 q2 6 8 8" stroke-width="1.600"/>`,
+  // 花
+  lavender: _stem + `<path d="M24 26 V8"/>` + [5, 10, 15, 20].map((y, i) => `<ellipse cx="${24 + (i % 2 ? 3.5 : -3.5)}" cy="${y}" rx="4.800" ry="3.600" fill="${C.purple}" stroke-width="1.600"/>`).join(''),
+  daisy: _stem + _petals(24, 15, 8, 8, 3.400, 5.500, C.white) + `<circle cx="24" cy="15" r="4.500" fill="${C.yellow}"/>`,
+  // 药
+  firstaid: `<path d="M17 12 v-4 q0 -3 3 -3 h8 q3 0 3 3 v4"/><rect x="5" y="12" width="38" height="30" rx="5" fill="${C.white}"/><path d="M24 19 v16 M16 27 h16" stroke="${C.red}" stroke-width="5"/>`,
+  // 装扮
+  leaf: `<path d="M8 40 Q6 12 40 8 Q42 40 8 40Z" fill="${C.green}"/><path d="M8 40 L32 16" stroke-width="1.800"/>`,
+  bunny: `<path d="M14 30 Q6 6 14 4 Q22 6 20 27Z" fill="${C.white}"/><path d="M34 30 Q42 6 34 4 Q26 6 28 27Z" fill="${C.white}"/><path d="M15 24 Q12 12 15 9 M33 24 Q36 12 33 9" stroke="${C.pink}" stroke-width="3"/><path d="M6 41 Q24 22 42 41" stroke="${C.coral}" stroke-width="4"/>`,
+  sunglasses: `<path d="M3 20 h42"/><path d="M5 20 h17 v6 q0 9 -8.500 9 q-8.500 0 -8.500 -9z" fill="#5B4636"/><path d="M26 20 h17 v6 q0 9 -8.500 9 q-8.500 0 -8.500 -9z" fill="#5B4636"/><path d="M9 25 l4 -2 M30 25 l4 -2" stroke="#fff" stroke-width="2"/>`,
+  headphones: `<path d="M8 30 Q8 8 24 8 Q40 8 40 30" stroke-width="4"/><rect x="3" y="26" width="11" height="16" rx="5" fill="${C.coral}"/><rect x="34" y="26" width="11" height="16" rx="5" fill="${C.coral}"/>`,
+  santa: `<path d="M8 36 Q10 12 30 8 Q42 10 42 22 Q36 16 32 20 Q38 28 38 36Z" fill="${C.red}"/><rect x="4" y="33" width="38" height="10" rx="5" fill="${C.white}"/><circle cx="42" cy="24" r="5" fill="${C.white}"/>`,
+  halo: `<ellipse cx="24" cy="18" rx="18" ry="7" stroke-width="7.500"/><ellipse cx="24" cy="18" rx="18" ry="7" stroke="${C.yellow}" stroke-width="3.600"/>` + _star(24, 38, 6, 2.600, C.yellow),
+  // 旅行用品
+  boat: `<path d="M24 6 V30"/><path d="M25 8 L40 28 H25Z" fill="${C.cream}"/><path d="M22 12 L10 28 H22Z" fill="${C.coral}"/><path d="M4 31 h40 l-6 11 h-28z" fill="${C.wood}"/>`,
+  hotair: `<path d="M18 34 l1 6 M30 34 l-1 6"/><path d="M24 4 Q42 4 42 20 Q40 30 30 34 H18 Q8 30 6 20 Q6 4 24 4Z" fill="${C.coral}"/><path d="M24 4 Q14 18 18 34 M24 4 Q34 18 30 34" stroke-width="1.600"/><rect x="18" y="39" width="12" height="7" rx="2" fill="${C.wood}"/>`,
+  rocket: `<path d="M19 33 Q24 48 29 33Z" fill="${C.yellow}"/><path d="M15 26 L7 38 L16 34Z M33 26 L41 38 L32 34Z" fill="${C.coral}"/><path d="M24 3 Q35 14 33 33 H15 Q13 14 24 3Z" fill="${C.white}"/><circle cx="24" cy="18" r="5" fill="${C.sky}"/>`,
+  // 特产
+  lotussoup: `<path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.200" fill="#F6EBD0" stroke-width="1.600"/><circle cx="15" cy="22" r="2.400" fill="${C.cream}" stroke-width="1.200"/><circle cx="33" cy="22.500" r="2.400" fill="${C.cream}" stroke-width="1.200"/><path d="M24 20 q-7 -8 0 -16 q7 8 0 16z" fill="${C.pink}" stroke-width="1.600"/>`,
+  applepie: `<circle cx="24" cy="25" r="19" fill="#E2B877"/><circle cx="24" cy="25" r="13" fill="${C.red}" stroke-width="1.600"/><path d="M13 19 L35 31 M13 31 L35 19 M24 12 V38" stroke="#E2B877" stroke-width="4"/>`,
+  pancake: `<ellipse cx="24" cy="36" rx="19" ry="6" fill="#E2B877"/><ellipse cx="24" cy="29" rx="19" ry="6" fill="#E2B877"/><ellipse cx="24" cy="22" rx="19" ry="6" fill="#EBC98F"/><path d="M10 22 Q14 30 18 24 Q24 34 30 24 Q34 28 38 22 Q24 14 10 22Z" fill="${C.dwood}" stroke-width="1.600"/><rect x="20" y="15" width="8" height="6" rx="1.500" fill="${C.yellow}" stroke-width="1.600"/>`,
+  mushcookie: `<path d="M19 26 h10 l2 16 q-7 3 -14 0z" fill="#EBD3A6"/><path d="M5 26 Q5 7 24 7 Q43 7 43 26Z" fill="${C.dwood}"/><path d="M14 18 v.100 M24 13 v.100 M33 19 v.100" stroke="${C.cream}" stroke-width="4"/>`,
+  cocojelly: `<path d="M34 21 L40 5" stroke="${C.coral}" stroke-width="3"/><path d="M5 22 h38 q-1 21 -19 21 q-18 0 -19 -21z" fill="${C.dwood}"/><ellipse cx="24" cy="22" rx="19" ry="6" fill="${C.white}"/><path d="M14 22 q4 -3 8 0" stroke="${C.sky}" stroke-width="2"/>`,
+  popsicle: `<path d="M24 34 V46" stroke-width="6.500"/><path d="M24 34 V45" stroke="${C.wood}" stroke-width="3.200"/><path d="M12 34 V16 Q12 4 24 4 Q36 4 36 16 V34Z" fill="${C.sky}"/><path d="M12 23 Q24 29 36 23" stroke="#fff" stroke-width="3"/><path d="M19 12 v.100 M29 12 v.100" stroke-width="3.400"/><path d="M22 17 h4" stroke="${C.orange}" stroke-width="3"/>`,
+  cloudbread: _cloud('#F3DDB0') + `<path d="M18 25 v.100 M30 25 v.100" stroke-width="3"/><path d="M22 28 q2 2 4 0" stroke-width="1.600"/>`,
+  mooncake: `<circle cx="24" cy="24" r="19" fill="#D9A05C"/><circle cx="24" cy="24" r="13.500" stroke-width="1.600"/><path d="M19 28 A7 7 0 1 1 28 18 A5.500 5.500 0 0 0 19 28Z" fill="${C.yellow}" stroke-width="1.400"/>`
+});
+
+/* 新的做法：果汁、甜点、三明治、盖饭、面 */
+function _dishIconMore(kind, c1, c2) {
+  const bowl = f => `<path d="M5 24 h38 q-2 18 -19 18 q-17 0 -19 -18z" fill="${f}"/>`;
+  if (kind === 'juice') return `<path d="M29 3 l-6 30" stroke="${C.coral}" stroke-width="3"/>` + _glass(c1) + `<circle cx="38" cy="10" r="6" fill="${c2}" stroke-width="1.800"/>`;
+  if (kind === 'sweet') return `<ellipse cx="24" cy="38" rx="21" ry="6" fill="${C.white}"/><path d="M9 22 v13 q15 6 30 0 v-13z" fill="#F3E3B8"/><path d="M9.500 29 q14.500 6 29 0" stroke="${c2}" stroke-width="3"/><ellipse cx="24" cy="22" rx="15" ry="5.500" fill="${c1}"/><circle cx="24" cy="18" r="4" fill="${c2}" stroke-width="1.600"/>`;
+  if (kind === 'bun') return `<path d="M6 37 h36 v4 q0 3 -3 3 h-30 q-3 0 -3 -3z" fill="#E9C98F"/><path d="M4 30 h40 v4 q-5 6 -10 2 q-5 5 -10 0 q-5 5 -10 0 q-5 4 -10 -2z" fill="${c2}"/><path d="M4 26 h40 v5 h-40z" fill="${c1}"/><path d="M5 26 L24 7 L43 26Z" fill="#E9C98F"/>`;
+  if (kind === 'rice') return `<path d="M9 24 Q10 8 24 8 Q38 8 39 24Z" fill="${C.white}"/><circle cx="18" cy="17" r="4.200" fill="${c1}" stroke-width="1.400"/><circle cx="29" cy="15" r="4.200" fill="${c2}" stroke-width="1.400"/><circle cx="25" cy="21" r="3" fill="${c1}" stroke-width="1.400"/>` + bowl(C.blue);
+  if (kind === 'noodle') return `<path d="M31 3 L37 20 M37 2 L41 19" stroke="${C.dwood}" stroke-width="2.400"/><path d="M8 24 q4 -9 9 -4 q4 -8 9 -2 q5 -7 9 0 q4 -3 5 6z" fill="#F1DDA6"/><circle cx="17" cy="19" r="3.600" fill="${c1}" stroke-width="1.400"/><circle cx="29" cy="18" r="3.600" fill="${c2}" stroke-width="1.400"/>` + bowl(C.coral);
+  return '';
+}
+
+/* ---------- 新家具 ---------- */
+Object.assign(FURNS, {
+  stove:    { name: '小灶台',   type: 'floor', price: 95,  w: 130, vb: [130, 132], draw: () => `<path d="M56 22 q-4 -6 0 -12 M72 22 q-4 -6 0 -12"/><path d="M40 28 h50 v12 q0 6 -6 6 h-38 q-6 0 -6 -6z" fill="${C.gray}"/><path d="M32 30 h66" stroke-width="3.500"/><rect x="8" y="46" width="114" height="82" rx="5" fill="${C.white}"/><rect x="20" y="70" width="90" height="46" rx="4" fill="#C9D6E0" stroke-width="2"/><path d="M34 62 h62" stroke-width="4"/><circle cx="24" cy="57" r="3" fill="${C.coral}" stroke="none"/><circle cx="106" cy="57" r="3" fill="${C.coral}" stroke="none"/><path d="M4 46 h122" stroke-width="5"/>` },
+  fridge:   { name: '小冰箱',   type: 'floor', price: 100, w: 90,  vb: [90, 172],  draw: () => `<path d="M18 164 v6 M72 164 v6"/><rect x="8" y="6" width="74" height="158" rx="8" fill="${C.sky}"/><path d="M8 62 h74"/><path d="M20 26 v22 M20 76 v34" stroke-width="4"/><rect x="46" y="82" width="15" height="13" fill="${C.yellow}" stroke-width="1.800"/><circle cx="64" cy="110" r="6.500" fill="${C.coral}" stroke-width="1.800"/>` },
+  table:    { name: '小餐桌',   type: 'floor', price: 75,  w: 170, vb: [170, 112], draw: () => `<path d="M40 62 v46 M130 62 v46"/><path d="M14 44 h142 l-10 26 h-122z" fill="${C.pink}"/><ellipse cx="85" cy="42" rx="78" ry="14" fill="${C.cream}"/><circle cx="76" cy="31" r="7.500" fill="${C.red}" stroke-width="1.800"/><circle cx="93" cy="30" r="7.500" fill="${C.orange}" stroke-width="1.800"/><path d="M62 36 h46 q-2 12 -23 12 q-21 0 -23 -12z" fill="${C.blue}" stroke-width="2"/>` },
+  horse:    { name: '小木马',   type: 'floor', price: 85,  w: 140, vb: [140, 122], draw: () => `<path d="M110 54 q14 2 14 22" stroke="${C.dwood}" stroke-width="5"/><path d="M44 66 h12 l-6 40 h-10z M84 66 h12 l8 40 h-10z" fill="${C.wood}"/><path d="M8 98 Q70 122 132 98 L128 107 Q70 131 12 107Z" fill="${C.wood}"/><path d="M34 50 Q36 38 52 40 H92 Q112 40 110 58 Q108 72 90 72 H52 Q36 72 34 50Z" fill="${C.orange}"/><path d="M40 54 Q28 32 30 14 Q44 8 52 22 L54 44Z" fill="${C.orange}"/><path d="M35 14 l-2 -9 l8 6"/><path d="M51 20 q8 8 5 20" stroke="${C.dwood}" stroke-width="4"/><circle cx="38" cy="24" r="2.200" fill="${C.line}" stroke="none"/><path d="M62 40 h24 v10 q-12 6 -24 0z" fill="${C.coral}" stroke-width="2"/>` },
+  beanbag:  { name: '懒人沙发', type: 'floor', price: 65,  w: 130, vb: [130, 102], draw: () => `<path d="M10 80 Q4 40 40 30 Q64 6 92 28 Q126 38 120 80 Q112 98 66 98 Q18 98 10 80Z" fill="${C.lgreen}"/><path d="M34 52 Q64 70 98 50" stroke-width="2"/><circle cx="66" cy="24" r="3" fill="${C.line}" stroke="none"/>` },
+  rug4:     { name: '草莓地毯', type: 'rug',   price: 70,  w: 320, vb: [320, 92],  draw: () => `<ellipse cx="160" cy="46" rx="156" ry="42" fill="${C.pink}"/><ellipse cx="160" cy="46" rx="128" ry="31" fill="${C.cream}" stroke-width="1.800"/>` +
+    [92, 160, 228].map(x => `<g transform="translate(${x} 44) scale(1 .620)"><path d="M0 -14 Q18 -18 16 0 Q12 16 0 22 Q-12 16 -16 0 Q-18 -18 0 -14Z" fill="${C.red}" stroke-width="2"/><path d="M0 -13 l-9 -7 h18z" fill="${C.green}" stroke-width="1.600"/></g>`).join('') },
+  mirror:   { name: '小镜子',   type: 'wall',  price: 45,  w: 70,  vb: [70, 92],   draw: () => `<ellipse cx="35" cy="46" rx="29" ry="40" fill="${C.wood}"/><ellipse cx="35" cy="46" rx="22" ry="33" fill="${C.sky}" stroke-width="1.800"/><path d="M24 30 q4 -8 12 -10 M21 42 q1 -3 3 -5" stroke="#fff" stroke-width="3"/>` },
+  balloons: { name: '气球束',   type: 'wall',  price: 40,  w: 90,  vb: [90, 132],  draw: () => `<path d="M28 52 Q40 90 46 126 M62 48 Q52 90 46 126 M46 40 V126" stroke-width="1.600"/><ellipse cx="26" cy="32" rx="18" ry="22" fill="${C.coral}"/><ellipse cx="64" cy="28" rx="18" ry="22" fill="${C.blue}"/><ellipse cx="46" cy="22" rx="17" ry="20" fill="${C.yellow}"/>` },
+  map:      { name: '世界地图', type: 'wall',  price: 60,  w: 150, vb: [150, 102], draw: () => `<rect x="4" y="6" width="142" height="90" rx="3" fill="#F3E6C8"/><path d="M22 30 q14 -12 30 -4 q4 12 -8 16 q-4 14 -14 12 q-12 -8 -8 -24z M78 26 q20 -10 44 2 q8 16 -6 26 q-14 4 -18 -8 q-16 0 -20 -20z M98 66 q12 -4 16 8 q-10 8 -16 -8z" fill="${C.green}" stroke-width="1.600"/><path d="M4 6 h142" stroke-width="7"/><circle cx="62" cy="66" r="3.500" fill="${C.red}" stroke="none"/>` }
+});
+
+/* ---------- 第三批旅行目的地 ---------- */
+Object.assign(DESTS, {
+  lake:     { name: '荷花池塘', time: 150, souv: 'lotussoup',  pet: [70, 84, .42] },
+  orchard:  { name: '苹果果园', time: 150, souv: 'applepie',   pet: [30, 104, .42] },
+  maple:    { name: '枫叶山谷', time: 180, souv: 'pancake',    pet: [108, 104, .42] },
+  mushwood: { name: '蘑菇森林', time: 210, souv: 'mushcookie', pet: [100, 104, .42] },
+  island:   { name: '椰子小岛', time: 240, souv: 'cocojelly',  pet: [84, 82, .42] },
+  penguin:  { name: '企鹅冰原', time: 270, souv: 'popsicle',   pet: [60, 100, .42] },
+  cloud:    { name: '云上城堡', time: 270, souv: 'cloudbread', pet: [70, 84, .42] },
+  moon:     { name: '月亮上面', time: 300, souv: 'mooncake',   pet: [86, 90, .42] }
+});
+Object.assign(SOUVS, {
+  lotussoup:  { name: '莲子羹',   ic: 'lotussoup',  hunger: 20, thirst: 22 },
+  applepie:   { name: '苹果派',   ic: 'applepie',   hunger: 28, happy: 14 },
+  pancake:    { name: '枫糖松饼', ic: 'pancake',    hunger: 26, energy: 12 },
+  mushcookie: { name: '蘑菇饼干', ic: 'mushcookie', hunger: 18, happy: 16 },
+  cocojelly:  { name: '椰子冻',   ic: 'cocojelly',  drink: true, thirst: 30, hunger: 8, happy: 10 },
+  popsicle:   { name: '企鹅雪糕', ic: 'popsicle',   drink: true, thirst: 20, happy: 20, sweet: 1 },
+  cloudbread: { name: '云朵面包', ic: 'cloudbread', hunger: 34, happy: 8 },
+  mooncake:   { name: '小月饼',   ic: 'mooncake',   hunger: 24, happy: 18, sweet: 1 }
+});
+Object.assign(CARD_BG, {
+  lake(r) {
+    const leaf = (x, y, s) => `<ellipse cx="${x}" cy="${y}" rx="${22 * s}" ry="${8 * s}" fill="${C.green}"/><path d="M${x} ${y} l${14 * s} ${-3 * s}" stroke-width="1.600"/>`;
+    const bloom = (x, y) => `<path d="M${x} ${y} q-13 -5 -11 -17 q9 2 11 17z M${x} ${y} q13 -5 11 -17 q-9 2 -11 17z" fill="#F2B8C0" stroke-width="1.600"/><path d="M${x} ${y} q-7 -12 0 -24 q7 12 0 24z" fill="${C.pink}" stroke-width="1.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 222 : 248}" cy="${r ? 62 : 36}" r="${r ? 24 : 16}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 104 Q70 66 150 92 T300 78 V110 H0Z', r ? '#C9B79A' : '#C4D9B4')}
+      <rect y="104" width="300" height="100" fill="${r ? '#A9C2CC' : C.sky}" stroke="none"/><path d="M0 104 H300"/>
+      <path d="M22 122 q10 -6 20 0 M196 120 q10 -6 20 0 M222 190 q10 -6 20 0" stroke="#fff" stroke-width="2.200"/>
+      ${leaf(252, 130, .9)}${leaf(262, 174, 1.2)}${leaf(196, 186, .9)}${leaf(34, 138, .8)}${bloom(258, 124)}${bloom(274, 164)}
+      ${r ? `<g transform="translate(168 108) scale(.34)">${FRIEND_DRAW.duck()}</g>` : ''}
+      <path d="M40 170 v26 M150 170 v26"/><path d="M-6 158 H172 V170 H-6Z" fill="${C.wood}"/><path d="M52 158 v12 M112 158 v12" stroke-width="1.600"/>`;
+  },
+  orchard(r) {
+    const tree = (x, y, s) => `<path d="M${x} ${y} v${-34 * s}" stroke="${C.dwood}" stroke-width="${7 * s}"/><circle cx="${x}" cy="${y - 54 * s}" r="${28 * s}" fill="${C.green}"/>` +
+      [[-12, -62], [10, -68], [-2, -46], [15, -48], [-17, -44]].map(q => `<circle cx="${x + q[0] * s}" cy="${y + q[1] * s}" r="${4.4 * s}" fill="${C.red}" stroke-width="1.400"/>`).join('');
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 60 : 52}" cy="${r ? 58 : 36}" r="${r ? 24 : 16}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 118 Q90 84 170 110 T300 96 V200 H0Z', '#CFE0B6')}${tree(128, 128, .7)}${tree(184, 122, .6)}
+      ${_hill('M0 142 Q150 124 300 140 V200 H0Z', '#A9C987')}${tree(250, 162, 1.1)}
+      <circle cx="202" cy="170" r="6.500" fill="${C.red}" stroke-width="1.600"/><circle cx="213" cy="166" r="6.500" fill="${C.red}" stroke-width="1.600"/><circle cx="223" cy="170" r="6.500" fill="${C.red}" stroke-width="1.600"/>
+      <path d="M190 172 h44 l-5 21 h-34z" fill="${C.wood}"/><path d="M193 180 h38" stroke-width="1.600"/>
+      ${r ? `<g transform="translate(112 126) scale(.34)">${FRIEND_DRAW.hedgehog()}</g>` : ''}`;
+  },
+  maple(r) {
+    let lv = '';
+    for (let i = 0, n = r ? 26 : 9; i < n; i++) { const x = (i * 47 + 23) % 288, y = (i * 31 + 15) % 140 + 20; lv += `<path d="M${x} ${y} l4 -6 l4 6 l-4 5z" fill="${i % 2 ? C.orange : C.red}" stroke="none" transform="rotate(${i * 50} ${x + 4} ${y})"/>`; }
+    const tree = (x, s, c) => `<path d="M${x} 150 q-3 -26 2 -${46 * s}" stroke="${C.dwood}" stroke-width="${7 * s}"/>` +
+      `<path d="M${x + 2 - 32 * s} ${150 - 48 * s} a${17 * s} ${15 * s} 0 0 1 ${13 * s} -${23 * s} a${21 * s} ${19 * s} 0 0 1 ${38 * s} 0 a${17 * s} ${15 * s} 0 0 1 ${13 * s} ${23 * s} a${32 * s} ${15 * s} 0 0 1 -${64 * s} 0z" fill="${c}"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#EFE9D6'}" stroke="none"/><circle cx="150" cy="${r ? 50 : 34}" r="${r ? 22 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 112 L70 62 L130 104 L200 56 L260 100 L300 84 V200 H0Z', '#D9B58C')}
+      ${_hill('M0 126 Q90 100 170 122 T300 110 V200 H0Z', '#E3C98F')}${tree(196, .75, C.orange)}${tree(56, 1, C.red)}${tree(254, 1.1, '#E9A04E')}
+      ${_hill('M0 148 Q150 132 300 146 V200 H0Z', '#D6B46F')}
+      <path d="M118 200 Q140 172 150 150 Q160 172 184 200Z" fill="#EFE3C4"/>${lv}`;
+  },
+  mushwood(r) {
+    const mush = (x, y, s, c) => `<path d="M${x - 9 * s} ${y} q${3 * s} -${22 * s} 0 -${42 * s} h${18 * s} q-${3 * s} ${20 * s} 0 ${42 * s}z" fill="${C.cream}"/><path d="M${x - 36 * s} ${y - 38 * s} Q${x - 34 * s} ${y - 80 * s} ${x} ${y - 80 * s} Q${x + 34 * s} ${y - 80 * s} ${x + 36 * s} ${y - 38 * s}Z" fill="${c}"/>` +
+      [[-16, -53, 5], [2, -65, 6], [18, -51, 4.5]].map(q => `<circle cx="${x + q[0] * s}" cy="${y + q[1] * s}" r="${q[2] * s}" fill="#fff" stroke="none"/>`).join('');
+    return `<rect width="300" height="200" fill="${r ? '#3E4A6A' : '#DDE8D2'}" stroke="none"/>
+      ${r ? `<path d="M40 22 A14 14 0 1 0 53 46 A11 11 0 0 1 40 22Z" fill="#FFF6C9"/>` + _dots([[96, 24], [150, 44], [200, 20], [272, 40], [120, 70]], 2, '#FFF6C9') : `<circle cx="46" cy="34" r="15" fill="#F3D98B"/>`}
+      ${_hill('M0 112 Q80 84 150 104 T300 92 V200 H0Z', r ? '#4F6B5E' : '#B9D0A4')}
+      ${mush(238, 152, 1.5, C.coral)}${mush(48, 148, 1.15, C.purple)}${mush(160, 138, .7, C.orange)}
+      ${_hill('M0 148 Q150 134 300 146 V200 H0Z', r ? '#56755A' : '#A9C987')}
+      ${mush(274, 192, .45, C.yellow)}${mush(24, 192, .4, C.coral)}
+      ${r ? _dots([[76, 96], [128, 62], [196, 88], [222, 60], [168, 112], [98, 132], [284, 108]], 3, C.yellow) + `<g transform="translate(184 138) scale(.36)">${FRIEND_DRAW.snail()}</g>` : ''}`;
+  },
+  island(r) {
+    const palm = (x, y, h, lean) => { const tx = x + lean / 2, ty = y - h; return `<path d="M${x} ${y} q${-lean} -${h / 2} ${lean / 2} -${h}" stroke="${C.dwood}" stroke-width="6"/>` +
+      `<path d="M${tx} ${ty} q-26 -12 -38 6 q22 -6 38 -6z M${tx} ${ty} q-10 -24 -32 -20 q18 6 32 20z M${tx} ${ty} q22 -14 36 2 q-20 -4 -36 -2z M${tx} ${ty} q8 -22 28 -22 q-14 8 -28 22z" fill="${C.green}" stroke-width="1.800"/>` +
+      `<circle cx="${tx - 4}" cy="${ty + 6}" r="4" fill="${C.dwood}" stroke-width="1.400"/><circle cx="${tx + 5}" cy="${ty + 7}" r="4" fill="${C.dwood}" stroke-width="1.400"/>`; };
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="254" cy="${r ? 76 : 32}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <rect y="96" width="300" height="110" fill="${C.blue}" stroke="none"/><path d="M0 96 H300"/>
+      <path d="M16 126 q10 -6 20 0 M250 118 q10 -6 20 0 M150 110 q10 -6 20 0 M6 184 q10 -6 20 0 M268 186 q10 -6 20 0" stroke="#fff" stroke-width="2.200"/>
+      ${r ? `<path d="M12 106 Q30 66 62 92 l9 -5 l-3 12 Q48 82 22 108Z" fill="#6F9DB5"/><circle cx="28" cy="92" r="1.600" fill="${C.line}" stroke="none"/>` : `<path d="M22 96 h34 l-7 9 h-20z" fill="${C.wood}"/><path d="M38 96 V70 L56 92Z" fill="${C.cream}"/>`}
+      <path d="M28 170 Q150 112 272 170 Q150 198 28 170Z" fill="${C.sand}"/>
+      ${palm(216, 152, 70, 10)}${palm(240, 156, 48, -10)}
+      <path d="M186 172 l5 -8 l5 8 l-10 -5 h10z" fill="${C.pink}" stroke-width="1.600"/>`;
+  },
+  penguin(r) {
+    const pg = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M-5 0 l-6 3 M5 0 l6 3" stroke="${C.orange}" stroke-width="4"/>` +
+      `<path d="M-12 0 Q-17 -22 -10 -35 Q0 -47 10 -35 Q17 -22 12 0Z" fill="#4A5568"/><path d="M-13 -22 q-7 7 -5 15 M13 -22 q7 7 5 15" stroke-width="3"/>` +
+      `<path d="M-7 0 Q-10 -17 -5 -25 Q0 -30 5 -25 Q10 -17 7 0Z" fill="${C.white}" stroke-width="1.400"/><circle cx="-4" cy="-34" r="1.700" fill="#fff" stroke="none"/><circle cx="4" cy="-34" r="1.700" fill="#fff" stroke="none"/>` +
+      `<path d="M-3 -30 h6 l-3 5z" fill="${C.orange}" stroke-width="1"/></g>`;
+    return `<rect width="300" height="200" fill="${r ? '#F2D5D0' : '#DCE9EF'}" stroke="none"/>
+      <circle cx="150" cy="${r ? 58 : 36}" r="${r ? 22 : 15}" fill="${r ? C.coral : '#F3D98B'}"/>
+      <path d="M8 118 L40 58 L64 92 L84 70 L114 118Z" fill="#C9DCE6"/><path d="M176 118 L206 74 L226 100 L246 82 L274 118Z" fill="#D6E5EC"/>
+      <rect y="116" width="300" height="30" fill="${C.blue}" stroke="none"/><path d="M0 116 H300"/>
+      ${_hill('M0 142 Q150 128 300 140 V200 H0Z', C.white)}
+      <path d="M198 170 q0 -34 36 -34 q36 0 36 34z" fill="${C.white}"/><path d="M224 170 v-12 a10 10 0 0 1 20 0 v12" fill="#8FA9B8"/>
+      <path d="M201 154 h66 M211 144 h46 M234 136 v8 M220 144 v10 M248 144 v10" stroke-width="1.400"/>
+      ${pg(160, 182, 1)}${pg(186, 190, .8)}
+      ${r ? pg(24, 178, .9) + pg(46, 188, .7) + _dots([[30, 30], [70, 62], [110, 24], [196, 44], [236, 22], [276, 58], [56, 100], [262, 100]], 2.600, '#fff') : ''}`;
+  },
+  cloud(r) {
+    const cl = (x, y, s) => `<path d="M${x} ${y} a${8 * s} ${8 * s} 0 0 1 ${2 * s} -${16 * s} a${11 * s} ${11 * s} 0 0 1 ${21 * s} -${s} a${8.5 * s} ${8.5 * s} 0 0 1 ${s} ${17 * s}z" fill="#fff"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#D9D2E6' : '#CFE4EC'}" stroke="none"/>
+      ${r ? _arcBow(196, 150, 104) : `<circle cx="46" cy="36" r="16" fill="#F3D98B"/>`}
+      ${cl(92, 62, 1.6)}${cl(16, 112, 1.3)}
+      <rect x="186" y="84" width="64" height="66" fill="${C.cream}"/>
+      <rect x="174" y="66" width="22" height="84" fill="${C.cream}"/><rect x="240" y="66" width="22" height="84" fill="${C.cream}"/>
+      <path d="M170 66 L185 38 L200 66Z" fill="${C.coral}"/><path d="M236 66 L251 38 L266 66Z" fill="${C.coral}"/>
+      <rect x="207" y="56" width="22" height="30" fill="${C.cream}"/><path d="M203 56 L218 28 L233 56Z" fill="${C.purple}"/>
+      <path d="M218 28 v-14 l12 5 l-12 5" fill="${C.yellow}" stroke-width="1.600"/>
+      <path d="M208 150 v-24 a10 10 0 0 1 20 0 v24" fill="${C.wood}"/>
+      <rect x="180" y="86" width="10" height="13" rx="5" fill="${C.sky}" stroke-width="1.600"/><rect x="246" y="86" width="10" height="13" rx="5" fill="${C.sky}" stroke-width="1.600"/><rect x="213" y="64" width="10" height="13" rx="5" fill="${C.sky}" stroke-width="1.600"/>
+      <path d="M-10 206 V152 q20 -22 44 -8 q16 -22 44 -6 q22 -20 50 -2 q24 -18 48 0 q26 -16 50 2 q24 -14 44 4 q20 -8 40 6 V206Z" fill="${C.white}"/>
+      ${r ? _burst(40, 44, C.yellow, .7) + _burst(110, 30, C.pink, .6) : ''}`;
+  },
+  cloudFront() {
+    return `<path d="M52 206 V180 q16 -16 36 -4 q18 -14 38 0 q18 -10 34 6 V206Z" fill="${C.white}"/>`;
+  },
+  moon(r) {
+    let st = '';
+    for (let i = 0; i < 16; i++) st += `<circle cx="${(i * 61 + 19) % 296}" cy="${(i * 29 + 11) % 110 + 6}" r="${i % 3 ? 1.6 : 2.4}" fill="#FFF6C9"/>`;
+    return `<rect width="300" height="200" fill="#2B3560" stroke="none"/><g stroke="none">${st}</g>
+      <circle cx="56" cy="50" r="24" fill="#8FC0D4"/><path d="M42 38 q8 -8 16 -2 q2 8 -6 12 q-10 2 -10 -10z M60 56 q10 -2 12 6 q-4 8 -12 6z" fill="${C.green}" stroke-width="1.600"/>
+      ${r ? `<ellipse cx="170" cy="38" rx="30" ry="8" stroke="${C.yellow}" stroke-width="3" transform="rotate(-18 170 38)"/><circle cx="170" cy="38" r="14" fill="${C.orange}"/><path d="M96 16 l34 17 M230 22 l28 14" stroke="#FFF6C9" stroke-width="2.400"/>` : ''}
+      <g transform="translate(0 16)"><path d="M238 118 v10 M254 118 v10"/><path d="M233 104 L220 126 L234 118Z M259 104 L272 126 L258 118Z" fill="${C.coral}"/><path d="M246 60 Q262 78 259 118 H233 Q230 78 246 60Z" fill="${C.white}"/><circle cx="246" cy="86" r="7" fill="${C.sky}"/></g>
+      ${_hill('M-6 150 Q150 122 306 150 V206 H-6Z', '#D9D4C4')}
+      <ellipse cx="46" cy="176" rx="20" ry="6" fill="#C2BCAA"/><ellipse cx="214" cy="184" rx="26" ry="7" fill="#C2BCAA"/><ellipse cx="270" cy="162" rx="12" ry="4" fill="#C2BCAA"/>
+      <path d="M190 142 v-42"/><path d="M190 100 h24 l-6 8 l6 8 h-24z" fill="${C.coral}"/>`;
+  },
+  moonFront() {
+    return `<circle cx="128" cy="128" r="50" fill="rgba(255,255,255,.16)" stroke="#fff" stroke-width="2.600"/><path d="M96 102 q8 -15 23 -19" stroke="#fff" stroke-width="3.200"/>`;
+  }
+});
