@@ -59,6 +59,17 @@ const FOODS = {
   peach:      { name: '桃子',     ic: 'peach',      hunger: 12, happy: 6, price: 7 },
   banana:     { name: '香蕉',     ic: 'banana',     hunger: 16, energy: 4, price: 6 },
   grape:      { name: '葡萄',     ic: 'grape',      hunger: 10, thirst: 8, happy: 6, price: 8 },
+  cherry:     { name: '樱桃',     ic: 'cherry',     hunger: 8,  happy: 8, price: 8 },
+  pineapple:  { name: '菠萝',     ic: 'pineapple',  hunger: 12, thirst: 10, price: 8 },
+  mango:      { name: '芒果',     ic: 'mango',      hunger: 14, happy: 6, price: 8 },
+  lemon:      { name: '柠檬',     ic: 'lemon',      hunger: 4,  thirst: 12, price: 5 },
+  mantou:     { name: '小馒头',   ic: 'mantou',     hunger: 18, price: 5 },
+  fries:      { name: '薯条',     ic: 'fries',      hunger: 14, happy: 8, price: 8 },
+  pizza:      { name: '小披萨',   ic: 'pizza',      hunger: 26, happy: 6, price: 12 },
+  burger:     { name: '小汉堡',   ic: 'burger',     hunger: 28, price: 12 },
+  lollipop:   { name: '棒棒糖',   ic: 'lollipop',   hunger: 3,  happy: 14, sweet: 1, price: 6 },
+  jelly:      { name: '果冻',     ic: 'jelly',      hunger: 6,  thirst: 6, happy: 12, sweet: 1, price: 8 },
+  chocolate:  { name: '巧克力',   ic: 'chocolate',  hunger: 8,  happy: 14, energy: 4, sweet: 1, price: 10 },
   water:      { name: '清水',     ic: 'water',      drink: true, thirst: 24, price: 2 },
   milk:       { name: '牛奶',     ic: 'milk',       drink: true, thirst: 20, hunger: 8, price: 6 },
   juice:      { name: '橙汁',     ic: 'juice',      drink: true, thirst: 22, happy: 6, price: 7 },
@@ -67,7 +78,10 @@ const FOODS = {
   soymilk:    { name: '豆浆',     ic: 'soymilk',    drink: true, thirst: 20, hunger: 6, price: 5 },
   lemonade:   { name: '柠檬水',   ic: 'lemonade',   drink: true, thirst: 26, happy: 4, price: 6 },
   coconut:    { name: '椰子汁',   ic: 'coconut',    drink: true, thirst: 28, energy: 4, price: 9 },
-  bubbletea:  { name: '珍珠奶茶', ic: 'bubbletea',  drink: true, thirst: 16, happy: 16, sweet: 1, price: 11 }
+  bubbletea:  { name: '珍珠奶茶', ic: 'bubbletea',  drink: true, thirst: 16, happy: 16, sweet: 1, price: 11 },
+  barleytea:  { name: '大麦茶',   ic: 'barleytea',  drink: true, thirst: 24, energy: 4, price: 5 },
+  plumjuice:  { name: '酸梅汤',   ic: 'plumjuice',  drink: true, thirst: 26, happy: 6, price: 7 },
+  mungsoup:   { name: '绿豆汤',   ic: 'mungsoup',   drink: true, thirst: 24, hunger: 6, price: 7 }
 };
 const SEEDS = {
   carrot:     { name: '胡萝卜', ic: 'carrot',     time: 60,  give: 3, food: 'carrot',     price: 5 },
@@ -97,7 +111,10 @@ const SEEDS = {
   sweetpotato: { name: '红薯',  ic: 'sweetpotato', time: 120, give: 3, food: 'sweetpotato', price: 8 },
   grape:      { name: '葡萄',   ic: 'grape',      time: 120, give: 4, food: 'grape',      price: 9 },
   daisy:      { name: '小雏菊', ic: 'daisy',      time: 50,  coins: 18, price: 6 },
-  lavender:   { name: '薰衣草', ic: 'lavender',   time: 140, coins: 55, price: 14 }
+  lavender:   { name: '薰衣草', ic: 'lavender',   time: 140, coins: 55, price: 14 },
+  lemon:      { name: '柠檬',   ic: 'lemon',      time: 90,  give: 3, food: 'lemon',      price: 7 },
+  cherry:     { name: '樱桃',   ic: 'cherry',     time: 120, give: 4, food: 'cherry',     price: 9 },
+  lily:       { name: '百合',   ic: 'lily',       time: 160, coins: 70, price: 16 }
 };
 /* 药。tonic 是保健品（没病时吃，预防生病）；any 是什么病都能治 */
 const MEDS = {
@@ -134,6 +151,7 @@ const WEARS = {
   flower:  { name: '小花发夹', ic: 'flowerclip', price: 35 },
   beret:   { name: '贝雷帽',   ic: 'beret',      price: 40 },
   cap:     { name: '棒球帽',   ic: 'cap',        price: 45 },
+  nightcap: { name: '小睡帽',  ic: 'nightcap',   price: 50 },
   hat:     { name: '派对帽',   ic: 'party',      price: 50 },
   bunny:   { name: '兔耳朵',   ic: 'bunny',      price: 55 },
   glasses: { name: '小眼镜',   ic: 'glasses',    price: 60 },
@@ -141,6 +159,9 @@ const WEARS = {
   headphones: { name: '小耳机', ic: 'headphones', price: 70 },
   wreath:  { name: '花环',     ic: 'wreath',     price: 80 },
   santa:   { name: '圣诞帽',   ic: 'santa',      price: 90 },
+  helmet:  { name: '赛车头盔', ic: 'helmet',     price: 85 },
+  pirate:  { name: '海盗帽',   ic: 'pirate',     price: 95 },
+  gradcap: { name: '博士帽',   ic: 'gradcap',    price: 110 },
   wizard:  { name: '魔法帽',   ic: 'wizard',     price: 120 },
   halo:    { name: '天使光环', ic: 'halo',       price: 130 },
   crown:   { name: '小皇冠',   ic: 'crown',      price: 150 }
@@ -148,17 +169,18 @@ const WEARS = {
 /* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
   bell:     { name: '幸运铃铛', ic: 'bell',     price: 18, desc: '更容易遇见珍贵风景', once: true },
-  strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边和沙漠', to: ['sea', 'desert'] },
+  strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边、沙漠和金字塔', to: ['sea', 'desert', 'pyramid'] },
   umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布和蘑菇森林', to: ['waterfall', 'mushwood'] },
-  lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇和乐园', to: ['bamboo', 'town', 'ferris'] },
+  lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇、乐园和水晶山洞', to: ['bamboo', 'town', 'ferris', 'cave'] },
   camera:   { name: '小相机',   ic: 'camera',   price: 70, desc: '更容易多带回一张明信片' },
-  tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山和营地', to: ['snow', 'camp'] },
+  tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山、营地和长颈鹿草原', to: ['snow', 'camp', 'safari'] },
   goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] },
   boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛和企鹅冰原', to: ['island', 'penguin'] },
-  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡', to: ['cloud'] },
+  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡和糖果王国', to: ['cloud', 'candy'] },
   rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面', to: ['moon'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple'];
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill'];
+const CAR_DESTS = ['track', 'canyon'];   // 只有开车才到得了的地方
 const TASKS = [
   { id: 'feed',    name: '喂宠物吃 3 次饭',   need: 3, coin: 15, ic: 'apple' },
   { id: 'drink',   name: '给宠物喝 2 次水',   need: 2, coin: 10, ic: 'water' },
@@ -189,7 +211,9 @@ const STICKERS = [
   { id: 's17', ic: 'noodle',    name: '料理达人',     c: 'recipes', n: 40 },
   { id: 's18', ic: 'dumpling',  name: '美食大师',     c: 'recipes', n: 100 },
   { id: 's19', ic: 'rocket',    name: '环游世界',     c: 'trip', n: 25 },
-  { id: 's20', ic: 'camera',    name: '风景收藏家',   c: 'cards', n: 24 }
+  { id: 's20', ic: 'camera',    name: '风景收藏家',   c: 'cards', n: 24 },
+  { id: 's21', ic: 'minicar',   name: '小小车手',     c: 'cars', n: 1 },
+  { id: 's22', ic: 'mapic',     name: '走遍地图',     c: 'places', n: 20 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -284,7 +308,7 @@ function openModal(html, opt) {
   opt = opt || {};
   closeModal();
   const root = $('#modal-root');
-  root.innerHTML = `<div class="modal-mask"><div class="modal">${opt.noClose ? '' : '<button class="x" data-close>×</button>'}${html}</div></div>`;
+  root.innerHTML = `<div class="modal-mask"><div class="modal${opt.wide ? ' wide' : ''}">${opt.noClose ? '' : '<button class="x" data-close>×</button>'}${html}</div></div>`;
   const mask = root.firstChild;
   mask.addEventListener('click', e => {
     if ((e.target === mask && !opt.noClose) || e.target.closest('[data-close]')) { Sound.sfx.click(); closeModal(); }
@@ -594,7 +618,7 @@ function updateActions() {
   set('sleep', S.sleeping ? 'sun' : 'moon', S.sleeping ? '起床' : '睡觉');
   const p = PETS[S.pet.type];
   if (S.sick && !gone()) set('talent', 'med', '吃药'); else set('talent', p.talentIcon, p.talent);
-  set('travel', 'backpack', S.trip ? '旅行中' : '旅行');
+  set('travel', S.trip ? 'mapic' : 'backpack', S.trip ? '看地图' : '旅行');
   set('decor', 'sofa', decor ? '摆好了' : '布置');
   $$('.act').forEach(b => b.classList.toggle('off', b.dataset.act === 'decor' ? false : !!decor || (gone() && !(S.trip && b.dataset.act === 'travel'))));
 }
@@ -870,7 +894,7 @@ function pcHTML(id, cls) {
 }
 function openPack() {
   if (bath) return;
-  if (S.trip) { toast(S.pet.name + ' 正在旅行，' + leftText()); return; }
+  if (S.trip) { openMap(); return; }
   if (blocked()) return;
   if (S.sick) { say('生病了不能出门，先把病养好吧…'); return; }
   if (S.stats.hunger < 40) { say('肚子还饿着呢，吃饱了再出发吧~'); return; }
@@ -884,7 +908,7 @@ function openPack() {
   }
   const tools = Object.keys(GEAR).filter(k => !GEAR[k].once && S.gear[k]);
   const drinks = myDrinks();
-  const sel = { food: null, drink: null, tool: null, bell: false };
+  const sel = { food: null, drink: null, tool: null, bell: false, car: null };
   let html = `<h2>准备行囊</h2><p>带上便当，${esc(S.pet.name)} 会自己去远方走走，<br>路上还会寄明信片回来。</p><h3>便当（选一样）</h3><div class="item-grid">` +
     foods.map(k => itemBtn(`data-pf="${k}"`, FOODS[k].ic, FOODS[k].name, '×' + S.inv[k] + (fav === k ? ' 最爱' : ''))).join('') +
     myMeals().map(k => itemBtn(`data-pf="dish:${k}"`, DISHES[k].ic, DISHES[k].name, '×' + S.dishes[k] + ' 亲手做')).join('') + '</div>' +
@@ -893,10 +917,17 @@ function openPack() {
   if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、小木船、热气球、小火箭……<br>带上它们能去更远的地方。</p>';
   else html += '<div class="item-grid">' + tools.map(k => itemBtn(`data-pt="${k}"`, GEAR[k].ic, GEAR[k].name, GEAR[k].desc)).join('') +
     (S.gear.bell ? itemBtn('data-pb="1"', 'bell', '幸运铃铛', '×' + S.gear.bell) : '') + '</div>';
+  const cars = myCars();
+  if (cars.length) {   // 有车就默认开最快的那辆，点一下可以不开
+    sel.car = cars.slice().sort((a, b) => FURNS[b].car - FURNS[a].car)[0];
+    html += '<h3>开车去（路上更快，点一下可以不开）</h3><div class="item-grid">' + cars.map(k => itemBtn(`data-pc="${k}"`, FURNS[k].ic, FURNS[k].name, FURNS[k].tip, k === sel.car)).join('') + '</div>';
+  }
   html += '<div class="row"><button class="btn big green" id="go-trip">出发</button></div>';
   const m = openModal(html);
   m.addEventListener('click', e => {
     const f = e.target.closest('[data-pf]'), t = e.target.closest('[data-pt]'), b = e.target.closest('[data-pb]'), d = e.target.closest('[data-pd]');
+    const c = e.target.closest('[data-pc]');
+    if (c) { sel.car = sel.car === c.dataset.pc ? null : c.dataset.pc; $$('[data-pc]', m).forEach(x => x.classList.toggle('sel', x.dataset.pc === sel.car)); Sound.sfx.pop(); }
     if (d) { sel.drink = sel.drink === d.dataset.pd ? null : d.dataset.pd; $$('[data-pd]', m).forEach(x => x.classList.toggle('sel', x.dataset.pd === sel.drink)); Sound.sfx.pop(); }
     if (f) { sel.food = f.dataset.pf; $$('[data-pf]', m).forEach(x => x.classList.toggle('sel', x === f)); Sound.sfx.pop(); }
     if (t) { sel.tool = sel.tool === t.dataset.pt ? null : t.dataset.pt; $$('[data-pt]', m).forEach(x => x.classList.toggle('sel', x.dataset.pt === sel.tool)); Sound.sfx.pop(); }
@@ -914,19 +945,20 @@ function startTrip(sel) {
   if (sel.drink) S.inv[sel.drink]--;
   const isFav = !!dishBento || PETS[S.pet.type].fav === sel.food;   // 亲手做的菜和最爱的食物一样好：一定带回特产
   const to = sel.tool && GEAR[sel.tool].to;   // 带了能去远方的用品，四次里有三次会去那里
-  const dest = to && Math.random() < .75 ? pick(to) : pick(BASE_DESTS);
+  const car = sel.car && FURNS[sel.car] && FURNS[sel.car].car ? sel.car : null, v = car ? FURNS[car].car : 1;
+  const dest = to && Math.random() < .75 ? pick(to) : car && Math.random() < .45 ? pick(CAR_DESTS) : pick(BASE_DESTS);
   const rareP = .15 + (sel.bell ? .3 : 0) + (isFav ? .1 : 0) + (sel.food === 'cake' ? .1 : 0);
   const rare = Math.random() < rareP;
   S.trip = {
-    dest, start: Date.now(), dur: DESTS[dest].time,
+    dest, start: Date.now(), dur: Math.round(DESTS[dest].time * (.16 + .84 / v)), a: .42 / (.16 * v + .84), car,
     card: dest + (rare ? ':b' : ':a'),
     extra: Math.random() < (rare ? .5 : .2) + (sel.tool === 'camera' ? .4 : 0) ? dest + (rare ? ':a' : ':b') : null,
     souv: isFav || Math.random() < .7 ? DESTS[dest].souv : null,
     coins: rand(8, 20), mailed: false, drink: !!sel.drink
   };
   progress('trip'); resetIdle();
-  Sound.sfx.trip(); setTempMood('joy', 1500); say('我出发啦！等我的明信片哦~', 1800);
-  setTimeout(() => { if (S && S.trip) { renderAway(); updateActions(); toast(S.pet.name + ' 背着小包出门了'); } }, 1700);
+  Sound.sfx.trip(); setTempMood('joy', 1500); say(car ? '坐稳啦，开车出发！等我的明信片哦~' : '我出发啦！等我的明信片哦~', 1800);
+  setTimeout(() => { if (S && S.trip) { renderAway(); renderFurn(); updateActions(); toast(S.pet.name + (S.trip.car ? ' 开着' + FURNS[S.trip.car].name + '出门了' : ' 背着小包出门了')); } }, 1700);
   save();
 }
 function renderAway() {
@@ -936,7 +968,7 @@ function renderAway() {
   const note = $('#away-note');
   note.classList.toggle('on', away);
   if (S.runaway) note.innerHTML = `<b>我去栗子家住几天…</b><small>生病了一直没吃到药，有点难过</small><div class="sign">—— ${esc(S.pet.name)}</div><div class="row"><button class="btn small" data-fetch="1">去接它回家</button></div>`;
-  else if (away) note.innerHTML = `<b>我去旅行啦</b><small id="away-left">${leftText()}</small><div class="sign">—— ${esc(S.pet.name)}</div>`;
+  else if (away) note.innerHTML = `<b>我${S.trip.car && FURNS[S.trip.car] ? '开着' + FURNS[S.trip.car].name : ''}去旅行啦</b><small id="away-left">${leftText()}</small><div class="sign">—— ${esc(S.pet.name)}</div><div class="row"><button class="btn small" data-map="1">看看它在哪</button></div>`;
 }
 function addCard(id) {
   const isNew = !S.cards[id];
@@ -953,7 +985,7 @@ function tickTrip() {
     renderMailbox(); updateDots(); save();
   }
   if (el >= t.dur) { if (!Games.active && !modalOpen()) finishTrip(); }
-  else { const a = $('#away-left'); if (a) a.textContent = leftText(); }
+  else { const a = $('#away-left'); if (a) a.textContent = leftText(); updateMap(); }
 }
 function finishTrip() {
   const t = S.trip, st = S.stats, d = DESTS[t.dest];
@@ -974,6 +1006,7 @@ function finishTrip() {
   if (t.extra) { const isNew = addCard(t.extra); extra = pcHTML(t.extra, 'big') + (isNew ? '' : '<p class="hint">这张已经有了，换成了 5 颗橡果</p>'); }
   S.counters.trip++;
   renderAway(); resetIdle(); renderPet(true); updateActions(); renderMailbox(); renderWall(); updateDots();
+  if (scene === 'album' && albumTab === 'map') renderAlbum();
   Sound.sfx.trip(); confetti(); setTempMood('joy', 2500);
   openModal(`<div class="hero">${petSVG(S.pet.type, 'joy', travelWear())}</div><h2>${esc(S.pet.name)} 回来啦</h2>
     <p>它去了「${d.name}」，给你带回了：</p><div class="gift-list">${gifts}</div>${extra}
@@ -996,6 +1029,61 @@ function openMailbox() {
   $('#to-album', m).onclick = () => { closeModal(); switchScene('album'); };
   afterAction();
 }
+/* ---------- 小车和旅行地图 ---------- */
+const myCars = () => S.furn.own.filter(id => FURNS[id] && FURNS[id].car);
+const beenTo = d => !!(S.cards[d + ':a'] || S.cards[d + ':b'] || S.souvSeen[DESTS[d].souv]);
+/* 新买的车直接停到一楼；第一次买车送一块停车位 */
+function parkCar(id) {
+  if (!S.furn.own.includes('parkmat')) {
+    S.furn.own.push('parkmat');
+    const m = { id: 'parkmat', f: 1, x: 170, y: 496 }; clampFurn(m); S.furn.put.push(m);
+  }
+  const mat = S.furn.put.find(p => p.id === 'parkmat' && p.f === 1);
+  const p = { id, f: 1, x: (mat ? mat.x : 170) + 36 * (myCars().length - 1), y: mat ? mat.y - 14 : 480 };
+  clampFurn(p); S.furn.put.push(p);
+  renderFurn();
+}
+/* 旅行走到哪一步了：去的路上（go）、在那里玩（stay）、回家的路上（back）；u 是在路上的位置，0 是家，1 是目的地 */
+function tripStage() {
+  const t = S.trip, f = clamp((Date.now() - t.start) / 1000 * SPEED / t.dur, 0, 1), a = t.a || .42;
+  return f < a ? { at: 'go', u: f / a } : f <= 1 - a ? { at: 'stay', u: 1 } : { at: 'back', u: (1 - f) / a };
+}
+function mapHTML() {
+  const n = Object.keys(DESTS).filter(beenTo).length;
+  return `<p class="map-say"></p><div class="mapbox"><div class="mapin">${mapSVG(beenTo, S.trip ? S.trip.dest : null, !!S.runaway)}</div></div>` +
+    `<p class="album-note" style="margin:8px 0 0">去过的地方会亮起来 · 已经去过 ${n} / ${Object.keys(DESTS).length} 个地方</p>`;
+}
+/* 把地图上的宠物挪到它现在的位置（页面上有几张地图就挪几张）；center 表示顺便把地图滚到它那里 */
+function updateMap(center) {
+  const pets = $$('.map-pet'); if (!pets.length || !S) return;
+  let pos = MAP_HOME, text = S.pet.name + ' 在家里', d = '', car = null;
+  if (S.runaway) { pos = MAP_FRIEND; text = S.pet.name + ' 在栗子家，等你去接它'; }
+  else if (S.trip && MAP_AT[S.trip.dest]) {
+    const t = S.trip, st = tripStage(), r = mapRoute(MAP_AT[t.dest]), name = DESTS[t.dest].name;
+    pos = r.at(st.u); d = r.d; car = t.car && FURNS[t.car] ? FURNS[t.car] : null;
+    text = st.at === 'go' ? `${S.pet.name} ${car ? '开着' + car.name : '背着小包'}，正在去「${name}」的路上`
+      : st.at === 'stay' ? `${S.pet.name} 正在「${name}」玩` : `${S.pet.name} 正在回家的路上，${leftText()}`;
+  }
+  const wear = gone() ? travelWear() : S.wear, sig = S.pet.type + '|' + (wear || '') + '|' + (car ? car.ic : '');
+  pets.forEach(g => {
+    const fresh = g.dataset.sig !== sig;
+    if (fresh) { g.dataset.sig = sig; g.innerHTML = mapPetSVG(S.pet.type, wear, car && car.ic); }
+    g.style.transition = fresh || center ? 'none' : '';
+    g.style.transform = `translate(${pos[0].toFixed(1)}px, ${(pos[1] - 8).toFixed(1)}px)`;
+  });
+  $$('.map-route').forEach(p => p.setAttribute('d', d));
+  $$('.map-say').forEach(p => { p.textContent = text; });
+  if (center) $$('.mapbox').forEach(b => {
+    const w = b.firstChild.clientWidth, h = b.firstChild.clientHeight;
+    b.scrollLeft = pos[0] / 800 * w - b.clientWidth / 2; b.scrollTop = pos[1] / 520 * h - b.clientHeight / 2;
+  });
+}
+function openMap() {
+  Sound.sfx.page();
+  openModal('<h2>旅行地图</h2>' + mapHTML(), { wide: true });
+  updateMap(true);
+}
+
 /* ---------- 旅行手帐（明信片 / 特产 / 贴纸） ---------- */
 let albumTab = 'cards';
 function renderAlbum() {
@@ -1020,11 +1108,14 @@ function renderAlbum() {
       tips.map(k => `<div class="souv tip">${icon('pot', 'big')}<b>今日灵感</b><small>${FOODS[DISHES[k].a].name} + ${FOODS[DISHES[k].b].name}</small></div>`).join('') +
       mine.map(k => { const d = DISHES[k]; return `<div class="souv">${icon(d.ic, 'big')}<b>${d.name}</b><small>${FOODS[d.a].name} + ${FOODS[d.b].name}</small></div>`; }).join('') + '</div>' +
       (rest.length ? `<p class="album-note" style="margin-top:10px">还有 ${rest.length} 道菜等你发现，换着食材多试试吧</p>` : '');
+  } else if (albumTab === 'map') {
+    h = mapHTML();
   } else {
     h = `<p class="album-note">贴纸 ${S.stickers.length} / ${STICKERS.length} · 多照顾、多旅行、多玩耍就能得到</p><div class="souv-grid">` +
       STICKERS.map(s => { const own = S.stickers.includes(s.id); return `<div class="souv${own ? '' : ' lock'}">${icon(s.ic, 'big')}<b>${s.name}</b><small>${own ? '已获得' : '还没有'}</small></div>`; }).join('') + '</div>';
   }
   body.innerHTML = h;
+  if (albumTab === 'map') updateMap(true);
   if (S.albumNew) { S.albumNew = false; updateDots(); }
 }
 
@@ -1196,9 +1287,16 @@ function renderShop() {
   } else if (shopTab === 'furn') {
     const kind = { floor: '放在地上', rug: '铺在地上', wall: '挂在墙上' };
     for (const k in FURNS) {
-      const f = FURNS[k]; if (!f.price) continue;
+      const f = FURNS[k]; if (!f.price || f.car) continue;
       h += `<div class="sitem"><div class="thumb">${furnSVG(k)}</div><b>${f.name}</b><small>${kind[f.type]}</small><small></small>` +
         (S.furn.own.includes(k) ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="furn:${k}">${acorns(f.price)}</button>`) + '</div>';
+    }
+  } else if (shopTab === 'car') {
+    h = '<p class="shop-note">开车去旅行，路上更快，还能去只有开车才到得了的地方</p>';
+    for (const k in FURNS) {
+      const f = FURNS[k]; if (!f.car) continue;
+      h += `<div class="sitem"><div class="thumb">${furnSVG(k)}</div><b>${f.name}</b><small>${f.tip}</small><small>停在小屋一楼</small>` +
+        (S.furn.own.includes(k) ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="car:${k}">${acorns(f.price)}</button>`) + '</div>';
     }
   } else {
     for (const k in GEAR) { const g = GEAR[k]; h += card(g.ic, g.name, g.desc, g.once ? '用一次少一个 · 有 ' + (S.gear[k] || 0) + ' 个' : '可以一直用', g.price, 'gear', k, !g.once && !!S.gear[k]); }
@@ -1206,14 +1304,16 @@ function renderShop() {
   $('#shop-grid').innerHTML = h;
 }
 function buy(kind, id, btn) {
-  const item = { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS, furn: FURNS }[kind][id];
+  const item = { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS, furn: FURNS, car: FURNS }[kind][id];
   if (!item) return;
+  if (kind === 'car' && S.furn.own.includes(id)) return;
   if (S.coins < item.price) { Sound.sfx.bad(); toast('橡果不够啦，去游乐场玩游戏捡一些吧'); return; }
   S.coins -= item.price;
   if (kind === 'food') S.inv[id] = (S.inv[id] || 0) + 1;
   else if (kind === 'seed') S.seeds[id] = (S.seeds[id] || 0) + 1;
   else if (kind === 'med') { if (item.pack) { item.pack.forEach(k => { S.meds[k] = (S.meds[k] || 0) + 1; }); toast('买到啦！四种药各多了一份'); } else S.meds[id] = (S.meds[id] || 0) + 1; }
   else if (kind === 'furn') { if (S.furn.own.includes(id)) return; S.furn.own.push(id); toast('买到啦！回小屋点“布置”，把' + item.name + '摆出来'); }
+  else if (kind === 'car') { S.furn.own.push(id); parkCar(id); toast('买到啦！' + item.name + '停在小屋一楼了，准备行囊的时候可以开上它'); }
   else if (kind === 'gear') { S.gear[id] = (S.gear[id] || 0) + 1; if (!item.once) toast('买到啦！准备行囊的时候记得带上' + item.name); }
   else { S.owned.push(id); S.wear = id; renderPet(true); toast(gone() ? '买到啦！等 ' + S.pet.name + ' 回家就能戴上' : '买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
   const r = btn.getBoundingClientRect();
@@ -1243,7 +1343,7 @@ function progress(key) {
   if (before < t.need && before + 1 >= t.need) setTimeout(() => toast('任务完成：' + t.name + '，去领奖励吧'), 900);
   updateDots();
 }
-function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : (S.counters[s.c] || 0); }
+function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : s.c === 'cars' ? myCars().length : s.c === 'places' ? Object.keys(DESTS).filter(beenTo).length : (S.counters[s.c] || 0); }
 function checkStickers() {
   STICKERS.forEach(s => {
     if (!S.stickers.includes(s.id) && stickerValue(s) >= s.n) {
@@ -1314,7 +1414,9 @@ const COOK = {
   apple:       { t: 'fruit', c: '#D6655A' },         strawberry: { t: 'fruit', c: '#E47C8A' },
   watermelon:  { t: 'fruit', c: '#E0606A', juicy: 1 }, orange:  { t: 'fruit', c: '#F0A04E', juicy: 1 },
   peach:       { t: 'fruit', c: '#F2B8A6' },         banana:   { t: 'fruit', c: '#F3DC7A' },
-  grape:       { t: 'fruit', c: '#A68BC4', juicy: 1 }
+  grape:       { t: 'fruit', c: '#A68BC4', juicy: 1 },
+  cherry:      { t: 'fruit', c: '#C9485A' },         pineapple: { t: 'fruit', c: '#EFC84A', juicy: 1 },
+  mango:       { t: 'fruit', c: '#F0B24E' },         lemon:    { t: 'fruit', c: '#F3DC5A', juicy: 1 }
 };
 const COOK_IDS = Object.keys(COOK);
 const isProduce = k => !!COOK[k] && COOK[k].t !== 'pan';   // 蔬菜和水果，商店里放在“蔬果”那一栏
@@ -1397,7 +1499,9 @@ const RECIPES = {
   'carrot+bread': ['胡萝卜面包', 'bun'], 'corn+bread': ['玉米面包', 'bun'], 'potato+bread': ['土豆泥三明治', 'bun'], 'pumpkin+bread': ['南瓜面包', 'bun'],
   'sweetpotato+bread': ['红薯面包', 'bun'],
   // 水果
-  'apple+apple': ['苹果酱', 'sweet'], 'watermelon+watermelon': ['西瓜冰沙', 'juice'], 'banana+banana': ['烤香蕉', 'bake']
+  'apple+apple': ['苹果酱', 'sweet'], 'watermelon+watermelon': ['西瓜冰沙', 'juice'], 'banana+banana': ['烤香蕉', 'bake'],
+  'rice+pineapple': ['菠萝炒饭', 'rice'], 'bread+pineapple': ['菠萝包', 'bun'], 'rice+mango': ['芒果糯米饭', 'rice'], 'mango+mango': ['芒果布丁', 'sweet'],
+  'lemon+lemon': ['柠檬茶', 'juice']
 };
 /* 没有专门起名字的搭配，按食材的种类来定菜名和做法 */
 const PAN_RULE = {    // 蔬菜 + 厨房食材
@@ -1529,7 +1633,7 @@ function cardSlotsHTML() {
   }).join('');
 }
 function renderFurn() {
-  $('#furn').innerHTML = S.furn.put.filter(p => p.f === S.floor && FURNS[p.id]).map(p =>
+  $('#furn').innerHTML = S.furn.put.filter(p => p.f === S.floor && FURNS[p.id] && !(S.trip && S.trip.car === p.id)).map(p =>
     `<div class="fi ${FURNS[p.id].type}${decor && decor.sel === p.id ? ' sel' : ''}" data-fid="${p.id}" style="${furnStyle(p)}">${furnSVG(p.id)}${p.id === 'cards' ? cardSlotsHTML() : ''}<button class="stow" data-stow="${p.id}">收起来</button></div>`
   ).join('');
 }
@@ -1562,7 +1666,7 @@ function toggleDecor() {
 function renderDecorBar() {
   const bar = $('#decor-bar');
   if (!decor) { bar.innerHTML = ''; return; }
-  const spare = S.furn.own.filter(id => FURNS[id] && !S.furn.put.some(p => p.id === id));
+  const spare = S.furn.own.filter(id => FURNS[id] && !S.furn.put.some(p => p.id === id) && !(S.trip && S.trip.car === id));
   bar.innerHTML = '<div class="tray">' + (spare.length
     ? spare.map(id => `<button data-place="${id}" title="${FURNS[id].name}">${furnSVG(id)}</button>`).join('')
     : '<span class="tip">家具都摆出来了。想要更多，去商店的“家具”看看。<br>点右边的楼梯，可以去布置另一层。</span>') +
@@ -1570,6 +1674,7 @@ function renderDecorBar() {
 }
 function placeFurn(id) {
   const f = FURNS[id]; if (!decor || !f || S.furn.put.some(p => p.id === id)) return;
+  if (f.car && S.floor !== 1) { toast('小车上不了楼梯，只能停在一楼哦'); return; }
   const p = { id, f: S.floor, x: f.type === 'floor' ? 300 : 400, y: f.type === 'wall' ? 190 : f.type === 'rug' ? 494 : 444 };
   clampFurn(p); S.furn.put.push(p); decor.sel = id;
   Sound.sfx.pop(); renderFurn(); renderDecorBar();
@@ -1866,7 +1971,7 @@ function bindEvents() {
     else if (e.target.closest('#decor-done')) { Sound.sfx.click(); toggleDecor(); }
   });
   $('#alert').addEventListener('click', e => { const b = e.target.closest('[data-al]'); if (b) alertAction(b.dataset.al); });
-  $('#away-note').addEventListener('click', e => { if (e.target.closest('[data-fetch]')) { Sound.sfx.click(); openFetch(); } });
+  $('#away-note').addEventListener('click', e => { if (e.target.closest('[data-fetch]')) { Sound.sfx.click(); openFetch(); } else if (e.target.closest('[data-map]')) openMap(); });
   $('#guest').onclick = () => { Sound.sfx.click(); openGuest(); };
   $('#scene-shop').addEventListener('click', e => {
     const t = e.target.closest('.tab'), b = e.target.closest('[data-buy]');

@@ -496,3 +496,12 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .rest-card p { line-height: 1.6; }
 .rest-card .hint { font-size: 14px; opacity: .78; }
 .rest-clock { font-size: 58px; font-weight: bold; letter-spacing: .04em; margin: 8px 0 2px; font-variant-numeric: tabular-nums; }
+
+/* ---------- 旅行地图和小车 ---------- */
+.modal.wide { max-width: 880px; }
+.map-say { font-weight: bold; margin: 0 0 8px; min-height: 1.5em; text-align: center; }
+.mapbox { border: 2.5px solid var(--line); border-radius: var(--r3); overflow: auto; background: #BFDDE3; max-height: 66dvh; -webkit-overflow-scrolling: touch; }
+.mapin { min-width: 680px; max-width: calc(64dvh * 1.538); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
+.mapin svg.map { display: block; width: 100%; height: auto; font-family: inherit; }
+.map-pet { transition: transform 1s linear; }
+.shop-note { grid-column: 1 / -1; text-align: center; font-size: 14.5px; opacity: .8; margin: 0 0 2px; }
