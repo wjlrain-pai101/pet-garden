@@ -63,9 +63,10 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 #screen-choose::before, #screen-choose::after { content: ""; flex: 1; }
 .choose-title { font-size: clamp(21px, 4.8vw, 30px); text-align: center; }
 .choose-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 640px; }
+@media (min-width: 700px) { .choose-grid { grid-template-columns: repeat(5, 1fr); max-width: 860px; } }
 .pcard { background: var(--paper2); border: 2.5px solid var(--line); border-radius: var(--r3); padding: 8px 6px 10px; text-align: center; transition: transform .15s; box-shadow: var(--sh); }
 .pcard:nth-child(odd) { transform: rotate(-1deg); } .pcard:nth-child(even) { transform: rotate(1deg); }
-.pcard .pp { width: min(76%, 21dvh); margin: 0 auto; }
+.pcard .pp { width: min(68%, 13dvh); margin: 0 auto; }
 .pcard .pp svg { width: 100%; display: block; overflow: visible; }
 .pcard b { display: block; font-size: 20px; }
 .pcard small { font-size: 13px; opacity: .8; }
@@ -427,10 +428,10 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .pet.mood-throat, .pet.mood-fever { animation: droop 2.6s ease-in-out infinite; filter: saturate(.8); }
 @media (max-width: 540px) { .stats { gap: 3px; } .stat { gap: 2px; } .stat svg.ic { width: 19px; height: 19px; } #alert { font-size: 14px; padding: 4px 9px; } }
 
-/* ---------- 小屋：两层楼、可以摆放的家具 ---------- */
+/* ---------- 小屋：三层楼、可以摆放的家具 ---------- */
 #scene-home { isolation: isolate; }
-#scene-home .bg.f2, #scene-home.floor2 .bg.f1 { display: none; }
-#scene-home.floor2 .bg.f2 { display: block; }
+#scene-home .bg.f2, #scene-home .bg.f0, #scene-home.floor2 .bg.f1, #scene-home.floor0 .bg.f1 { display: none; }
+#scene-home.floor2 .bg.f2, #scene-home.floor0 .bg.f0 { display: block; }
 .furn-layer { position: absolute; inset: 0; pointer-events: none; }
 .fi { position: absolute; transform: translate(-50%, -100%); pointer-events: none; touch-action: none; }
 .fi.wall { transform: translate(-50%, -50%); }
@@ -443,6 +444,24 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .floor-btn { position: absolute; right: 8px; top: 36%; z-index: 620; display: flex; flex-direction: column; align-items: center; font-size: 14px; font-weight: bold; padding: 3px 8px 2px; background: var(--paper2); border: 2px solid var(--line); border-radius: var(--r3); box-shadow: 1px 2px 0 rgba(107, 79, 58, .25); transform: rotate(1.5deg); }
 .floor-btn svg.ic { width: 30px; height: 30px; vertical-align: 0; }
 .floor-btn:active { transform: translate(1px, 2px); box-shadow: none; }
+.floor-btn.down { top: calc(36% + 62px); }
+/* 左边的门牌：写着现在住在哪里，点一下看地图 */
+.home-tag { position: absolute; left: 8px; top: 36%; z-index: 620; display: flex; flex-direction: column; align-items: center; font-size: 13px; font-weight: bold; line-height: 1.25; padding: 3px 7px 3px; max-width: 88px; background: var(--paper2); border: 2px solid var(--line); border-radius: var(--r3); box-shadow: 1px 2px 0 rgba(107, 79, 58, .25); transform: rotate(-1.5deg); }
+.home-tag svg.ic { width: 28px; height: 28px; vertical-align: 0; }
+.home-tag em { font-style: normal; }
+.home-tag:active { transform: translate(1px, 2px); box-shadow: none; }
+.decor .home-tag { display: none; }
+/* 搬家以后窗外的风景；晚上盖一层深蓝 */
+.win-dark { fill: #1F2A50; opacity: 0; transition: opacity 1.2s; }
+.night .win-dark { opacity: .62; }
+/* 家里的其他小伙伴：站在一楼两边，点一下可以换它来陪你 */
+.pals { position: absolute; inset: 0; pointer-events: none; z-index: 452; }
+.pal { position: absolute; bottom: calc(var(--u) * 58); width: calc(var(--pu) * 104); margin-left: calc(var(--pu) * -52); padding: 0; background: none; border: 0; pointer-events: auto; cursor: pointer; animation: breathe 3.4s ease-in-out infinite; transform-origin: 50% 100%; }
+.pal svg { width: 100%; display: block; overflow: visible; pointer-events: none; }
+.pal.p0 { left: 9%; } .pal.p1 { left: 91%; animation-delay: -1.2s; }
+.pal.p2 { left: 23%; bottom: calc(var(--u) * 72); animation-delay: -2s; } .pal.p3 { left: 77%; bottom: calc(var(--u) * 72); animation-delay: -.6s; }
+@media (max-width: 700px) { .pal.p2, .pal.p3 { display: none; } .pal { width: calc(var(--pu) * 84); margin-left: calc(var(--pu) * -42); } .pal.p0 { left: 14%; } .pal.p1 { left: 86%; } }
+#scene-home.floor0 .pals, #scene-home.floor2 .pals, .decor .pals { display: none; }
 /* 明信片绳上的三个位置：点一下可以换一张 */
 .fi .slot { position: absolute; width: 26.600%; pointer-events: auto; cursor: pointer; }
 .fi .slot .pc { display: block; padding: 3px; }
@@ -477,13 +496,15 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .dish-big svg.ic { width: 100%; height: auto; display: block; }
 .sitem .thumb { height: 58px; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
 .sitem .thumb svg { height: 100%; width: auto; max-width: 100%; overflow: visible; }
+.sitem .pet-thumb { height: 76px; }
 /* 八个按钮：宽屏一排，手机上排成两行 */
 #actions { flex-wrap: wrap; }
 @media (max-width: 660px) {
   #actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; padding: 6px 6px 2px; }
   .act { width: auto; flex-direction: row; justify-content: center; gap: 3px; padding: 3px 0; }
   .act svg.ic { width: 24px; height: 24px; }
-  .floor-btn { top: 30%; }
+  .floor-btn, .home-tag { top: 30%; }
+  .floor-btn.down { top: calc(30% + 60px); }
 }
 
 /* ---------- 强制休息 ---------- */
@@ -501,7 +522,8 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .modal.wide { max-width: 880px; }
 .map-say { font-weight: bold; margin: 0 0 8px; min-height: 1.5em; text-align: center; }
 .mapbox { border: 2.5px solid var(--line); border-radius: var(--r3); overflow: auto; background: #BFDDE3; max-height: 66dvh; -webkit-overflow-scrolling: touch; }
-.mapin { min-width: 680px; max-width: calc(64dvh * 1.538); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
+.mapin { min-width: 820px; max-width: calc(64dvh * 1.530); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
 .mapin svg.map { display: block; width: 100%; height: auto; font-family: inherit; }
-.map-pet { transition: transform 1s linear; }
+.map-pet { transition: transform 1s linear; pointer-events: none; }
+.spot { cursor: pointer; }
 .shop-note { grid-column: 1 / -1; text-align: center; font-size: 14.5px; opacity: .8; margin: 0 0 2px; }

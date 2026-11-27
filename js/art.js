@@ -59,7 +59,7 @@ function _mouth(x, y, mood) {
   return `<path d="M${x} ${y} q-5 7 -11 2 M${x} ${y} q5 7 11 2" stroke-width="2.6"/>`;
 }
 
-/* ---------- 六只宠物（只画身体，外层统一加线条和滤镜） ---------- */
+/* ---------- 最早的六只宠物（只画身体，外层统一加线条和滤镜；后来的八只在文件后面） ---------- */
 const PET_DRAW = {
   bird(m) {
     const e = PETS.bird.eyes;
@@ -212,6 +212,30 @@ function wearSVG(id, p) {
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-23 -14 v14 q23 10 46 0 v-14" fill="#5B4636"/><path d="M0 -36 L42 -21 L0 -6 L-42 -21Z" fill="#5B4636"/><path d="M31 -18 v21" stroke="${C.yellow}" stroke-width="3.200"/><circle cx="31" cy="6" r="4.500" fill="${C.yellow}"/></g>`;
     case 'nightcap':
       return `<g transform="translate(${hx} ${hy + 10})"><path d="M-24 -2 Q-22 -36 8 -42 Q30 -40 34 -18 Q26 -26 18 -22 Q24 -12 24 -2Z" fill="${C.blue}"/><path d="M-8 -20 v.100 M6 -30 v.100 M4 -14 v.100 M18 -32 v.100" stroke="#fff" stroke-width="3.600"/><rect x="-30" y="-8" width="60" height="13" rx="6.500" fill="${C.white}"/><circle cx="35" cy="-14" r="7" fill="${C.yellow}"/></g>`;
+    case 'acornhat':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M0 -30 q2 -9 9 -11" stroke-width="4"/><path d="M-30 2 Q-32 -30 0 -30 Q32 -30 30 2 Q0 -8 -30 2Z" fill="${C.dwood}"/><path d="M-20 -12 l6 6 M-6 -20 l6 6 M8 -14 l6 6 M18 -4 l4 4 M-12 -4 l5 5 M0 -8 l5 5" stroke-width="1.600"/></g>`;
+    case 'butterfly':
+      return `<g transform="translate(${hx + 30} ${hy + 14}) rotate(18)"><path d="M0 0 Q-20 -22 -22 -4 Q-22 8 0 0Z M0 0 Q20 -22 22 -4 Q22 8 0 0Z" fill="${C.purple}"/><path d="M0 0 Q-14 6 -12 14 Q-4 16 0 0Z M0 0 Q14 6 12 14 Q4 16 0 0Z" fill="${C.pink}"/><path d="M0 -8 v18" stroke-width="3.200"/></g>`;
+    case 'sailor':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-28 0 Q-36 -22 0 -24 Q36 -22 28 0Z" fill="${C.white}"/><path d="M-27 -3 Q0 6 27 -3 L27 3 Q0 12 -27 3Z" fill="${C.blue}"/><path d="M22 4 l9 12 M26 2 l12 8" stroke="${C.blue}" stroke-width="4"/></g>`;
+    case 'shellclip':
+      return `<g transform="translate(${hx - 32} ${hy + 18}) rotate(-15)"><path d="M0 12 Q-20 4 -14 -10 Q0 -20 14 -10 Q20 4 0 12Z" fill="${C.sky}"/><path d="M0 12 V-14 M0 12 L-10 -9 M0 12 L10 -9" stroke-width="1.600"/></g>`;
+    case 'earmuff':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-40 34 Q-42 -12 0 -12 Q42 -12 40 34" stroke-width="8"/><path d="M-40 34 Q-42 -12 0 -12 Q42 -12 40 34" stroke="${C.blue}" stroke-width="4"/><circle cx="-43" cy="36" r="13" fill="${C.white}"/><circle cx="43" cy="36" r="13" fill="${C.white}"/></g>`;
+    case 'knitcap':
+      return `<g transform="translate(${hx} ${hy + 10})"><circle cy="-36" r="8" fill="${C.white}"/><path d="M-27 0 Q-28 -30 0 -30 Q28 -30 27 0Z" fill="${C.coral}"/><path d="M-24 -14 Q0 -22 24 -14" stroke="${C.cream}" stroke-width="4"/><rect x="-30" y="-6" width="60" height="11" rx="5.500" fill="${C.cream}"/><path d="M-18 -5 v9 M-6 -5 v9 M6 -5 v9 M18 -5 v9" stroke-width="1.400"/></g>`;
+    case 'cowboy':
+      return `<g transform="translate(${hx} ${hy + 12})"><path d="M-44 -2 Q-30 8 0 4 Q30 8 44 -2 Q34 -12 22 -8 L18 -30 Q10 -36 0 -28 Q-10 -36 -18 -30 L-22 -8 Q-34 -12 -44 -2Z" fill="${C.dwood}"/><path d="M-21 -12 Q0 -6 21 -12" stroke="${C.yellow}" stroke-width="4"/></g>`;
+    case 'explorer':
+      return `<g transform="translate(${hx} ${hy + 12})"><path d="M-38 0 Q0 -10 38 0 Q0 8 -38 0Z" fill="#D9C79A"/><path d="M-25 -3 Q-25 -30 0 -30 Q25 -30 25 -3" fill="${C.sand}"/><path d="M-25 -8 Q0 -2 25 -8" stroke="${C.dwood}" stroke-width="4"/><circle cy="-31" r="3" fill="${C.dwood}" stroke-width="1.600"/></g>`;
+    case 'unicornhorn':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-30 6 Q0 -12 30 6" stroke-width="8"/><path d="M-30 6 Q0 -12 30 6" stroke="${C.pink}" stroke-width="4"/><path d="M-9 -4 L0 -46 L9 -4Z" fill="${C.yellow}"/><path d="M-6 -16 l10 -5 M-4 -27 l7 -4" stroke-width="1.600"/><circle cx="-17" cy="-1" r="5" fill="${C.purple}" stroke-width="1.600"/><circle cx="17" cy="-1" r="5" fill="${C.blue}" stroke-width="1.600"/></g>`;
+    case 'antenna':
+      return `<g transform="translate(${hx} ${hy + 10})"><path d="M-30 6 Q0 -12 30 6" stroke-width="8"/><path d="M-30 6 Q0 -12 30 6" stroke="#9BE0B8" stroke-width="4"/><path d="M-14 -4 q-6 -16 -12 -26 M14 -4 q6 -16 12 -26" stroke-width="2.600"/><circle cx="-27" cy="-33" r="7" fill="#9BE0B8"/><circle cx="27" cy="-33" r="7" fill="#9BE0B8"/></g>`;
+    case 'tophat':
+      return `<g transform="translate(${hx} ${hy + 10})"><ellipse rx="36" ry="7" fill="#5B4636"/><path d="M-21 -2 V-36 Q0 -42 21 -36 V-2 Q0 4 -21 -2Z" fill="#5B4636"/><path d="M-21 -12 Q0 -6 21 -12" stroke="${C.red}" stroke-width="5"/></g>`;
+    case 'starglasses':
+      return `<g stroke-width="2.600">${_star(e[0], e[2], 19, 10.5, 'rgba(235,198,107,.5)')}${_star(e[1], e[2], 19, 10.5, 'rgba(235,198,107,.5)')}<path d="M${e[0] + 13} ${e[2] - 2} L${e[1] - 13} ${e[2] - 2}"/></g>`;
     case 'strawhat':
       return `<g transform="translate(${hx} ${hy + 12})"><ellipse rx="40" ry="10" fill="${C.sand}"/><path d="M-23 -1 Q-23 -28 0 -28 Q23 -28 23 -1" fill="${C.sand}"/><path d="M-22.5 -8 Q0 0 22.5 -8" stroke="${C.coral}" stroke-width="5"/></g>`;
   }
@@ -423,6 +447,7 @@ function sceneHomeSVG() {
     <circle class="win-sun" cx="224" cy="134" r="15" stroke="none"/>
     <g class="win-stars" stroke="none">${stars}</g>
     <path class="win-hill" d="M102 242 V212 Q140 184 180 208 Q222 186 258 204 V242Z" stroke="none"/>
+    <defs><clipPath id="win-clip"><path d="M102 242 V152 Q102 96 180 96 Q258 96 258 152 V242Z"/></clipPath></defs><g class="win-view" clip-path="url(#win-clip)"></g>
     <path d="M180 86 V250 M92 172 H268" stroke-width="5" stroke="${C.white}"/><path d="M180 96 V242 M102 172 H258" stroke-width="1.600"/>
     <rect x="78" y="250" width="204" height="13" rx="4" fill="${C.wood}"/>
     <path d="M70 78 H290" stroke-width="5"/>
@@ -510,7 +535,7 @@ function sceneShopSVG() {
     <rect width="800" height="404" fill="url(#hatch)" stroke="none"/>
     <path d="M300 60 V96 M500 60 V96" stroke-width="2"/>
     <rect x="262" y="94" width="276" height="60" rx="8" fill="${C.wood}"/>
-    <text x="400" y="136" text-anchor="middle" font-size="32" font-weight="bold" fill="${C.line}" stroke="none" font-family="STKaiti,KaiTi,楷体,serif">小小杂货铺</text>
+    <text class="shop-sign" x="400" y="136" text-anchor="middle" font-size="32" font-weight="bold" fill="${C.line}" stroke="none" font-family="STKaiti,KaiTi,楷体,serif">小小杂货铺</text>
     ${goods}
     <rect x="60" y="236" width="680" height="14" rx="4" fill="${C.dwood}"/><rect x="60" y="336" width="680" height="14" rx="4" fill="${C.dwood}"/>
     <rect y="404" width="800" height="96" fill="${C.wood}" stroke="none"/><path d="M0 404 H800 M0 440 H800" stroke-width="2.400"/>
@@ -1161,20 +1186,20 @@ Object.assign(ICONS, {
   gingerman: `<path d="M14 18 H34 L44 22 L42 28 L33 26 V32 L38 44 H29 L24 36 L19 44 H10 L15 32 V26 L6 28 L4 22Z" fill="#D9A866"/><circle cx="24" cy="11" r="8" fill="#D9A866"/><path d="M21 10 v.100 M27 10 v.100" stroke-width="2.200"/><path d="M21 13.500 q3 2.500 6 0" stroke-width="1.400"/><path d="M24 22 v.100 M24 28 v.100" stroke="${C.red}" stroke-width="3.400"/><path d="M7 24 l3 1 M38 25 l3 -1 M13 40 h5 M30 40 h5" stroke="#fff" stroke-width="2"/>`
 });
 
-/* ---------- 小车（停在一楼，旅行的时候可以开）和新家具 ----------
+/* ---------- 小车（停在负一楼的车库，旅行的时候可以开）和新家具 ----------
  * car 是开车时路上快几倍；ic 是小图标；tip 是商店里的说明 */
 Object.assign(FURNS, {
   parkmat:  { name: '停车位',   type: 'rug',   price: 0,    w: 290, vb: [300, 96],  draw: () => `<path d="M26 8 H274 L296 88 H4Z" fill="#B8BCC0"/><path d="M42 19 H258 L274 77 H26Z" stroke="#fff" stroke-width="3" stroke-dasharray="14 10"/><path d="M139 66 V32 h14 q12 0 12 9.500 q0 9.500 -12 9.500 h-14" stroke="#fff" stroke-width="6"/>` },
-  scooter:  { name: '滑板车',   type: 'floor', price: 350,  car: 1.5, ic: 'scooter', tip: '路上快一半', w: 110, vb: [130, 130],
+  scooter:  { name: '滑板车',   type: 'floor', price: 350,  car: 1.5, ic: 'scooter', tip: '路上快一半', w: 96, vb: [130, 130],
     draw: () => _line2('M100 96 L90 22', C.blue, 5) + `<path d="M74 22 h30" stroke-width="8"/><path d="M22 98 h66 l8 -10 h10 l-8 18 h-76z" fill="${C.coral}"/>` + _wh(24, 112, 12) + _wh(104, 112, 12) },
-  bike:     { name: '自行车',   type: 'floor', price: 600,  car: 2,   ic: 'bike',    tip: '路上快 2 倍', w: 150, vb: [180, 130],
+  bike:     { name: '自行车',   type: 'floor', price: 600,  car: 2,   ic: 'bike',    tip: '路上快 2 倍', w: 130, vb: [180, 130],
     draw: () => `<circle cx="38" cy="96" r="27" stroke-width="5.500"/><circle cx="142" cy="96" r="27" stroke-width="5.500"/><path d="M38 96 l0 -27 M38 96 l23 14 M38 96 l-23 14 M142 96 l0 -27 M142 96 l23 14 M142 96 l-23 14" stroke-width="1.400"/>` +
       _line2('M38 96 L72 52 H120 L142 96 M72 52 L90 96 L120 52 M90 96 H38', C.coral, 4.5) + `<path d="M72 52 l-3 -9" stroke-width="4"/><path d="M57 42 h28" stroke-width="8"/><path d="M120 52 L114 28 h14" stroke-width="5"/><path d="M128 32 h26 l-4 18 h-18z" fill="${C.wood}"/><circle cx="90" cy="96" r="5" fill="${C.cream}"/>` },
-  minicar:  { name: '小汽车',   type: 'floor', price: 1000, car: 3,   ic: 'minicar', tip: '路上快 3 倍', w: 220, vb: [230, 128],
+  minicar:  { name: '小汽车',   type: 'floor', price: 1000, car: 3,   ic: 'minicar', tip: '路上快 3 倍', w: 180, vb: [230, 128],
     draw: () => `<path d="M12 96 V72 Q12 60 30 58 L52 30 Q58 20 74 20 H138 Q152 20 162 32 L182 58 Q214 62 218 78 V96 Q218 102 210 102 H20 Q12 102 12 96Z" fill="${C.coral}"/><path d="M62 56 L77 32 H104 V56Z" fill="${C.sky}"/><path d="M112 32 H140 Q148 32 154 40 L166 56 H112Z" fill="${C.sky}"/><path d="M108 58 V98" stroke-width="1.800"/><path d="M118 68 h12" stroke-width="3.500"/><circle cx="208" cy="77" r="6.500" fill="${C.yellow}"/><path d="M12 84 h10" stroke="${C.red}" stroke-width="5"/>` + _wh(60, 102, 20) + _wh(170, 102, 20) },
-  camper:   { name: '小房车',   type: 'floor', price: 1600, car: 4,   ic: 'camper',  tip: '路上快 4 倍', w: 250, vb: [270, 158],
+  camper:   { name: '小房车',   type: 'floor', price: 1600, car: 4,   ic: 'camper',  tip: '路上快 4 倍', w: 200, vb: [270, 158],
     draw: () => `<rect x="52" y="8" width="62" height="14" rx="4" fill="${C.wood}"/><path d="M72 8 v14 M94 8 v14" stroke-width="1.600"/><path d="M10 124 V36 Q10 22 26 22 H190 Q204 22 212 34 L236 74 Q256 78 258 96 V124 Q258 130 250 130 H18 Q10 130 10 124Z" fill="${C.cream}"/><path d="M13 96 H256" stroke="${C.blue}" stroke-width="9"/><rect x="28" y="40" width="50" height="34" rx="6" fill="${C.sky}"/><path d="M29 41 q16 14 2 32 M77 41 q-16 14 -2 32" fill="${C.pink}" stroke-width="1.600"/><rect x="92" y="40" width="40" height="34" rx="6" fill="${C.sky}"/><rect x="144" y="40" width="34" height="78" rx="5" fill="#F3E6C8"/><circle cx="171" cy="82" r="2.600" fill="${C.line}" stroke="none"/><path d="M190 40 h14 l20 34 h-34z" fill="${C.sky}"/><circle cx="250" cy="106" r="5.500" fill="${C.yellow}"/>` + _wh(66, 130, 22) + _wh(204, 130, 22) },
-  racer:    { name: '小跑车',   type: 'floor', price: 2400, car: 5,   ic: 'racer',   tip: '路上快 5 倍', w: 230, vb: [250, 106],
+  racer:    { name: '小跑车',   type: 'floor', price: 2400, car: 5,   ic: 'racer',   tip: '路上快 5 倍', w: 186, vb: [250, 106],
     draw: () => `<path d="M16 58 V38 M6 38 H36" stroke-width="5.500"/><path d="M8 78 Q8 62 28 58 L70 52 Q92 30 124 30 H150 Q170 30 186 52 L226 60 Q244 64 244 78 Q244 86 236 86 H16 Q8 86 8 78Z" fill="${C.yellow}"/><path d="M90 52 Q104 38 124 38 H148 Q160 38 170 52Z" fill="${C.sky}"/><path d="M36 71 H96 M160 71 H224" stroke="${C.coral}" stroke-width="5"/><circle cx="128" cy="68" r="11.500" fill="${C.white}"/><path d="M125 64 l4 -3 v14" stroke-width="2.600"/><circle cx="236" cy="72" r="4.500" fill="${C.white}" stroke-width="1.800"/>` + _wh(58, 84, 18) + _wh(196, 84, 18) },
   tv:       { name: '小电视',   type: 'floor', price: 110,  w: 120, vb: [120, 112], draw: () => `<path d="M42 10 L60 26 L78 8"/><path d="M28 92 l-6 16 M92 92 l6 16"/><rect x="8" y="26" width="104" height="66" rx="10" fill="${C.orange}"/><rect x="18" y="36" width="64" height="46" rx="6" fill="${C.sky}"/><path d="M36 54 v.100 M62 54 v.100" stroke-width="5"/><path d="M40 64 q10 8 20 0" stroke-width="2.400"/><circle cx="97" cy="47" r="5.500" fill="${C.cream}" stroke-width="1.800"/><circle cx="97" cy="66" r="5.500" fill="${C.cream}" stroke-width="1.800"/>` },
   wardrobe: { name: '小衣柜',   type: 'floor', price: 120,  w: 120, vb: [120, 172], draw: () => `<path d="M18 158 v10 M102 158 v10"/><rect x="8" y="8" width="104" height="150" rx="6" fill="${C.wood}"/><path d="M60 8 V158"/><path d="M20 22 h28 v44 h-28z M72 22 h28 v44 h-28z M20 80 h28 v64 h-28z M72 80 h28 v64 h-28z" fill="#D9B98C" stroke-width="1.800"/><circle cx="53" cy="92" r="3.500" fill="${C.cream}" stroke-width="1.600"/><circle cx="67" cy="92" r="3.500" fill="${C.cream}" stroke-width="1.600"/>` },
@@ -1315,57 +1340,655 @@ Object.assign(CARD_BG, {
   }
 });
 
+/* ==========================================================
+ *  第六批：更多宠物、负一楼车库、更多小车、搬家和各地的小铺、更多景点
+ * ========================================================== */
+/* ---------- 八只新宠物 ----------
+ * trick 是表演才艺时的动作 */
+Object.assign(PETS, {
+  panda:   { name: '熊猫',   defName: '滚滚', desc: '爱吃竹笋的黑白团子', fav: 'shoot',       talent: '打滚',   talentIcon: 'sparkle', trick: 'trick-roll', eyes: [77, 123, 90], hat: [100, 45] },
+  fox:     { name: '小狐狸', defName: '阿橘', desc: '机灵的大尾巴',       fav: 'grape',       talent: '转圈圈', talentIcon: 'sparkle', trick: 'trick-spin', eyes: [78, 122, 88], hat: [100, 44] },
+  penguin: { name: '小企鹅', defName: '摇摇', desc: '走路一摇一摆',       fav: 'fish',        talent: '翻跟头', talentIcon: 'sparkle', trick: 'trick-flip', eyes: [80, 120, 92], hat: [100, 34] },
+  pig:     { name: '小猪',   defName: '噜噜', desc: '粉嘟嘟的小吃货',     fav: 'sweetpotato', talent: '打滚',   talentIcon: 'sparkle', trick: 'trick-roll', eyes: [76, 124, 82], hat: [100, 45] },
+  monkey:  { name: '小猴',   defName: '淘淘', desc: '爬树荡秋千样样行',   fav: 'banana',      talent: '翻跟头', talentIcon: 'sparkle', trick: 'trick-flip', eyes: [80, 120, 88], hat: [100, 44] },
+  bear:    { name: '小熊',   defName: '布布', desc: '抱起来软乎乎',       fav: 'strawberry',  talent: '转圈圈', talentIcon: 'sparkle', trick: 'trick-spin', eyes: [78, 122, 86], hat: [100, 45] },
+  dino:    { name: '小恐龙', defName: '嗷嗷', desc: '其实一点也不凶',     fav: 'broccoli',    talent: '蹦蹦跳', talentIcon: 'sparkle', trick: 'trick-jump', eyes: [78, 122, 84], hat: [100, 46] },
+  unicorn: { name: '独角兽', defName: '星星', desc: '鬃毛像彩虹一样',     fav: 'peach',       talent: '转圈圈', talentIcon: 'sparkle', trick: 'trick-spin', eyes: [78, 122, 88], hat: [100, 44] }
+});
+Object.assign(PET_DRAW, {
+  panda(m) {
+    const e = PETS.panda.eyes, k = '#5B4636';
+    return `
+      <circle cx="56" cy="50" r="18" fill="${k}"/><circle cx="144" cy="50" r="18" fill="${k}"/>
+      <ellipse cx="100" cy="152" rx="44" ry="35" fill="${C.white}"/>
+      <path d="M60 152 q-10 -26 12 -36 q12 14 4 38z" fill="${k}"/><path d="M140 152 q10 -26 -12 -36 q-12 14 -4 38z" fill="${k}"/>
+      <ellipse cx="80" cy="182" rx="15" ry="8" fill="${k}"/><ellipse cx="120" cy="182" rx="15" ry="8" fill="${k}"/>
+      <ellipse cx="100" cy="90" rx="54" ry="47" fill="${C.white}"/>
+      <ellipse cx="${e[0]}" cy="${e[2]}" rx="16" ry="19" fill="${k}" stroke="none" transform="rotate(18 ${e[0]} ${e[2]})"/><ellipse cx="${e[1]}" cy="${e[2]}" rx="16" ry="19" fill="${k}" stroke="none" transform="rotate(-18 ${e[1]} ${e[2]})"/>
+      <circle cx="${e[0]}" cy="${e[2]}" r="10" fill="#fff" stroke="none"/><circle cx="${e[1]}" cy="${e[2]}" r="10" fill="#fff" stroke="none"/>
+      ${_eye(e[0], e[2], m, 5)}${_eye(e[1], e[2], m, 5)}${_blush(56, 144, 112)}
+      <ellipse cx="100" cy="106" rx="6.500" ry="4.500" fill="${k}" stroke="none"/>
+      ${_mouth(100, 111, m)}`;
+  },
+  fox(m) {
+    const e = PETS.fox.eyes, o = '#E59A5A';
+    return `
+      <g class="tail"><path d="M134 170 Q192 170 176 106 Q146 124 150 148 Q146 160 134 170Z" fill="${o}"/><path d="M176 106 Q160 114 155 130 Q170 136 180 126 Q182 116 176 106Z" fill="${C.cream}" stroke-width="2"/></g>
+      <ellipse cx="100" cy="150" rx="42" ry="35" fill="${o}"/>
+      <ellipse cx="100" cy="160" rx="24" ry="22" fill="${C.cream}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="#5B4636"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="#5B4636"/>
+      <path d="M54 68 L42 12 L94 42Z" fill="${o}"/><path d="M59 54 L53 26 L79 42Z" fill="${C.cream}" stroke="none"/>
+      <path d="M146 68 L158 12 L106 42Z" fill="${o}"/><path d="M141 54 L147 26 L121 42Z" fill="${C.cream}" stroke="none"/>
+      <path d="M100 42 Q150 42 156 82 Q170 100 148 116 Q126 136 100 136 Q74 136 52 116 Q30 100 44 82 Q50 42 100 42Z" fill="${o}"/>
+      <path d="M45 102 Q72 94 100 112 Q128 94 155 102 Q148 118 126 129 Q112 134 100 134 Q88 134 74 129 Q52 118 45 102Z" fill="${C.cream}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(58, 142, 106)}
+      <ellipse cx="100" cy="109" rx="6.500" ry="4.500" fill="${C.line}" stroke="none"/>
+      ${_mouth(100, 114, m)}`;
+  },
+  penguin(m) {
+    const e = PETS.penguin.eyes, k = '#5F7186';
+    const beak = m === 'eat'
+      ? `<path d="M90 105 L110 105 L100 112Z" fill="${C.orange}"/><path d="M92 116 L108 116 L100 126Z" fill="${C.orange}"/>`
+      : `<path d="M90 107 L110 107 L100 121Z" fill="${C.orange}"/>`;
+    return `
+      <path d="M82 176 q-16 2 -18 12 h30z M118 176 q16 2 18 12 h-30z" fill="${C.orange}"/>
+      <path d="M100 30 Q158 32 160 112 Q162 182 100 182 Q38 182 40 112 Q42 32 100 30Z" fill="${k}"/>
+      <path d="M100 68 Q74 54 63 82 Q55 112 61 140 Q69 175 100 175 Q131 175 139 140 Q145 112 137 82 Q126 54 100 68Z" fill="${C.white}" stroke="none"/>
+      <g transform="rotate(20 42 128)"><ellipse class="wing wl" cx="42" cy="128" rx="12" ry="30" fill="${k}"/></g>
+      <g transform="rotate(-20 158 128)"><ellipse class="wing wr" cx="158" cy="128" rx="12" ry="30" fill="${k}"/></g>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(64, 136, 110)}${beak}`;
+  },
+  pig(m) {
+    const e = PETS.pig.eyes, p = '#F4C6C4', d = '#E8A3A0';
+    return `
+      <path class="tail" d="M140 160 q18 -2 17 -15 q-1 -10 -10 -8 q-7 3 -4 10 q3 5 9 2" stroke-width="4"/>
+      <ellipse cx="100" cy="150" rx="46" ry="36" fill="${p}"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${d}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${d}"/>
+      <path d="M60 64 L42 28 Q72 24 90 46Z" fill="${d}"/><path d="M140 64 L158 28 Q128 24 110 46Z" fill="${d}"/>
+      <ellipse cx="100" cy="90" rx="54" ry="47" fill="${p}"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(54, 146, 100)}
+      <ellipse cx="100" cy="103" rx="21" ry="15" fill="${d}"/><path d="M93 103 v.100 M107 103 v.100" stroke-width="6"/>
+      ${_mouth(100, 119, m)}`;
+  },
+  monkey(m) {
+    const e = PETS.monkey.eyes, b = '#B98A5E', f = '#F3DFC1';
+    const tail = 'M138 166 q38 0 36 -34 q-2 -22 -20 -18 q-12 4 -8 16';
+    return `
+      <path class="tail" d="${tail}" stroke="${C.line}" stroke-width="13"/><path class="tail" d="${tail}" stroke="${b}" stroke-width="7.500"/>
+      <ellipse cx="100" cy="152" rx="40" ry="33" fill="${b}"/>
+      <ellipse cx="100" cy="160" rx="23" ry="21" fill="${f}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${f}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${f}"/>
+      <circle cx="46" cy="88" r="19" fill="${b}"/><circle cx="46" cy="88" r="10" fill="${f}" stroke="none"/>
+      <circle cx="154" cy="88" r="19" fill="${b}"/><circle cx="154" cy="88" r="10" fill="${f}" stroke="none"/>
+      <ellipse cx="100" cy="88" rx="50" ry="46" fill="${b}"/>
+      <path d="M100 66 Q86 54 72 62 Q58 72 62 92 Q60 124 100 128 Q140 124 138 92 Q142 72 128 62 Q114 54 100 66Z" fill="${f}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(64, 136, 104)}
+      <path d="M96 101 v.100 M104 101 v.100" stroke-width="3"/>
+      ${_mouth(100, 106, m)}`;
+  },
+  bear(m) {
+    const e = PETS.bear.eyes, b = '#CFA06C', f = '#F3E3C4';
+    return `
+      <circle cx="58" cy="50" r="18" fill="${b}"/><circle cx="58" cy="50" r="9" fill="${f}" stroke="none"/>
+      <circle cx="142" cy="50" r="18" fill="${b}"/><circle cx="142" cy="50" r="9" fill="${f}" stroke="none"/>
+      <circle cx="142" cy="166" r="10" fill="${b}"/>
+      <ellipse cx="100" cy="152" rx="45" ry="35" fill="${b}"/>
+      <ellipse cx="100" cy="160" rx="26" ry="22" fill="${f}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="15" ry="8" fill="${b}"/><ellipse cx="120" cy="182" rx="15" ry="8" fill="${b}"/>
+      <ellipse cx="100" cy="90" rx="54" ry="47" fill="${b}"/>
+      <ellipse cx="100" cy="108" rx="24" ry="18" fill="${f}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(58, 142, 104)}
+      <ellipse cx="100" cy="100" rx="8" ry="6" fill="${C.line}" stroke="none"/>
+      ${_mouth(100, 108, m)}`;
+  },
+  dino(m) {
+    const e = PETS.dino.eyes, g = '#A9CC8E', d = '#7FAE6E';
+    return `
+      <path class="tail" d="M134 174 Q178 178 186 138 Q164 150 138 146Z" fill="${g}"/>
+      <ellipse cx="100" cy="150" rx="44" ry="36" fill="${g}"/>
+      <ellipse cx="100" cy="159" rx="26" ry="23" fill="${C.cream}" stroke="none"/>
+      <path d="M86 150 h28 M84 160 h32 M88 170 h24" stroke="#E0D2A8" stroke-width="2"/>
+      <ellipse cx="59" cy="146" rx="9" ry="6.500" fill="${g}"/><ellipse cx="141" cy="146" rx="9" ry="6.500" fill="${g}"/>
+      <ellipse cx="80" cy="182" rx="15" ry="8" fill="${d}"/><ellipse cx="120" cy="182" rx="15" ry="8" fill="${d}"/>
+      <path d="M82 50 L89 28 L100 44 L111 26 L118 50Z" fill="${d}"/>
+      <ellipse cx="100" cy="90" rx="52" ry="46" fill="${g}"/>
+      <circle cx="60" cy="72" r="4.500" fill="${d}" stroke="none"/><circle cx="142" cy="68" r="5.500" fill="${d}" stroke="none"/><circle cx="132" cy="56" r="3.500" fill="${d}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(58, 142, 102)}
+      <path d="M94 99 v.100 M106 99 v.100" stroke-width="3"/>
+      ${_mouth(100, 105, m)}`;
+  },
+  unicorn(m) {
+    const e = PETS.unicorn.eyes, w = '#FDF8F0';
+    return `
+      <path class="tail" d="M138 162 q36 -2 36 -38 q-14 4 -18 16 q-2 -10 -12 -12 q4 18 -6 34z" fill="${C.purple}"/>
+      <ellipse cx="100" cy="152" rx="42" ry="34" fill="${w}"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${C.pink}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${C.pink}"/>
+      <path d="M62 62 L54 26 L86 46Z" fill="${w}"/><path d="M138 62 L146 26 L114 46Z" fill="${w}"/>
+      <path d="M90 48 L100 4 L110 48Z" fill="${C.yellow}"/><path d="M95 34 l9 -5 M93 43 l13 -7 M98 22 l5 -3" stroke-width="1.800"/>
+      <ellipse cx="100" cy="90" rx="52" ry="46" fill="${w}"/>
+      <path d="M102 46 Q76 40 62 58 Q56 68 58 78 Q68 64 84 62 Q96 58 102 46Z" fill="${C.pink}"/>
+      <path d="M100 46 Q124 40 140 58 Q146 68 144 76 Q134 62 118 60 Q106 56 100 46Z" fill="${C.purple}"/>
+      <path d="M150 74 q12 14 6 36 q-10 -6 -12 -20z" fill="${C.sky}"/>
+      <ellipse cx="100" cy="111" rx="25" ry="16" fill="#FBE3E0" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(58, 142, 104)}
+      <path d="M92 109 v.100 M108 109 v.100" stroke-width="3"/>
+      ${_mouth(100, 113, m)}`;
+  }
+});
+
+/* ---------- 第六批图标 ---------- */
+Object.assign(ICONS, {
+  // 新小车
+  tricycle: _wh(36, 36, 8) + _wh(11, 39, 5) + `<path d="M36 36 L31 14" stroke-width="3"/><path d="M26 14 h10" stroke-width="4"/>` + _line2('M33 23 L14 30', C.coral, 3) + `<path d="M7 25 h13 v4.500 h-13z" fill="${C.yellow}"/>`,
+  motorbike: _wh(11, 37, 7) + _wh(38, 37, 7) + `<path d="M6 33 Q6 25 15 24 H27 L31 32 H34 L37 14 H42 L44 34 H37 Q33 28 28 34 H18 Q14 28 8 31Z" fill="${C.blue}"/><path d="M14 24 h13 q2 -4.500 -2 -5.500 h-9 q-3 1 -2 5.500z" fill="#5B4636"/><path d="M34 14 h9" stroke-width="3.500"/>`,
+  jeep: `<path d="M4 33 V20 H16 V11 H34 L38 20 H44 Q46 21 46 24 V33 Q46 35 44 35 H6 Q4 35 4 33Z" fill="#8DB574"/><path d="M19 19 V14 H25 V19Z M28 14 H32 L35 19 H28Z" fill="${C.sky}" stroke-width="1.600"/><rect x="1" y="20" width="4" height="10" rx="2" fill="#5B4636"/>` + _wh(14, 36, 6) + _wh(36, 36, 6),
+  bus: `<path d="M3 33 V13 Q3 9 7 9 H38 Q44 10 45 18 V33 Q45 35 43 35 H5 Q3 35 3 33Z" fill="${C.yellow}"/><path d="M4 27 H45" stroke="#5B4636" stroke-width="2.400"/><rect x="7" y="13" width="7" height="8" rx="1.500" fill="${C.sky}" stroke-width="1.400"/><rect x="16" y="13" width="7" height="8" rx="1.500" fill="${C.sky}" stroke-width="1.400"/><rect x="25" y="13" width="7" height="8" rx="1.500" fill="${C.sky}" stroke-width="1.400"/><rect x="35" y="13" width="6" height="18" rx="1.500" fill="${C.sky}" stroke-width="1.400"/>` + _wh(13, 36, 5.5) + _wh(35, 36, 5.5),
+  firetruck: `<path d="M3 33 V19 H28 V12 H38 Q42 13 44 19 L46 24 V33 Q46 35 44 35 H5 Q3 35 3 33Z" fill="${C.red}"/><path d="M31 15 H37 Q40 16 41 21 H31Z" fill="${C.sky}" stroke-width="1.600"/><path d="M5 12 H26 M5 16 H26 M9 12 v4 M14 12 v4 M19 12 v4 M24 12 v4" stroke-width="1.600"/><path d="M4.500 29 H45" stroke="#fff" stroke-width="2.600"/><rect x="33" y="7.500" width="5" height="4.500" rx="1.500" fill="${C.blue}" stroke-width="1.400"/>` + _wh(13, 36, 5.5) + _wh(36, 36, 5.5),
+  train: `<rect x="4" y="11" width="16" height="23" rx="2" fill="${C.red}"/><rect x="7" y="15" width="8" height="8" rx="1.500" fill="${C.sky}" stroke-width="1.400"/><path d="M20 20 H38 Q43 20 43 25 V34 H20Z" fill="${C.blue}"/><path d="M32 20 V13 h-2 v-4 h9 v4 h-2 v7z" fill="#5B4636"/><path d="M2 11 h20" stroke-width="3.500"/>` + _wh(12, 37, 6) + _wh(26, 38, 5) + _wh(37, 38, 5),
+  heli: `<path d="M8 8 H42 M25 8 v5" stroke-width="3"/><path d="M16 13 H30 Q39 14 40 22 Q39 30 30 31 H21 Q14 30 13 24 L3 21 V17 L13 18 Q14 14 16 13Z" fill="${C.orange}"/><path d="M28 16 H31 Q36 17 37 22 H28Z" fill="${C.sky}" stroke-width="1.600"/><path d="M20 31 v5 M31 31 v5 M14 37.500 H38" stroke-width="2.400"/><circle cx="4" cy="19" r="3.500" stroke-width="1.600"/>`,
+  ufo: `<path d="M14 30 l-4 11 M34 30 l4 11 M24 32 v9" stroke-width="2.400"/><path d="M15 21 Q15 6 24 6 Q33 6 33 21Z" fill="${C.sky}"/><ellipse cx="24" cy="24" rx="21" ry="7.500" fill="${C.purple}"/>` + _dots([[9, 25], [17, 28], [24, 29], [31, 28], [39, 25]], 2, C.yellow),
+  // 新旅行用品
+  compass: `<rect x="21" y="3" width="6" height="6" rx="2" fill="${C.yellow}"/><circle cx="24" cy="26" r="18" fill="${C.cream}"/><circle cx="24" cy="26" r="13" stroke-width="1.600"/><path d="M24 14 L28 26 H20Z" fill="${C.red}" stroke-width="1.600"/><path d="M24 38 L28 26 H20Z" fill="${C.white}" stroke-width="1.600"/>`,
+  rod: `<path d="M8 44 L36 6" stroke-width="3"/><path d="M36 6 Q46 14 40 28" stroke-width="1.400"/><circle cx="15" cy="35" r="4" fill="${C.yellow}" stroke-width="1.600"/>` + _fish(36, 34, C.orange),
+  sled: `<path d="M5 10 l4 3 M14 5 l2 5 M40 8 l-3 4" stroke="${C.blue}" stroke-width="2"/><path d="M6 38 H36 Q44 38 44 30" stroke-width="3"/><path d="M12 38 V28 M30 38 V28" stroke-width="2.400"/><rect x="6" y="20" width="30" height="8" rx="3" fill="${C.red}"/><path d="M36 24 Q44 22 44 30" stroke-width="2"/>`,
+  ticket: `<path d="M4 14 h40 v7 a4 4 0 0 0 0 8 v7 h-40 v-7 a4 4 0 0 0 0 -8z" fill="${C.pink}"/><path d="M32 14 v22" stroke-width="1.400" stroke-dasharray="3 3"/>` + _star(18, 25, 7, 3.2, C.yellow),
+  treasure: `<path d="M6 10 Q24 4 42 10 V38 Q24 32 6 38Z" fill="${C.sand}"/><path d="M12 30 q6 -10 12 -4 q6 4 10 -8" stroke="${C.dwood}" stroke-width="2" stroke-dasharray="3 3"/><path d="M31 13 l6 6 M37 13 l-6 6" stroke="${C.red}" stroke-width="2.600"/>`,
+  // 新特产
+  raisin: `<path d="M30 10 q8 -6 12 2 q-8 4 -12 -2z" fill="${C.green}" stroke-width="1.600"/><path d="M6 24 h36 q-2 18 -18 18 q-16 0 -18 -18z" fill="${C.white}"/><ellipse cx="24" cy="24" rx="18" ry="4.500" fill="#8C6BA6" stroke-width="1.600"/>` + _dots([[16, 23], [24, 25], [32, 23], [20, 21.5], [28, 21.5]], 1.800, '#6E4E86'),
+  seedcake: `<ellipse cx="24" cy="28" rx="20" ry="13" fill="#E2B877"/><path d="M7 26 q17 -12 34 0" stroke-width="1.600"/><path d="M15 31 l3 -3 M23 34 l3 -3 M31 30 l3 -3 M21 26 l3 -3 M28 25 l3 -3" stroke="${C.dwood}" stroke-width="3"/>`,
+  lavice: `<path d="M26 7 l4 -5" stroke="${C.dgreen}" stroke-width="2"/><path d="M15 24 L24 46 L33 24Z" fill="#E2B877"/><path d="M19 30 l8 5 M29 30 l-8 5" stroke-width="1.200"/><path d="M10 24 Q8 6 24 6 Q40 6 38 24 q-3.500 5 -7 0 q-3.500 5 -7 0 q-3.500 5 -7 0 q-3.500 5 -7 0z" fill="${C.purple}"/>`,
+  bananachip: `<path d="M10 8 h28 l-2 5 l3 27 q0 4 -4 4 h-22 q-4 0 -4 -4 l3 -27z" fill="${C.yellow}"/><path d="M11.500 13 h25" stroke-width="1.600"/><circle cx="24" cy="28" r="8" fill="${C.cream}" stroke-width="1.600"/><path d="M21 29 v.100 M27 29 v.100 M24 25 v.100" stroke="${C.dwood}" stroke-width="2.200"/>`,
+  pandabun: `<circle cx="11" cy="15" r="5.500" fill="#5B4636"/><circle cx="37" cy="15" r="5.500" fill="#5B4636"/><path d="M5 39 Q3 12 24 12 Q45 12 43 39Z" fill="${C.white}"/><path d="M3 39 h42"/><ellipse cx="17" cy="26" rx="4" ry="5" fill="#5B4636" stroke="none"/><ellipse cx="31" cy="26" rx="4" ry="5" fill="#5B4636" stroke="none"/><circle cx="24" cy="31" r="1.800" fill="#5B4636" stroke="none"/>`,
+  fishcake: `<path d="M4 24 Q14 8 30 14 L44 8 V40 L30 34 Q14 40 4 24Z" fill="#E2B877"/><circle cx="12" cy="22" r="1.800" fill="${C.line}" stroke="none"/><path d="M20 18 q4 6 0 12 M26 17 q4 7 0 14" stroke-width="1.500"/>`,
+  starcookie: _star(24, 25, 21, 10, '#E9B48A') + _dots([[24, 25], [24, 13], [14, 22], [34, 22], [18, 35], [30, 35]], 1.700, C.dwood),
+  osmanthus: `<path d="M6 22 L24 12 L42 22 V34 L24 44 L6 34Z" fill="#F6E7B4"/><path d="M6 22 L24 32 L42 22 M24 32 V44" stroke-width="1.800"/><path d="M6 28 L24 38 L42 28" stroke="${C.orange}" stroke-width="2.400"/>` + _dots([[18, 20], [24, 17], [30, 21], [24, 24]], 1.800, C.orange),
+  goldcoin: `<circle cx="24" cy="24" r="19" fill="${C.yellow}"/><circle cx="24" cy="24" r="14" stroke-width="1.600"/>` + _star(24, 24, 8, 3.6, '#F6E7B4'),
+  clamsoup: `<path d="M16 13 q-3 -3 0 -6 M24 13 q-3 -3 0 -6 M32 13 q-3 -3 0 -6" stroke-width="1.800"/><path d="M5 22 h38 q-2 20 -19 20 q-17 0 -19 -20z" fill="${C.white}"/><ellipse cx="24" cy="22" rx="19" ry="4.200" fill="#F3DCA8" stroke-width="1.600"/><path d="M17 22.500 q7 -8 14 0z" fill="${C.pink}" stroke-width="1.400"/>`,
+  aurorajelly: `<path d="M3 41 h42"/><path d="M10 40 Q6 14 24 12 Q42 14 38 40Z" fill="#9BE0B8"/><path d="M10.500 31 q13.500 -8 27 0 l.500 9 h-28z" fill="${C.purple}" stroke="none" opacity=".7"/><path d="M10 40 Q6 14 24 12 Q42 14 38 40Z"/>` + _dots([[18, 22], [28, 19], [24, 27]], 1.600, '#fff'),
+  fishball: `<path d="M37 31 q-3 -3 0 -6 M42 37 q-3 -3 0 -6" stroke-width="1.600"/><path d="M10 43 L38 7" stroke-width="2.400"/><circle cx="16" cy="35" r="7" fill="${C.cream}"/><circle cx="24" cy="25" r="7" fill="${C.cream}"/><circle cx="32" cy="15" r="7" fill="${C.cream}"/>`,
+  lavacake: `<path d="M22 9 q-3 -3 0 -6" stroke-width="1.600"/><path d="M3 41 h42"/><path d="M8 40 V22 Q8 16 16 16 H32 Q40 16 40 22 V40Z" fill="#8C5A44"/><path d="M11 17 q3 11 8 3 q3 12 8 0 q4 9 9.500 -3z" fill="${C.orange}" stroke-width="1.600"/>`,
+  dinoegg: `<path d="M24 4 Q40 6 40 28 Q40 44 24 44 Q8 44 8 28 Q8 6 24 4Z" fill="${C.cream}"/>` + _dots([[17, 16], [30, 13], [33, 33], [17, 36], [25, 38]], 3, '#9DBB7A') + `<path d="M8.500 27 l6 -4 l5 5 l6 -5 l5 5 l8.500 -4" stroke-width="1.600"/>`,
+  crowncookie: `<path d="M6 38 L4 14 L15 24 L24 8 L33 24 L44 14 L42 38Z" fill="#E2B877"/><path d="M9 32 h30" stroke="${C.cream}" stroke-width="3"/><circle cx="24" cy="21" r="2.600" fill="${C.red}" stroke="none"/><circle cx="12" cy="25" r="2" fill="${C.blue}" stroke="none"/><circle cx="36" cy="25" r="2" fill="${C.blue}" stroke="none"/>`,
+  spaceice: `<rect x="7" y="12" width="32" height="28" rx="4" fill="${C.pink}"/><path d="M7 22 h32 v9 h-32z" fill="${C.white}" stroke-width="1.400"/><path d="M7 31 h32 v5 q0 4 -4 4 h-24 q-4 0 -4 -4z" fill="#C9A27A" stroke-width="1.400"/>` + _star(38, 10, 7, 3, C.yellow),
+  rainbowcandy: `<path d="M6 34 A18 18 0 0 1 42 34" stroke="${C.coral}" stroke-width="6"/><path d="M12 34 A12 12 0 0 1 36 34" stroke="${C.yellow}" stroke-width="6"/><path d="M18 34 A6 6 0 0 1 30 34" stroke="${C.blue}" stroke-width="6"/><circle cx="8" cy="37" r="6" fill="#fff" stroke-width="1.600"/><circle cx="40" cy="37" r="6" fill="#fff" stroke-width="1.600"/>`,
+  animalcracker: `<circle cx="12" cy="14" r="6" fill="#E2B877"/><circle cx="36" cy="14" r="6" fill="#E2B877"/><circle cx="24" cy="26" r="17" fill="#E2B877"/><path d="M18 23 v.100 M30 23 v.100" stroke-width="3"/><ellipse cx="24" cy="31" rx="6" ry="4.500" fill="${C.cream}" stroke-width="1.400"/><path d="M24 29.500 v.100" stroke-width="2.600"/>`,
+  railbento: `<path d="M6 8 h36 M6 4.500 h36" stroke-width="1.600"/><rect x="4" y="13" width="40" height="28" rx="4" fill="${C.wood}"/><rect x="8" y="17" width="16" height="20" rx="2" fill="${C.white}" stroke-width="1.400"/><circle cx="16" cy="27" r="3" fill="${C.red}" stroke="none"/><rect x="26" y="17" width="14" height="9" rx="2" fill="${C.yellow}" stroke-width="1.400"/><rect x="26" y="28" width="14" height="9" rx="2" fill="${C.green}" stroke-width="1.400"/>`,
+  takoyaki: `<path d="M27 19 L33 5" stroke-width="1.600"/><path d="M4 30 h40 l-5 12 h-30z" fill="${C.cream}"/><circle cx="14" cy="26" r="7.500" fill="#D9A866"/><circle cx="34" cy="26" r="7.500" fill="#D9A866"/><circle cx="24" cy="24" r="7.500" fill="#D9A866"/><path d="M9 23 q5 -4 10 0 M29 23 q5 -4 10 0 M19 21 q5 -4 10 0" stroke="#8C5A44" stroke-width="2.600"/>`,
+  // 各地小铺的吃的喝的
+  honeycomb: `<path d="M24 4 L41 14 V34 L24 44 L7 34 V14Z" fill="${C.yellow}"/><path d="M24 14 l8 5 v10 l-8 5 l-8 -5 v-10z" fill="#F6E7B4" stroke-width="1.600"/><path d="M24 4 v10 M41 14 l-9 5 M41 34 l-9 -5 M24 44 v-10 M7 34 l9 -5 M7 14 l9 5" stroke-width="1.400"/>`,
+  berrypie: `<path d="M4 30 Q4 15 24 15 Q44 15 44 30Z" fill="#B0688A"/><path d="M12 20 l8 10 M22 16 l8 14 M32 18 l6 12 M36 20 l-8 10 M26 16 l-8 14 M16 18 l-6 12" stroke="#E2B877" stroke-width="2.600"/><path d="M2 30 h44 l-4 10 h-36z" fill="#E2B877"/>`,
+  shrimpchip: `<path d="M10 40 Q4 26 12 14 Q22 6 34 12 Q44 20 40 34 Q34 44 24 40 Q16 44 10 40Z" fill="#F6C9C0"/><path d="M14 30 q6 -10 14 -6 M18 36 q8 -8 16 -4 M16 20 q6 -6 14 -2" stroke="${C.coral}" stroke-width="1.600"/>`,
+  saltsoda: `<path d="M30 3 l-5 30" stroke="${C.blue}" stroke-width="3"/>` + _glass('#BFE3EA') + _dots([[19, 30], [26, 35], [30, 27]], 1.800, '#fff'),
+  hotpot: `<path d="M14 14 q-3 -3 0 -6 M24 14 q-3 -3 0 -6 M34 14 q-3 -3 0 -6" stroke-width="1.800"/><path d="M2 27 h4 M42 27 h4" stroke-width="3.500"/><path d="M6 22 h36 v8 q0 12 -18 12 q-18 0 -18 -12z" fill="${C.red}"/><ellipse cx="24" cy="22" rx="18" ry="4.500" fill="#F3B48A" stroke-width="1.600"/>` + _dots([[17, 22], [25, 23.5], [31, 21.5]], 1.800, C.dgreen),
+  gingermilk: `<path d="M17 10 q-3 -3 0 -6 M27 10 q-3 -3 0 -6" stroke-width="1.800"/><path d="M36 22 q9 0 8 8 q-1 6 -8 5"/><path d="M8 16 h28 v20 q0 6 -6 6 h-16 q-6 0 -6 -6z" fill="${C.white}"/><ellipse cx="22" cy="17" rx="13.500" ry="3" fill="#F6E7B4" stroke-width="1.400"/>`,
+  datecake: `<path d="M6 20 L24 10 L42 20 V34 L24 44 L6 34Z" fill="#B07A52"/><path d="M6 20 L24 30 L42 20 M24 30 V44" stroke-width="1.800"/><ellipse cx="24" cy="20" rx="6" ry="3.500" fill="${C.cream}" stroke-width="1.400"/>`,
+  minttea: _glass('#BFE3C0') + `<rect x="17" y="30" width="7" height="7" rx="1.500" fill="#fff" opacity=".75" stroke-width="1.200"/><path d="M22 21 q8 -11 17 -7 q-4 11 -17 7z" fill="${C.green}" stroke-width="1.600"/>`,
+  starcandy: `<rect x="15" y="4" width="18" height="6" rx="2" fill="${C.wood}"/><path d="M12 10 h24 q4 4 4 10 v18 q0 6 -6 6 h-20 q-6 0 -6 -6 v-18 q0 -6 4 -10z" fill="#EEF5F4"/><g stroke-width="1.300">` + _star(18, 24, 5, 2.2, C.yellow) + _star(29, 22, 5, 2.2, C.pink) + _star(24, 34, 5, 2.2, C.sky) + _star(33, 35, 4, 1.8, C.purple) + _star(15, 36, 4, 1.8, C.lgreen) + '</g>',
+  stardrink: _glass('#B7A3CC') + _star(24, 31, 6.5, 2.8, C.yellow) + _dots([[30, 25], [18, 36]], 1.600, '#fff'),
+  hotdog: `<path d="M4 27 Q4 16 14 16 H34 Q44 16 44 27 Q44 38 34 38 H14 Q4 38 4 27Z" fill="#E2B877"/><path d="M2 25 Q2 19.500 8 19.500 H40 Q46 19.500 46 25 Q46 30.500 40 30.500 H8 Q2 30.500 2 25Z" fill="${C.coral}"/><path d="M8 25 q4 -5 8 0 q4 5 8 0 q4 -5 8 0 q4 5 8 0" stroke="${C.yellow}" stroke-width="2.400"/>`,
+  crepe: `<path d="M28 9 l6 -6" stroke="${C.dwood}" stroke-width="3"/><path d="M10 16 L24 46 L38 16Z" fill="#F3DCA8"/><path d="M17 27 l12 7" stroke-width="1.200"/><path d="M8 17 q4 -11 16 -11 q12 0 16 11 q-4 5 -8 0 q-4 5 -8 0 q-4 5 -8 0 q-4 5 -8 0z" fill="${C.white}"/><circle cx="18" cy="9" r="5" fill="${C.red}" stroke-width="1.600"/>`,
+  // 各地小铺的装扮
+  acornhat: `<path d="M24 12 q1 -6 6 -8" stroke-width="3"/><path d="M5 34 Q3 12 24 12 Q45 12 43 34 Q24 26 5 34Z" fill="${C.dwood}"/><path d="M12 24 l4 4 M22 18 l4 4 M32 22 l4 4 M18 28 l3 3 M28 27 l3 3" stroke-width="1.400"/>`,
+  butterfly: `<path d="M24 24 Q6 4 4 20 Q4 30 24 24Z M24 24 Q42 4 44 20 Q44 30 24 24Z" fill="${C.purple}"/><path d="M24 24 Q10 30 12 40 Q20 42 24 24Z M24 24 Q38 30 36 40 Q28 42 24 24Z" fill="${C.pink}"/><path d="M24 14 v24" stroke-width="3"/>`,
+  sailor: `<path d="M6 30 Q0 12 24 10 Q48 12 42 30Z" fill="${C.white}"/><path d="M7 27 Q24 34 41 27 L41 33 Q24 40 7 33Z" fill="${C.blue}"/><path d="M36 35 l6 8 M40 33 l6 5" stroke="${C.blue}" stroke-width="3"/>`,
+  shellclip: `<path d="M24 42 Q2 32 8 14 Q24 2 40 14 Q46 32 24 42Z" fill="${C.sky}"/><path d="M24 42 V8 M24 42 L12 14 M24 42 L36 14" stroke-width="1.600"/>`,
+  earmuff: `<path d="M8 30 Q6 6 24 6 Q42 6 40 30" stroke-width="6"/><path d="M8 30 Q6 6 24 6 Q42 6 40 30" stroke="${C.blue}" stroke-width="3"/><circle cx="8" cy="32" r="8" fill="${C.white}"/><circle cx="40" cy="32" r="8" fill="${C.white}"/>`,
+  knitcap: `<circle cx="24" cy="8" r="5.500" fill="${C.white}"/><path d="M7 34 Q6 12 24 12 Q42 12 41 34Z" fill="${C.coral}"/><path d="M9 24 Q24 18 39 24" stroke="${C.cream}" stroke-width="3"/><rect x="5" y="31" width="38" height="9" rx="4.500" fill="${C.cream}"/>`,
+  cowboy: `<path d="M2 32 Q10 38 24 35 Q38 38 46 32 Q40 26 34 28 L32 12 Q28 8 24 13 Q20 8 16 12 L14 28 Q8 26 2 32Z" fill="${C.dwood}"/><path d="M14.500 25 Q24 29 33.500 25" stroke="${C.yellow}" stroke-width="3"/>`,
+  explorer: `<path d="M3 34 Q24 26 45 34 Q24 40 3 34Z" fill="#D9C79A"/><path d="M9 31 Q9 10 24 10 Q39 10 39 31" fill="${C.sand}"/><path d="M9 27 Q24 32 39 27" stroke="${C.dwood}" stroke-width="3"/><circle cx="24" cy="9" r="2.200" fill="${C.dwood}" stroke-width="1.400"/>`,
+  unicornhorn: `<path d="M6 40 Q24 28 42 40" stroke-width="6"/><path d="M6 40 Q24 28 42 40" stroke="${C.pink}" stroke-width="3"/><path d="M17 34 L24 4 L31 34Z" fill="${C.yellow}"/><path d="M19.500 25 l8 -4 M21.500 16 l5 -2.500" stroke-width="1.500"/>`,
+  antenna: `<path d="M6 40 Q24 28 42 40" stroke-width="6"/><path d="M6 40 Q24 28 42 40" stroke="#9BE0B8" stroke-width="3"/><path d="M16 34 q-4 -10 -8 -18 M32 34 q4 -10 8 -18" stroke-width="2"/><circle cx="7" cy="12" r="5.500" fill="#9BE0B8"/><circle cx="41" cy="12" r="5.500" fill="#9BE0B8"/>`,
+  tophat: `<ellipse cx="24" cy="36" rx="21" ry="5" fill="#5B4636"/><path d="M12 35 V10 Q24 6 36 10 V35 Q24 39 12 35Z" fill="#5B4636"/><path d="M12 28 Q24 32 36 28" stroke="${C.red}" stroke-width="4"/>`,
+  starglasses: `<g stroke-width="2">` + _star(13, 24, 11.5, 6, C.yellow) + _star(35, 24, 11.5, 6, C.yellow) + `</g><path d="M21 23 h6" stroke-width="2.400"/>`
+});
+
+/* ---------- 更多小车（都停在负一楼的车库）和各地小铺才有的家具 ---------- */
+Object.assign(FURNS, {
+  tricycle:  { name: '三轮车',   type: 'floor', price: 450,  car: 1.8, ic: 'tricycle',  tip: '路上快八成', w: 104, vb: [150, 132],
+    draw: () => _wh(118, 104, 23) + _wh(36, 112, 14) + _line2('M118 104 L104 40', C.coral, 5) + `<path d="M86 40 h34" stroke-width="8"/>` + _line2('M108 62 L46 86', C.coral, 5) + `<path d="M22 76 h36 q6 0 6 6 v6 h-48 v-6 q0 -6 6 -6z" fill="${C.yellow}"/><path d="M124 58 h18 l-3 16 h-12z" fill="${C.wood}" stroke-width="2"/>` },
+  motorbike: { name: '小摩托',   type: 'floor', price: 800,  car: 2.5, ic: 'motorbike', tip: '路上快 2.5 倍', w: 140, vb: [190, 132],
+    draw: () => _wh(40, 106, 20) + _wh(150, 106, 20) + `<path d="M22 96 Q22 70 52 66 H98 Q104 66 108 74 L114 90 H128 L138 40 H154 L166 100 H142 Q132 78 112 98 H68 Q58 78 40 80 Q28 82 22 96Z" fill="${C.blue}"/><path d="M48 66 h48 q6 -11 -4 -13 h-38 q-9 2 -6 13z" fill="#5B4636"/><path d="M130 40 h26" stroke-width="7"/><circle cx="160" cy="64" r="6.500" fill="${C.yellow}"/><path d="M26 92 h14" stroke="${C.red}" stroke-width="5"/>` },
+  jeep:      { name: '越野车',   type: 'floor', price: 1300, car: 3.5, ic: 'jeep',      tip: '路上快 3.5 倍', w: 180, vb: [230, 140],
+    draw: () => `<path d="M14 102 V60 H60 V30 H150 L168 60 H208 Q218 62 218 74 V102 Q218 108 210 108 H22 Q14 108 14 102Z" fill="#8DB574"/><path d="M70 58 V40 H104 V58Z M112 40 H144 L154 58 H112Z" fill="${C.sky}"/><path d="M108 60 V106" stroke-width="1.800"/><path d="M118 70 h12" stroke-width="3.500"/><rect x="2" y="62" width="14" height="34" rx="6" fill="#5B4636"/><circle cx="208" cy="80" r="6.500" fill="${C.yellow}"/><path d="M196 98 h22" stroke-width="5"/><path d="M64 30 V20 H146 V30" stroke-width="4"/>` + _wh(58, 108, 24) + _wh(170, 108, 24) },
+  bus:       { name: '小巴士',   type: 'floor', price: 2000, car: 4.5, ic: 'bus',       tip: '路上快 4.5 倍', w: 208, vb: [280, 150],
+    draw: () => `<path d="M10 118 V36 Q10 22 26 22 H236 Q262 24 268 60 V118 Q268 124 260 124 H18 Q10 124 10 118Z" fill="${C.yellow}"/><path d="M13 90 H266" stroke="#5B4636" stroke-width="5"/>` +
+      [24, 62, 100, 138, 176].map(x => `<rect x="${x}" y="38" width="30" height="32" rx="5" fill="${C.sky}"/>`).join('') +
+      `<rect x="216" y="38" width="30" height="78" rx="5" fill="${C.sky}"/><path d="M231 38 v78" stroke-width="1.600"/><circle cx="262" cy="104" r="5.500" fill="${C.white}" stroke-width="1.800"/><path d="M10 104 h10" stroke="${C.red}" stroke-width="5"/>` + _wh(62, 124, 22) + _wh(206, 124, 22) },
+  firetruck: { name: '消防车',   type: 'floor', price: 2800, car: 5.5, ic: 'firetruck', tip: '路上快 5.5 倍', w: 208, vb: [280, 150],
+    draw: () => `<rect x="198" y="20" width="16" height="14" rx="4" fill="${C.blue}"/><path d="M10 118 V60 H170 V34 H228 Q246 36 256 62 L268 86 V118 Q268 124 260 124 H18 Q10 124 10 118Z" fill="${C.red}"/><path d="M182 46 H224 Q236 48 244 68 H182Z" fill="${C.sky}"/><path d="M16 42 H166 M16 54 H166" stroke-width="3"/><path d="M30 42 v12 M50 42 v12 M70 42 v12 M90 42 v12 M110 42 v12 M130 42 v12 M150 42 v12" stroke-width="2"/><path d="M13 102 H267" stroke="#fff" stroke-width="6"/><circle cx="118" cy="80" r="13" fill="${C.yellow}"/><circle cx="118" cy="80" r="5" fill="${C.cream}" stroke-width="1.800"/><circle cx="262" cy="106" r="5.500" fill="${C.yellow}" stroke-width="1.800"/>` + _wh(62, 124, 22) + _wh(206, 124, 22) },
+  train:     { name: '小火车',   type: 'floor', price: 3600, car: 6.5, ic: 'train',     tip: '路上快 6.5 倍', w: 200, vb: [272, 162],
+    draw: () => `<path d="M186 64 V36 h-6 v-12 h30 v12 h-6 V64Z" fill="#5B4636"/><path d="M132 64 q0 -17 14 -17 q14 0 14 17z" fill="${C.yellow}"/><rect x="14" y="32" width="86" height="92" rx="6" fill="${C.red}"/><rect x="28" y="46" width="36" height="32" rx="5" fill="${C.sky}"/><path d="M6 30 h102" stroke-width="9"/><path d="M100 64 H216 Q238 64 238 86 V124 H100Z" fill="${C.blue}"/><path d="M118 64 v60 M196 64 v60" stroke="${C.yellow}" stroke-width="4"/><circle cx="240" cy="86" r="7.500" fill="${C.yellow}"/><path d="M236 124 L264 144 H224Z" fill="${C.gray}"/><path d="M14 124 H240" stroke-width="4"/>` + _wh(52, 132, 23) + _wh(120, 136, 18) + _wh(170, 136, 18) + _wh(214, 138, 15) + `<path d="M52 132 H170" stroke-width="5"/>` },
+  heli:      { name: '直升机',   type: 'floor', price: 5000, car: 8,   ic: 'heli',      tip: '路上快 8 倍', w: 200, vb: [270, 160],
+    draw: () => `<path d="M36 26 H234" stroke-width="5"/><path d="M135 26 v18" stroke-width="5"/><path d="M110 120 v18 M170 120 v18" stroke-width="4"/><path d="M82 140 H202 q9 0 11 -9" stroke-width="4.500"/><path d="M84 44 H160 Q204 46 208 86 Q206 118 160 120 H110 Q76 118 70 94 L20 80 V64 L70 68 Q74 46 84 44Z" fill="${C.orange}"/><path d="M150 54 H162 Q192 58 196 84 H150Z" fill="${C.sky}"/><path d="M74 96 H204" stroke="#fff" stroke-width="5"/><circle cx="20" cy="72" r="15" stroke-width="2"/><path d="M20 55 v34 M5 72 h30" stroke-width="3.500"/>` },
+  ufo:       { name: '小飞碟',   type: 'floor', price: 8000, car: 10,  ic: 'ufo',       tip: '路上快 10 倍', w: 176, vb: [240, 150],
+    draw: () => `<path d="M70 100 L52 140 M170 100 L188 140 M120 104 V140" stroke-width="4"/><path d="M40 142 h24 M176 142 h24 M108 142 h24" stroke-width="4.500"/><path d="M78 68 Q78 16 120 16 Q162 16 162 68Z" fill="${C.sky}"/><path d="M96 40 q6 -12 20 -14" stroke="#fff" stroke-width="3"/><ellipse cx="120" cy="78" rx="110" ry="27" fill="${C.purple}"/><ellipse cx="120" cy="70" rx="64" ry="12" fill="#DDD1EA" stroke-width="2"/>` +
+      [[34, 82], [76, 95], [120, 99], [164, 95], [206, 82]].map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="6" fill="${C.yellow}" stroke-width="1.800"/>`).join('') },
+  // 各地小铺才有的家具
+  hammock:   { name: '小吊床',   type: 'floor', price: 120, w: 220, vb: [220, 132], draw: () => `<path d="M4 128 h24 M192 128 h24" stroke-width="4.500"/>` + _line2('M16 128 V20', C.wood, 6) + _line2('M204 128 V20', C.wood, 6) + `<path d="M16 34 Q110 84 204 34 Q110 142 16 34Z" fill="${C.pink}"/><path d="M62 66 q4 20 -2 34 M110 76 v36 M158 66 q-4 20 2 34" stroke="${C.cream}" stroke-width="5"/><ellipse cx="60" cy="58" rx="18" ry="8" fill="${C.white}" stroke-width="2" transform="rotate(24 60 58)"/>` },
+  birdhouse: { name: '小鸟屋',   type: 'wall',  price: 60,  w: 80,  vb: [80, 100],  draw: () => `<rect x="16" y="40" width="48" height="52" fill="${C.cream}"/><path d="M6 44 L40 8 L74 44Z" fill="${C.coral}"/><circle cx="40" cy="60" r="10" fill="#5B4636"/><path d="M32 82 h16" stroke-width="4"/><circle cx="40" cy="74" r="6" fill="${C.sky}" stroke-width="1.800"/><path d="M45 73 l5 2 l-5 2z" fill="${C.orange}" stroke-width="1"/><circle cx="41.500" cy="72.500" r="1" fill="${C.line}" stroke="none"/>` },
+  surfboard: { name: '冲浪板',   type: 'floor', price: 90,  w: 76,  vb: [84, 182],  draw: () => `<g transform="rotate(8 42 176)"><path d="M42 6 Q70 60 64 132 Q58 174 42 176 Q26 174 20 132 Q14 60 42 6Z" fill="${C.sky}"/><path d="M42 8 V174" stroke="${C.coral}" stroke-width="6"/><path d="M22 98 Q42 86 63 98" stroke="#fff" stroke-width="5"/><path d="M21 112 Q42 100 63 112" stroke="${C.yellow}" stroke-width="4"/></g>` },
+  lifebuoy:  { name: '救生圈',   type: 'wall',  price: 55,  w: 80,  vb: [80, 86],   draw: () => `<path d="M40 2 v8"/><circle cx="40" cy="46" r="23" stroke-width="22"/><circle cx="40" cy="46" r="23" stroke="${C.white}" stroke-width="17"/><circle cx="40" cy="46" r="23" stroke="${C.red}" stroke-width="17" stroke-dasharray="18.060 18.060" stroke-linecap="butt"/>` },
+  fireplace: { name: '小壁炉',   type: 'floor', price: 150, w: 150, vb: [150, 140], draw: () => `<rect x="12" y="20" width="126" height="116" fill="#D9A58F"/><path d="M12 48 h126 M12 76 h30 M108 76 h30 M12 104 h30 M108 104 h30 M40 20 v28 M76 20 v28 M110 20 v28 M26 48 v28 M124 48 v28 M26 104 v32 M124 104 v32" stroke-width="1.400"/><rect x="4" y="6" width="142" height="14" rx="3" fill="${C.wood}"/><path d="M42 136 V86 Q42 60 75 60 Q108 60 108 86 V136Z" fill="#5B4636"/><path d="M75 132 q-24 -8 -14 -32 q6 8 10 4 q-2 -16 8 -26 q2 14 12 22 q8 12 0 26 q-6 8 -16 6z" fill="${C.orange}"/><path d="M75 132 q-10 -6 -4 -18 q6 6 8 -2 q8 10 2 18z" fill="${C.yellow}" stroke-width="1.600"/><path d="M52 134 h46" stroke-width="5"/>` },
+  snowman:   { name: '雪人摆件', type: 'floor', price: 80,  w: 84,  vb: [84, 132],  draw: () => `<path d="M14 86 l-11 -13 M70 86 l11 -13" stroke-width="2.600"/><circle cx="42" cy="98" r="30" fill="${C.white}"/><circle cx="42" cy="52" r="21" fill="${C.white}"/><rect x="31" y="10" width="22" height="22" fill="#5B4636"/><path d="M23 32 h38" stroke-width="5.500"/><path d="M35 48 v.100 M49 48 v.100" stroke-width="4"/><path d="M42 54 l15 4 l-15 3z" fill="${C.orange}" stroke-width="1.600"/><path d="M24 68 q18 10 36 0" stroke-width="9.500"/><path d="M24 68 q18 10 36 0" stroke="${C.red}" stroke-width="5.500"/><path d="M42 88 v.100 M42 102 v.100" stroke-width="4.500"/>` },
+  cactus:    { name: '仙人掌盆栽', type: 'floor', price: 60, w: 80,  vb: [80, 132],  draw: () => `<path d="M30 72 h-10 q-8 0 -8 -8 v-12" stroke-width="12"/><path d="M30 72 h-10 q-8 0 -8 -8 v-12" stroke="${C.green}" stroke-width="7.500"/><path d="M50 62 h10 q8 0 8 -8 v-8" stroke-width="12"/><path d="M50 62 h10 q8 0 8 -8 v-8" stroke="${C.green}" stroke-width="7.500"/><path d="M29 94 V36 q0 -12 11 -12 q11 0 11 12 V94z" fill="${C.green}"/><path d="M40 36 v50" stroke="${C.dgreen}" stroke-width="1.600"/><circle cx="40" cy="20" r="6.500" fill="${C.pink}" stroke-width="1.800"/><path d="M18 94 h44 l-6 34 h-32z" fill="${C.orange}"/><path d="M16 94 h48" stroke-width="5"/>` },
+  sandglass: { name: '大沙漏',   type: 'floor', price: 85,  w: 70,  vb: [70, 130],  draw: () => `<path d="M12 16 v98 M58 16 v98" stroke-width="3"/><path d="M16 16 H54 Q54 50 38 64 Q54 78 54 114 H16 Q16 78 32 64 Q16 50 16 16Z" fill="#EEF5F4"/><path d="M21 34 H49 Q45 52 35 61 Q25 52 21 34Z" fill="${C.sand}" stroke-width="1.400"/><path d="M35 62 v30" stroke="#D9BC7A" stroke-width="2"/><path d="M19 114 Q21 94 35 90 Q49 94 51 114Z" fill="${C.sand}" stroke-width="1.400"/><rect x="8" y="6" width="54" height="10" rx="3" fill="${C.wood}"/><rect x="8" y="114" width="54" height="10" rx="3" fill="${C.wood}"/>` },
+  moonlamp:  { name: '月亮灯',   type: 'wall',  price: 90,  w: 84,  vb: [84, 92],   draw: () => `<path d="M34 2 v12"/><path d="M50 14 A32 32 0 1 0 72 62 A26 26 0 0 1 50 14Z" fill="${C.yellow}"/><path d="M24 44 q5 5 10 0" stroke-width="2"/><path d="M26 58 q7 5 13 0" stroke-width="1.800"/>` + _star(62, 30, 8, 3.6, C.white) },
+  telescope: { name: '望远镜',   type: 'floor', price: 130, w: 110, vb: [110, 150], draw: () => `<path d="M55 80 L24 146 M55 80 L86 146 M55 80 V140" stroke-width="4.500"/><g transform="rotate(-28 55 72)"><rect x="8" y="58" width="80" height="26" rx="5" fill="${C.blue}"/><rect x="82" y="52" width="20" height="38" rx="4" fill="#6F9DB5"/><rect x="-4" y="64" width="13" height="14" rx="3" fill="#5B4636"/><path d="M30 58 v26 M58 58 v26" stroke="${C.yellow}" stroke-width="3"/></g><circle cx="55" cy="80" r="7" fill="${C.wood}"/>` },
+  gacha:     { name: '扭蛋机',   type: 'floor', price: 140, w: 100, vb: [100, 160], draw: () => `<rect x="14" y="76" width="72" height="78" rx="8" fill="${C.red}"/><circle cx="50" cy="46" r="40" fill="#EEF5F4"/>` +
+      [[30, 62, C.coral], [50, 68, C.yellow], [70, 62, C.blue], [40, 46, C.purple], [61, 48, C.lgreen]].map(q => `<circle cx="${q[0]}" cy="${q[1]}" r="10" fill="${q[2]}" stroke-width="1.800"/><path d="M${q[0] - 10} ${q[1]} h20" stroke-width="1.400"/>`).join('') +
+      `<path d="M22 32 q6 -13 18 -17" stroke="#fff" stroke-width="3.500"/><circle cx="50" cy="106" r="12" fill="${C.yellow}"/><path d="M42 106 h16" stroke-width="3.500"/><rect x="34" y="130" width="32" height="16" rx="3" fill="#5B4636"/>` },
+  neon:      { name: '霓虹灯牌', type: 'wall',  price: 80,  w: 130, vb: [130, 84],  draw: () => `<path d="M30 10 V2 M100 10 V2"/><rect x="4" y="10" width="122" height="68" rx="10" fill="#4A4660"/><g stroke="${C.yellow}" stroke-width="4">` + _star(38, 44, 21, 9.5, 'none') + `</g><path d="M92 62 q-24 -16 -16 -30 q8 -10 16 2 q8 -12 16 -2 q8 14 -16 30z" stroke="${C.pink}" stroke-width="4"/>` }
+});
+
+/* ---------- 负一楼：车库 ---------- */
+function sceneGarageSVG() {
+  let bricks = '';
+  for (let r = 0; r < 8; r++) { const y = 20 + r * 44; bricks += `M0 ${y} H800 `; for (let x = (r % 2) * 55 + 30; x < 800; x += 110) bricks += `M${x} ${y} v44 `; }
+  let slats = '';
+  for (let y = 152; y < 372; y += 30) slats += `M270 ${y} h260 `;
+  return _SCENE_OPEN + G_OPEN('wob-l', 3) + `
+    <rect width="800" height="372" fill="#DAD4C6" stroke="none"/>
+    <path d="${bricks}" stroke="#C6BEAC" stroke-width="2"/>
+    <rect width="800" height="372" fill="url(#hatch)" stroke="none"/>
+    <rect x="86" y="104" width="140" height="66" rx="6" fill="${C.white}"/>
+    <rect class="win-sky" x="96" y="114" width="120" height="46" stroke="none"/>
+    <path class="win-hill" d="M96 160 v-10 q30 -12 60 -2 q30 -10 60 0 v12z" stroke="none"/>
+    <path d="M156 114 v46" stroke="${C.white}" stroke-width="5"/><path d="M156 114 v46" stroke-width="1.600"/><rect x="96" y="114" width="120" height="46" stroke-width="1.600"/>
+    <rect x="270" y="122" width="260" height="250" fill="#B8BCC0"/><path d="${slats}" stroke-width="2"/>
+    <rect x="258" y="108" width="284" height="18" rx="5" fill="${C.dwood}"/><rect x="382" y="338" width="36" height="9" rx="3" fill="#5B4636"/>
+    <path d="M400 0 V50"/><path d="M372 76 Q400 38 428 76Z" fill="${C.yellow}"/>
+    <rect x="600" y="100" width="62" height="62" rx="9" fill="${C.blue}"/><path d="M620 148 V114 h13 q13 0 13 10 q0 10 -13 10 h-13" stroke="#fff" stroke-width="7"/>
+    <rect x="572" y="246" width="130" height="11" rx="3" fill="${C.wood}"/><path d="M586 257 v16 M688 257 v16"/>
+    <rect x="584" y="216" width="40" height="30" rx="4" fill="${C.red}"/><path d="M596 216 q8 -12 16 0" stroke-width="2.400"/>
+    <path d="M640 246 v-24 q0 -6 6 -6 h10 q6 0 6 6 v24z" fill="${C.yellow}"/><path d="M662 226 l12 -8" stroke-width="3"/>
+    <ellipse cx="80" cy="348" rx="44" ry="15" fill="#5B4636"/><ellipse cx="80" cy="322" rx="44" ry="15" fill="#5B4636"/><ellipse cx="80" cy="296" rx="44" ry="15" fill="#5B4636"/><ellipse cx="80" cy="296" rx="20" ry="6" fill="#DAD4C6" stroke-width="2"/>
+    <rect y="372" width="800" height="128" fill="#C9C6BE" stroke="none"/>
+    <path d="M0 372 H800" stroke-width="2.600"/>
+    <path d="M168 386 L128 500 M352 386 L336 500 M528 386 L540 500 M704 400 L744 500" stroke="#fff" stroke-width="5" stroke-dasharray="16 12"/>
+    <path d="M40 430 l10 3 M250 470 l12 -2 M440 420 l10 4 M610 480 l12 -3" stroke="#B5B1A6" stroke-width="2"/>
+    <path d="M700 372 V350 H726 V328 H752 V306 H778 V284 H810 V372Z" fill="#C9C6BE"/>
+    <path d="M704 328 L806 240" stroke-width="5"/><path d="M713 348 v-28 M739 326 v-28 M765 304 v-28 M791 282 v-28" stroke-width="2.400"/>
+  </g></svg>`;
+}
+
+/* ---------- 第五批旅行目的地（20 个） ---------- */
+Object.assign(DESTS, {
+  vineyard:     { name: '葡萄庄园',   time: 150, souv: 'raisin',        pet: [16, 104, .42] },
+  sunfield:     { name: '向日葵花海', time: 150, souv: 'seedcake',      pet: [108, 104, .42] },
+  lavender:     { name: '薰衣草庄园', time: 150, souv: 'lavice',        pet: [184, 104, .42] },
+  jungle:       { name: '热带雨林',   time: 240, souv: 'bananachip',    pet: [108, 104, .42] },
+  pandavale:    { name: '熊猫竹谷',   time: 210, souv: 'pandabun',      pet: [150, 104, .42] },
+  harbor:       { name: '渔港码头',   time: 180, souv: 'fishcake',      pet: [22, 82, .42] },
+  beach:        { name: '贝壳沙滩',   time: 180, souv: 'starcookie',    pet: [140, 104, .42] },
+  watertown:    { name: '水乡小桥',   time: 210, souv: 'osmanthus',     pet: [110, 30, .4] },
+  piratebay:    { name: '海盗湾',     time: 270, souv: 'goldcoin',      pet: [20, 100, .42] },
+  coastroad:    { name: '海滨公路',   time: 210, souv: 'clamsoup',      pet: [10, 44, .42] },
+  aurora:       { name: '极光冰原',   time: 270, souv: 'aurorajelly',   pet: [108, 104, .42] },
+  igloo:        { name: '冰屋村',     time: 240, souv: 'fishball',      pet: [140, 104, .42] },
+  volcano:      { name: '火山口',     time: 270, souv: 'lavacake',      pet: [16, 104, .42] },
+  dinovalley:   { name: '恐龙谷',     time: 270, souv: 'dinoegg',       pet: [16, 104, .42] },
+  castle:       { name: '古城堡',     time: 240, souv: 'crowncookie',   pet: [16, 104, .42] },
+  spacestation: { name: '太空站',     time: 300, souv: 'spaceice',      pet: [100, 100, .42] },
+  rainbow:      { name: '彩虹桥',     time: 270, souv: 'rainbowcandy',  pet: [110, 17, .4] },
+  zoo:          { name: '动物园',     time: 180, souv: 'animalcracker', pet: [14, 104, .42] },
+  station:      { name: '小火车站',   time: 180, souv: 'railbento',     pet: [18, 104, .42] },
+  nightmarket:  { name: '夜市',       time: 210, souv: 'takoyaki',      pet: [108, 104, .42] }
+});
+Object.assign(SOUVS, {
+  raisin:        { name: '葡萄干',       ic: 'raisin',        hunger: 16, happy: 10 },
+  seedcake:      { name: '瓜子酥',       ic: 'seedcake',      hunger: 22, happy: 8 },
+  lavice:        { name: '薰衣草冰淇淋', ic: 'lavice',        hunger: 8,  thirst: 8, happy: 20, sweet: 1 },
+  bananachip:    { name: '香蕉脆片',     ic: 'bananachip',    hunger: 20, energy: 10 },
+  pandabun:      { name: '熊猫包',       ic: 'pandabun',      hunger: 30, happy: 8 },
+  fishcake:      { name: '烤鱼饼',       ic: 'fishcake',      hunger: 30, energy: 6 },
+  starcookie:    { name: '海星饼干',     ic: 'starcookie',    hunger: 16, happy: 14 },
+  osmanthus:     { name: '桂花糕',       ic: 'osmanthus',     hunger: 20, happy: 12, sweet: 1 },
+  goldcoin:      { name: '金币巧克力',   ic: 'goldcoin',      hunger: 10, happy: 22, sweet: 1 },
+  clamsoup:      { name: '海鲜浓汤',     ic: 'clamsoup',      hunger: 22, thirst: 14 },
+  aurorajelly:   { name: '极光果冻',     ic: 'aurorajelly',   thirst: 12, happy: 24, sweet: 1 },
+  fishball:      { name: '热鱼丸',       ic: 'fishball',      hunger: 26, energy: 8 },
+  lavacake:      { name: '熔岩蛋糕',     ic: 'lavacake',      hunger: 18, happy: 18, sweet: 1 },
+  dinoegg:       { name: '恐龙蛋',       ic: 'dinoegg',       hunger: 24, happy: 12 },
+  crowncookie:   { name: '皇冠饼干',     ic: 'crowncookie',   hunger: 18, happy: 16 },
+  spaceice:      { name: '太空冰淇淋',   ic: 'spaceice',      hunger: 12, happy: 22, sweet: 1 },
+  rainbowcandy:  { name: '彩虹糖',       ic: 'rainbowcandy',  hunger: 6,  happy: 26, sweet: 1 },
+  animalcracker: { name: '动物饼干',     ic: 'animalcracker', hunger: 22, happy: 10 },
+  railbento:     { name: '铁路便当',     ic: 'railbento',     hunger: 40 },
+  takoyaki:      { name: '章鱼小丸子',   ic: 'takoyaki',      hunger: 24, happy: 12 }
+});
+Object.assign(CARD_BG, {
+  vineyard(r) {
+    const vine = (x, y) => `<path d="M${x} ${y} v-26 M${x - 14} ${y - 22} h28" stroke-width="2.200"/><path d="M${x - 14} ${y - 22} q-4 6 0 10 M${x + 14} ${y - 22} q4 6 0 10" stroke="${C.dgreen}" stroke-width="2"/>` +
+      _dots([[x - 8, y - 14], [x - 3, y - 14], [x - 5.5, y - 9], [x + 6, y - 15], [x + 11, y - 15], [x + 8.5, y - 10]], 3, '#8C6BA6');
+    let rows = '';
+    for (let i = 0; i < 5; i++) rows += vine(130 + i * 36, 152 + (i % 2) * 6) + vine(148 + i * 36, 188 - (i % 2) * 4);
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 60 : 250}" cy="${r ? 56 : 34}" r="${r ? 24 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 112 Q80 82 160 106 T300 94 V200 H0Z', '#CFE0B6')}
+      <rect x="196" y="72" width="52" height="40" fill="${C.cream}"/><path d="M188 74 L222 46 L256 74Z" fill="${C.coral}"/><path d="M214 112 v-18 a8 8 0 0 1 16 0 v18" fill="${C.wood}"/>
+      ${_hill('M0 132 Q150 116 300 130 V200 H0Z', '#B5CE92')}${rows}
+      ${r ? `<path d="M96 198 h30 l-3 -20 h-24z" fill="${C.wood}"/>` + _dots([[103, 174], [111, 172], [119, 175], [107, 167], [115, 167]], 4.200, '#8C6BA6') : ''}`;
+  },
+  sunfield(r) {
+    const sf = (x, y, s) => `<path d="M${x} ${y} v${-26 * s}" stroke="${C.dgreen}" stroke-width="3"/><path d="M${x} ${y - 9 * s} q${-9 * s} ${-2 * s} ${-11 * s} ${-9 * s}" stroke="${C.dgreen}" stroke-width="2.400"/><circle cx="${x}" cy="${y - 32 * s}" r="${11 * s}" fill="${C.yellow}" stroke-width="1.800"/><circle cx="${x}" cy="${y - 32 * s}" r="${5 * s}" fill="${C.dwood}" stroke-width="1.200"/>`;
+    let far = '';
+    for (let x = 8; x < 300; x += 15) far += `<circle cx="${x}" cy="${130 + (x % 2 ? 0 : 5)}" r="5" fill="${C.yellow}" stroke-width="1.200"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 150 : 50}" cy="${r ? 70 : 34}" r="${r ? 28 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 112 Q150 90 300 108 V200 H0Z', '#CFE0B6')}
+      <path d="M252 148 v-44 M234 116 h36" stroke-width="3"/><circle cx="252" cy="101" r="8.500" fill="${C.sand}"/><path d="M241 96 h22 l-11 -13z" fill="${C.coral}"/>
+      ${_hill('M0 132 Q150 120 300 130 V200 H0Z', '#A9C987')}${far}
+      ${sf(26, 198, 1.2)}${sf(62, 192, 1)}${sf(210, 194, 1)}${sf(244, 200, 1.3)}${sf(282, 192, 1)}
+      ${r ? `<path d="M70 50 q5 -7 10 0 q5 -7 10 0 M214 40 q5 -7 10 0 q5 -7 10 0" stroke-width="2"/>` : ''}`;
+  },
+  lavender(r) {
+    let rows = '';
+    for (let i = 0; i < 7; i++) { const x = -44 + i * 58, t = v => (150 + (v - 150) * .3).toFixed(1); rows += `<path d="M${t(x)} 122 L${x} 206 L${x + 34} 206 L${t(x + 34)} 122Z" fill="${i % 2 ? '#B7A3CC' : '#9F8ABF'}" stroke-width="1.400"/>`; }
+    return `<rect width="300" height="200" fill="${r ? '#F3D3C8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 226 : 250}" cy="${r ? 66 : 34}" r="${r ? 24 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 108 L70 70 L130 100 L200 62 L300 104 V200 H0Z', '#B9CDBE')}
+      <rect y="120" width="300" height="80" fill="#C3D69B" stroke="none"/>${rows}<path d="M0 122 H300"/>
+      <rect x="34" y="92" width="44" height="30" fill="${C.cream}"/><path d="M28 94 L56 72 L84 94Z" fill="${C.blue}"/><rect x="50" y="104" width="12" height="18" fill="${C.wood}" stroke-width="1.800"/>
+      <path d="M104 122 q-10 -30 0 -54 q10 24 0 54z" fill="${C.dgreen}"/><path d="M122 122 q-7 -22 0 -40 q7 18 0 40z" fill="${C.dgreen}"/>
+      ${r ? `<path d="M140 50 q5 -7 10 0 q5 -7 10 0 M96 34 q4 -6 8 0 q4 -6 8 0" stroke-width="2"/>` : ''}`;
+  },
+  jungle(r) {
+    const leaf = (x, y, a, c) => `<g transform="translate(${x} ${y}) rotate(${a})"><path d="M0 0 Q-20 -30 0 -64 Q20 -30 0 0Z" fill="${c}"/><path d="M0 0 V-58" stroke-width="1.400"/></g>`;
+    return `<rect width="300" height="200" fill="${r ? '#E6EDC8' : '#D9E9D2'}" stroke="none"/>
+      <path d="M40 30 Q32 120 44 206 M262 30 Q270 120 256 206" stroke="${C.line}" stroke-width="17"/><path d="M40 30 Q32 120 44 206 M262 30 Q270 120 256 206" stroke="${C.dwood}" stroke-width="12"/>
+      <path d="M92 40 q10 40 -4 70 M206 38 q-10 30 0 50 M150 40 q6 16 0 30" stroke="${C.dgreen}" stroke-width="3"/>
+      <path d="M262 100 H186" stroke="${C.line}" stroke-width="9"/><path d="M262 100 H186" stroke="${C.dwood}" stroke-width="5"/>
+      <path d="M-6 -6 H306 V40 Q268 62 236 38 Q204 64 172 36 Q140 60 108 36 Q76 62 48 38 Q20 56 -6 40Z" fill="#7FA86E"/>
+      <path d="M20 22 q8 -8 16 0 M96 16 q8 -8 16 0 M180 20 q8 -8 16 0 M250 16 q8 -8 16 0" stroke="${C.dgreen}" stroke-width="2"/>
+      ${r ? `<ellipse cx="206" cy="84" rx="11" ry="15" fill="#5B4636"/><ellipse cx="204" cy="82" rx="5" ry="8" fill="${C.cream}" stroke="none"/><circle cx="206" cy="66" r="9.500" fill="#5B4636"/><path d="M213 61 q22 -3 26 9 q-14 6 -26 -1z" fill="${C.orange}" stroke-width="1.600"/><circle cx="208" cy="64" r="2.800" fill="#fff" stroke="none"/><circle cx="208.500" cy="64" r="1.200" fill="${C.line}" stroke="none"/>` : ''}
+      ${_hill('M0 152 Q150 136 300 150 V200 H0Z', '#8DB574')}
+      ${leaf(18, 198, -30, '#6F9460')}${leaf(52, 204, 10, C.green)}${leaf(250, 204, -14, C.green)}${leaf(286, 198, 28, '#6F9460')}
+      <circle cx="226" cy="172" r="7" fill="${C.coral}" stroke-width="1.800"/><circle cx="226" cy="172" r="2.400" fill="${C.yellow}" stroke="none"/><circle cx="84" cy="180" r="6" fill="${C.pink}" stroke-width="1.800"/><circle cx="84" cy="180" r="2" fill="${C.yellow}" stroke="none"/>`;
+  },
+  pandavale(r) {
+    const bam = (x, w) => `<path d="M${x} -6 V206" stroke="${C.line}" stroke-width="${w + 3.5}"/><path d="M${x} -6 V206" stroke="#9DBB7A" stroke-width="${w}"/><path d="M${x - w / 2} 46 h${w} M${x - w / 2} 104 h${w} M${x - w / 2} 158 h${w}" stroke-width="1.600"/>`;
+    const k = '#5B4636';
+    const panda = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><circle cx="-13" cy="-35" r="6.500" fill="${k}"/><circle cx="13" cy="-35" r="6.500" fill="${k}"/><ellipse cx="0" cy="0" rx="21" ry="18" fill="${C.white}"/><ellipse cx="-15" cy="11" rx="8.500" ry="6.500" fill="${k}"/><ellipse cx="15" cy="11" rx="8.500" ry="6.500" fill="${k}"/><circle cx="0" cy="-22" r="16.500" fill="${C.white}"/><ellipse cx="-6.500" cy="-23" rx="4.200" ry="5.200" fill="${k}" stroke="none"/><ellipse cx="6.500" cy="-23" rx="4.200" ry="5.200" fill="${k}" stroke="none"/><circle cx="0" cy="-16" r="1.900" fill="${k}" stroke="none"/><path d="M13 -2 l14 -24" stroke="${C.dgreen}" stroke-width="3.500"/><ellipse cx="13" cy="-3" rx="6" ry="5" fill="${k}"/></g>`;
+    return `<rect width="300" height="200" fill="${r ? '#E9F0D4' : '#DCECE6'}" stroke="none"/>
+      ${_hill('M0 120 Q150 98 300 116 V200 H0Z', '#C3D69B')}
+      ${bam(22, 12)}${bam(54, 8)}${bam(126, 7)}${bam(252, 12)}${bam(284, 8)}
+      <path d="M28 62 q20 -10 30 4 q-18 4 -30 -4z M246 86 q-20 -10 -30 4 q18 4 30 -4z M58 120 q16 -10 26 2 q-14 5 -26 -2z M278 34 q-18 -8 -28 4 q16 4 28 -4z M130 66 q14 -8 24 2 q-12 5 -24 -2z" fill="${C.green}" stroke-width="1.600"/>
+      ${_hill('M0 160 Q150 146 300 158 V200 H0Z', '#A9C987')}
+      ${panda(92, 170, 1)}${r ? panda(262, 180, .62) : ''}`;
+  },
+  harbor(r) {
+    const boat = (x, y, c) => `<path d="M${x - 26} ${y} h52 l-8 14 h-36z" fill="${c}"/><path d="M${x} ${y} v-36"/><path d="M${x + 3} ${y - 34} l20 28 h-20z" fill="${C.white}" stroke-width="1.800"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#F6D9B8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 150 : 56}" cy="${r ? 84 : 34}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <path d="M64 44 q6 -6 12 0 q6 -6 12 0 M112 62 q5 -5 10 0 q5 -5 10 0" stroke-width="2"/>
+      <rect y="98" width="300" height="102" fill="${r ? '#8FB0C4' : '#A9CDD9'}" stroke="none"/><path d="M0 98 H300" stroke-width="1.600"/>
+      <path d="M150 118 q8 -5 16 0 M222 142 q8 -5 16 0 M178 176 q8 -5 16 0 M262 106 q8 -5 16 0 M140 152 q8 -5 16 0" stroke="#fff" stroke-width="2"/>
+      ${boat(198, 124, C.coral)}${boat(256, 158, C.blue)}
+      <path d="M116 170 v36 M84 170 v36 M30 170 v36" stroke-width="6"/>
+      <path d="M-6 152 H130 V170 H-6Z" fill="${C.wood}"/><path d="M20 152 v18 M48 152 v18 M76 152 v18 M104 152 v18" stroke-width="1.400"/>
+      <path d="M124 152 v-14" stroke-width="5"/><circle cx="124" cy="136" r="5" fill="${C.red}" stroke-width="1.800"/>
+      ${r ? `<rect x="92" y="134" width="28" height="18" fill="${C.sand}"/>` + _fish(104, 132, C.orange) + _fish(110, 126, C.sky) : ''}`;
+  },
+  beach(r) {
+    return `<rect width="300" height="200" fill="${r ? '#F6D3B0' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 210 : 250}" cy="${r ? 72 : 32}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <rect y="86" width="300" height="60" fill="${r ? '#8FB0C4' : '#A9CDD9'}" stroke="none"/><path d="M0 86 H300" stroke-width="1.600"/>
+      <path d="M40 102 q8 -5 16 0 M170 98 q8 -5 16 0 M240 110 q8 -5 16 0" stroke="#fff" stroke-width="2"/>
+      <path d="M-6 130 q26 -10 52 0 t52 0 t52 0 t52 0 t52 0 t52 0 V206 H-6Z" fill="${C.sand}"/>
+      <path d="M-6 136 q26 -10 52 0 t52 0 t52 0 t52 0 t52 0 t52 0" stroke="#fff" stroke-width="3"/>
+      <path d="M62 198 L74 112"/><path d="M26 126 Q66 70 122 108 Q92 102 74 112 Q50 110 26 126Z" fill="${C.coral}"/><path d="M74 112 Q70 92 80 84 M74 112 Q54 96 46 100 M74 112 Q96 94 104 98" stroke-width="1.600"/>
+      <path d="M236 188 v-26 h8 v-8 h8 v8 h10 v-16 h8 v16 h10 v-8 h8 v8 h8 v26z" fill="#E3C98F"/><path d="M258 188 v-12 a6 6 0 0 1 12 0 v12" fill="${C.dwood}" stroke-width="1.600"/><path d="M266 146 v-13 l11 4 l-11 4" fill="${C.red}" stroke-width="1.600"/>
+      <g stroke-width="1.600">${_star(122, 184, 9, 4, C.coral)}</g><path d="M200 192 q-10 -14 6 -18 q16 4 6 18z" fill="${C.pink}" stroke-width="1.600"/><path d="M206 192 v-16 M206 192 l-6 -13 M206 192 l6 -13" stroke-width="1.200"/>
+      ${r ? `<ellipse cx="34" cy="174" rx="10" ry="7" fill="${C.red}"/><path d="M26 170 l-6 -6 M42 170 l6 -6 M24 178 l-5 4 M44 178 l5 4" stroke-width="2"/><circle cx="18" cy="162" r="3.500" fill="${C.red}" stroke-width="1.400"/><circle cx="50" cy="162" r="3.500" fill="${C.red}" stroke-width="1.400"/><path d="M31 171 v.100 M37 171 v.100" stroke-width="2"/>` : ''}`;
+  },
+  watertown(r) {
+    const house = (x, w, h) => `<rect x="${x}" y="${120 - h}" width="${w}" height="${h}" fill="${C.white}"/><path d="M${x - 5} ${120 - h} h${w + 10} l-7 -11 h${-(w - 4)}z" fill="#6E6A72"/><rect x="${x + w / 2 - 6}" y="${132 - h}" width="12" height="12" fill="${r ? C.yellow : '#9A8E86'}" stroke-width="1.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#4A5680' : '#DCECE6'}" stroke="none"/>
+      ${r ? _dots([[30, 20], [90, 12], [150, 24], [216, 10], [272, 26]], 1.800, '#FFF6C9') + `<path d="M256 34 A13 13 0 1 0 270 54 A10 10 0 0 1 256 34Z" fill="#FFF6C9"/>` : `<circle cx="252" cy="30" r="14" fill="#F3D98B"/>`}
+      ${house(6, 56, 50)}${house(66, 42, 64)}${house(196, 42, 60)}${house(242, 54, 46)}
+      ${r ? `<circle cx="20" cy="84" r="5" fill="${C.red}" stroke-width="1.400"/><circle cx="96" cy="70" r="5" fill="${C.red}" stroke-width="1.400"/><circle cx="210" cy="74" r="5" fill="${C.red}" stroke-width="1.400"/><circle cx="282" cy="88" r="5" fill="${C.red}" stroke-width="1.400"/>` : ''}
+      <rect y="120" width="300" height="80" fill="${r ? '#6E86A6' : '#A9CDD9'}" stroke="none"/><path d="M0 120 H300" stroke-width="1.600"/>
+      <path d="M38 152 Q150 58 262 152 H228 Q150 98 72 152Z" fill="#D8D2C2"/><path d="M58 136 Q150 66 242 136" stroke-width="1.600"/>
+      <path d="M20 168 q8 -5 16 0 M96 182 q8 -5 16 0 M262 176 q8 -5 16 0 M130 160 q8 -5 16 0" stroke="#fff" stroke-width="2"/>
+      <path d="M178 174 h72 l-10 14 h-52z" fill="${C.wood}"/><path d="M198 174 q15 -20 32 0" fill="#6E6A72" stroke-width="1.800"/>`;
+  },
+  piratebay(r) {
+    return `<rect width="300" height="200" fill="${r ? '#F6D3B0' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 120 : 110}" cy="${r ? 80 : 34}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <rect y="102" width="300" height="98" fill="${r ? '#8FB0C4' : '#A9CDD9'}" stroke="none"/><path d="M0 102 H300" stroke-width="1.600"/>
+      <path d="M150 170 q8 -5 16 0 M250 178 q8 -5 16 0 M190 190 q8 -5 16 0" stroke="#fff" stroke-width="2"/>
+      <path d="M222 132 V50 M192 132 V78"/>
+      <path d="M226 58 h36 q9 26 0 54 h-36 q9 -28 0 -54z" fill="${C.cream}"/><path d="M160 84 h30 q7 18 0 36 h-30 q7 -18 0 -36z" fill="${C.cream}"/>
+      <path d="M222 50 h-22 v-15 h22z" fill="#5B4636"/><path d="M204 38 l14 9 M218 38 l-14 9" stroke="#fff" stroke-width="2"/>
+      <path d="M168 132 h102 l-12 28 h-76z" fill="${C.dwood}"/><path d="M176 143 h86" stroke-width="1.600"/>${_dots([[196, 151], [218, 151], [240, 151]], 2.600, '#5B4636')}
+      <path d="M-6 206 V152 Q60 130 132 162 Q152 188 142 206Z" fill="${C.sand}"/>
+      <path d="M12 160 q-6 -40 8 -72" stroke="${C.line}" stroke-width="9"/><path d="M12 160 q-6 -40 8 -72" stroke="${C.dwood}" stroke-width="5"/>
+      <path d="M20 88 q-22 -10 -32 5 q18 -5 32 -5z M20 88 q-8 -20 -27 -17 q15 5 27 17z M20 88 q18 -12 30 2 q-17 -4 -30 -2z M20 88 q10 -18 26 -14 q-14 4 -26 14z" fill="${C.green}" stroke-width="1.800"/>
+      <rect x="104" y="170" width="34" height="22" fill="${C.wood}"/><path d="M104 170 q17 -17 34 0z" fill="${C.dwood}"/><rect x="118" y="172" width="6" height="9" fill="${C.yellow}" stroke-width="1.400"/>
+      ${r ? _burst(121, 150, C.yellow, .6) + `<circle cx="96" cy="194" r="4" fill="${C.yellow}" stroke-width="1.400"/><circle cx="146" cy="196" r="4" fill="${C.yellow}" stroke-width="1.400"/>` : ''}`;
+  },
+  coastroad(r) {
+    const road = 'M-10 134 Q70 126 112 150 Q142 170 148 210';
+    return `<rect width="300" height="200" fill="${r ? '#F6D3B0' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 226 : 250}" cy="${r ? 74 : 34}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <path d="M150 40 q6 -6 12 0 q6 -6 12 0 M196 58 q5 -5 10 0 q5 -5 10 0" stroke-width="2"/>
+      <rect y="92" width="300" height="108" fill="${r ? '#8FB0C4' : '#A9CDD9'}" stroke="none"/><path d="M0 92 H300" stroke-width="1.600"/>
+      <path d="M196 114 q8 -5 16 0 M244 136 q8 -5 16 0 M218 164 q8 -5 16 0 M262 184 q8 -5 16 0 M176 136 q8 -5 16 0" stroke="#fff" stroke-width="2"/>
+      <path d="M236 110 h30 l-5 9 h-20z" fill="${C.coral}" stroke-width="1.800"/><path d="M251 110 v-24 l13 20z" fill="${C.white}" stroke-width="1.800"/>
+      <path d="M-6 206 V84 Q50 78 98 98 Q152 120 178 152 Q198 182 192 206Z" fill="#C3D69B"/>
+      <path d="${road}" stroke="${C.line}" stroke-width="35"/><path d="${road}" stroke="#A8A296" stroke-width="30"/><path d="${road}" stroke="#fff" stroke-width="2.400" stroke-dasharray="10 9"/>
+      <path d="M96 152 q0 -9 10 -10 l7 -8 h16 l7 8 q11 1 11 10z" fill="${C.red}" stroke-width="2"/><circle cx="108" cy="153" r="5.500" fill="#5B4636" stroke-width="1.600"/><circle cx="134" cy="153" r="5.500" fill="#5B4636" stroke-width="1.600"/>
+      <path d="M168 196 v-22" stroke-width="3"/><path d="M158 160 h22 l6 7 l-6 7 h-22z" fill="${C.cream}" stroke-width="1.800"/>
+      ${r ? `<path d="M36 186 l-3 -8 M36 186 l0 -10 M36 186 l3 -8 M70 196 l-3 -8 M70 196 l0 -10 M70 196 l3 -8" stroke="${C.dgreen}" stroke-width="2"/><circle cx="52" cy="182" r="5" fill="${C.pink}" stroke-width="1.600"/><circle cx="20" cy="194" r="5" fill="${C.yellow}" stroke-width="1.600"/>` : ''}`;
+  }
+});
+Object.assign(CARD_BG, {
+  aurora(r) {
+    const band = (d, c, w) => `<path d="${d}" stroke="${c}" stroke-width="${w}" opacity=".55"/>`;
+    const pine = (x, y, s) => `<path d="M${x} ${y} v${6 * s}" stroke-width="3"/><path d="M${x - 12 * s} ${y} L${x} ${y - 32 * s} L${x + 12 * s} ${y}Z" fill="#5E8478"/><path d="M${x - 5 * s} ${y - 18 * s} L${x} ${y - 32 * s} L${x + 5 * s} ${y - 18 * s}" fill="#fff" stroke-width="1.400"/>`;
+    return `<rect width="300" height="200" fill="#2E3A66" stroke="none"/>
+      ${_dots([[20, 16], [64, 34], [110, 10], [160, 20], [214, 12], [268, 26], [286, 70], [14, 80]], 1.800, '#FFF6C9')}
+      ${band('M-10 76 Q60 26 120 66 T240 46 T320 66', '#9BE0B8', 16)}${band('M-10 100 Q70 56 140 90 T320 78', '#B7A3CC', 12)}${r ? band('M-10 50 Q80 4 150 38 T320 24', '#8FD0E0', 12) : ''}
+      ${r ? `<path d="M226 20 l34 -12" stroke="#FFF6C9" stroke-width="2.400"/><g stroke-width="1.400">${_star(224, 21, 6, 2.6, '#FFF6C9')}</g>` : ''}
+      ${_hill('M0 134 L50 100 L96 130 L150 92 L210 128 L260 102 L300 124 V200 H0Z', '#56628C')}
+      <path d="M40 108 L50 100 L60 107 M138 101 L150 92 L162 100 M250 108 L260 102 L270 108" stroke="#fff" stroke-width="3"/>
+      ${_hill('M0 152 Q150 136 300 150 V200 H0Z', C.white)}
+      ${pine(34, 170, 1.1)}${pine(66, 182, .8)}${pine(246, 176, 1)}${pine(278, 166, 1.2)}
+      <path d="M100 186 q10 -4 20 0 M200 190 q10 -4 20 0" stroke="#C9D8E6" stroke-width="2"/>`;
+  },
+  igloo(r) {
+    const ig = (x, y, s) => `<path d="M${x - 36 * s} ${y} a${36 * s} ${34 * s} 0 0 1 ${72 * s} 0z" fill="${C.white}"/><path d="M${x - 31 * s} ${y - 15 * s} h${62 * s} M${x - 19 * s} ${y - 28 * s} h${38 * s} M${x} ${y - 34 * s} v${6 * s} M${x - 13 * s} ${y - 28 * s} v${13 * s} M${x + 13 * s} ${y - 28 * s} v${13 * s} M${x - 25 * s} ${y - 15 * s} v${15 * s} M${x + 25 * s} ${y - 15 * s} v${15 * s}" stroke-width="1.400"/><path d="M${x - 10 * s} ${y} v${-12 * s} a${10 * s} ${10 * s} 0 0 1 ${20 * s} 0 v${12 * s}z" fill="${r ? C.yellow : '#6E86A6'}"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#4A5680' : '#DCECE6'}" stroke="none"/>
+      ${r ? _dots([[24, 20], [84, 14], [150, 28], [210, 12], [276, 30]], 1.800, '#FFF6C9') + `<path d="M246 34 A13 13 0 1 0 260 54 A10 10 0 0 1 246 34Z" fill="#FFF6C9"/>` : `<circle cx="250" cy="32" r="14" fill="#F3D98B"/>`}
+      ${_hill('M0 112 L60 72 L110 106 L170 62 L240 102 L300 82 V200 H0Z', r ? '#7C88B0' : '#C9D8E6')}
+      <path d="M48 80 L60 72 L72 80 M156 72 L170 62 L184 72" stroke="#fff" stroke-width="3"/>
+      ${_hill('M0 134 Q150 118 300 132 V200 H0Z', C.white)}
+      ${ig(70, 156, 1)}${ig(256, 146, .78)}
+      ${r ? `<path d="M70 118 q-5 -6 0 -12 q5 -6 0 -12" stroke="#fff" stroke-width="2.400" opacity=".8"/>` : ''}
+      <ellipse cx="258" cy="184" rx="22" ry="7.500" fill="#8FB7CC"/><path d="M226 178 L262 150 V182" stroke-width="1.800"/><path d="M222 180 l8 -4" stroke-width="4"/>
+      <path d="M20 184 q10 -4 20 0 M120 192 q10 -4 20 0" stroke="#C9D8E6" stroke-width="2"/>`;
+  },
+  volcano(r) {
+    return `<rect width="300" height="200" fill="${r ? '#4A4660' : '#F6E9C8'}" stroke="none"/>
+      ${r ? _dots([[20, 24], [60, 50], [110, 20], [282, 92], [134, 60]], 1.800, '#FFF6C9') + _burst(209, 30, C.orange, 1.1) + _dots([[186, 20], [232, 16], [170, 44], [248, 40], [209, 6]], 3, C.red)
+        : `<circle cx="50" cy="36" r="15" fill="#F3D98B"/><path d="M190 42 a11 11 0 0 1 3 -22 a15 15 0 0 1 29 0 a11 11 0 0 1 2 22z" fill="${C.white}"/>`}
+      <path d="M92 154 L184 56 H234 L306 136 V154Z" fill="#A87F6A"/>
+      <path d="M184 56 q6 14 13 4 q6 16 12 2 q7 14 13 0 q6 10 12 -6z" fill="${C.orange}"/>
+      <path d="M204 70 q-6 28 6 46 q8 14 2 34" stroke-width="10"/><path d="M204 70 q-6 28 6 46 q8 14 2 34" stroke="${C.orange}" stroke-width="6"/>
+      <path d="M150 112 l10 8 M252 102 l-8 10 M130 138 l12 4" stroke-width="1.600"/>
+      ${_hill('M0 144 Q150 130 300 142 V200 H0Z', '#C99A7A')}
+      <path d="M120 192 l10 -17 l17 4 l8 13z" fill="#8C7B6C"/><path d="M246 198 l8 -14 l14 2 l10 12z" fill="#8C7B6C"/><path d="M176 182 l6 -9 l10 3 l3 6z" fill="#8C7B6C" stroke-width="1.800"/>`;
+  },
+  dinovalley(r) {
+    const fern = (x, y) => `<path d="M${x} ${y} q-14 -10 -18 -26 M${x} ${y} q0 -16 2 -30 M${x} ${y} q14 -10 18 -24" stroke="${C.dgreen}" stroke-width="3"/>`;
+    const g = '#9DBB7A';
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#E4EFD8'}" stroke="none"/>
+      <circle cx="${r ? 60 : 44}" cy="${r ? 50 : 34}" r="${r ? 22 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${r ? `<path d="M104 34 l16 8 l16 -8 l-11 15 l6 9 l-11 -5 l-11 5 l6 -9z" fill="${C.dwood}" stroke-width="1.600"/>` : ''}
+      ${_hill('M0 126 L36 98 L84 122 L124 102 L170 124 H300 V200 H0Z', '#C9B79A')}
+      ${_hill('M0 146 Q150 130 300 144 V200 H0Z', '#B5CE92')}
+      <path d="M266 138 Q292 134 302 112 Q302 148 270 158Z" fill="${g}"/>
+      <rect x="190" y="152" width="13" height="36" rx="5" fill="#8DB574"/><rect x="246" y="152" width="13" height="36" rx="5" fill="#8DB574"/>
+      <ellipse cx="226" cy="144" rx="46" ry="25" fill="${g}"/>
+      <rect x="206" y="156" width="13" height="36" rx="5" fill="${g}"/><rect x="232" y="156" width="13" height="36" rx="5" fill="${g}"/>
+      <path d="M186 140 Q174 102 176 66 Q158 64 156 51 Q160 38 181 40 Q198 42 198 66 Q198 106 216 126Z" fill="${g}"/>
+      <circle cx="170" cy="50" r="1.800" fill="${C.line}" stroke="none"/><path d="M160 57 q6 4 12 1" stroke-width="1.600"/>
+      ${_dots([[214, 138], [232, 132], [250, 140], [238, 152], [188, 98], [190, 78]], 3.500, '#7FAE6E')}
+      ${fern(118, 198)}${fern(286, 200)}
+      ${r ? `<ellipse cx="140" cy="188" rx="21" ry="7" fill="${C.dwood}"/><ellipse cx="132" cy="180" rx="6.500" ry="8.500" fill="${C.cream}" stroke-width="1.600"/><ellipse cx="147" cy="180" rx="6.500" ry="8.500" fill="${C.cream}" stroke-width="1.600"/>` : ''}`;
+  },
+  castle(r) {
+    const tower = (x, y, w, h, c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#E9E0CF"/><path d="M${x - 5} ${y} L${x + w / 2} ${y - w * 1.1} L${x + w + 5} ${y}Z" fill="${c}"/><rect x="${x + w / 2 - 3.5}" y="${y + 10}" width="7" height="11" rx="3.500" fill="#6E86A6" stroke-width="1.400"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#3E4A7A' : '#DCECE6'}" stroke="none"/>
+      ${r ? _dots([[20, 20], [70, 40], [120, 14], [282, 30], [136, 60]], 1.800, '#FFF6C9') + _burst(60, 66, C.coral, .9) + _burst(112, 40, C.yellow, .7) + _burst(280, 56, C.pink, .6)
+        : `<circle cx="56" cy="36" r="15" fill="#F3D98B"/><path d="M96 58 a8 8 0 0 1 2 -16 a11 11 0 0 1 21 -1 a8.500 8.500 0 0 1 1 17z" fill="#fff"/>`}
+      ${_hill('M0 134 Q90 98 190 106 Q260 106 300 124 V200 H0Z', '#C3D69B')}
+      <path d="M156 94 v-8 h10 v8 M176 94 v-8 h10 v8 M226 94 v-8 h10 v8" fill="#E9E0CF" stroke-width="1.800"/><rect x="156" y="94" width="100" height="50" fill="#E9E0CF"/>
+      ${tower(142, 74, 26, 70, C.purple)}${tower(244, 74, 26, 70, C.purple)}${tower(191, 50, 30, 62, C.coral)}
+      <path d="M206 17 v-13 l11 4.500 l-11 4.500" fill="${C.yellow}" stroke-width="1.600"/>
+      <path d="M195 144 v-20 a11 11 0 0 1 22 0 v20z" fill="${C.dwood}"/>
+      ${_hill('M0 154 Q150 140 300 152 V200 H0Z', '#A9C987')}
+      <path d="M206 146 Q204 174 164 206" stroke="#EADFBE" stroke-width="15"/>`;
+  },
+  spacestation(r) {
+    return `<rect width="300" height="200" fill="#2B3560" stroke="none"/>
+      ${_dots([[20, 20], [60, 50], [100, 16], [150, 34], [210, 14], [270, 24], [286, 110], [240, 126], [30, 100], [130, 86], [196, 174], [280, 164]], 1.800, '#FFF6C9')}
+      <circle cx="40" cy="236" r="112" fill="#8FB7CC"/><path d="M-6 152 q26 -16 50 2 q-2 26 -30 24 q-14 -2 -20 -10z M70 170 q28 -18 52 6 q-6 26 -34 22z" fill="#9DBB7A" stroke-width="1.600"/>
+      ${r ? `<circle cx="64" cy="50" r="17" fill="${C.yellow}"/><ellipse cx="64" cy="50" rx="30" ry="7" stroke="${C.orange}" stroke-width="3.500" transform="rotate(-18 64 50)"/>` + _burst(250, 150, '#FFF6C9', .5) : ''}
+      <path d="M178 66 H148 M250 66 H270" stroke-width="3"/>
+      <rect x="118" y="46" width="30" height="40" fill="${C.blue}"/><path d="M128 46 v40 M138 46 v40 M118 66 h30" stroke-width="1.200"/>
+      <rect x="270" y="46" width="30" height="40" fill="${C.blue}"/><path d="M280 46 v40 M290 46 v40 M270 66 h30" stroke-width="1.200"/>
+      <path d="M214 30 v-12"/><circle cx="214" cy="15" r="3.500" fill="${C.red}"/>
+      <rect x="202" y="30" width="24" height="72" rx="9" fill="#D8D2C2"/>
+      <rect x="176" y="52" width="76" height="28" rx="13" fill="#EEEAE0"/>
+      <circle cx="194" cy="66" r="6" fill="${C.yellow}" stroke-width="1.600"/><circle cx="214" cy="66" r="6" fill="${C.yellow}" stroke-width="1.600"/><circle cx="234" cy="66" r="6" fill="${C.yellow}" stroke-width="1.600"/>`;
+  },
+  rainbow(r) {
+    const cl = (x, y, s) => `<path d="M${x} ${y} a${8 * s} ${8 * s} 0 0 1 ${2 * s} -${16 * s} a${11 * s} ${11 * s} 0 0 1 ${21 * s} -${s} a${8.5 * s} ${8.5 * s} 0 0 1 ${s} ${17 * s}z" fill="#fff"/>`;
+    const arc = (rad, c) => `<path d="M${150 - rad} 196 A${rad} ${rad} 0 0 1 ${150 + rad} 196" stroke="${c}" stroke-width="13"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#EDE4F5' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 40 : 262}" cy="34" r="${r ? 20 : 15}" fill="${r ? C.yellow : '#F3D98B'}"/>
+      ${r ? _dots([[90, 20], [130, 44], [200, 24], [240, 60], [60, 76], [270, 104]], 2.200, C.yellow) + _burst(214, 50, C.pink, .5) + _burst(84, 46, C.yellow, .5) : cl(20, 64, 1.2) + cl(226, 88, 1)}
+      <path d="M52 196 A98 98 0 0 1 248 196" stroke-width="17"/>
+      ${arc(98, C.coral)}${arc(86, C.yellow)}${arc(74, C.lgreen)}${arc(62, C.blue)}
+      <path d="M94.500 196 A55.500 55.500 0 0 1 205.500 196" stroke-width="2.400"/>
+      ${cl(-6, 202, 2.4)}${cl(214, 204, 2.6)}${cl(112, 206, 1.6)}`;
+  },
+  zoo(r) {
+    const bal = (x, y, c) => `<path d="M${x} ${y + 11} q-4 12 2 24" stroke-width="1.400"/><ellipse cx="${x}" cy="${y}" rx="9" ry="11" fill="${c}" stroke-width="1.800"/>`;
+    const e = '#B8BCC0';
+    return `<rect width="300" height="200" fill="#DCECE6" stroke="none"/><circle cx="40" cy="34" r="15" fill="#F3D98B"/>
+      ${_hill('M0 122 Q150 102 300 118 V200 H0Z', '#CFE0B6')}
+      <path d="M238 152 L246 80 h12 L262 152Z" fill="${C.yellow}"/><path d="M252 70 v-8 M259 70 v-8" stroke-width="2"/><path d="M244 82 q2 -14 16 -12 q10 2 10 10 q-10 6 -26 2z" fill="${C.yellow}"/>
+      ${_dots([[250, 102], [254, 120], [248, 136], [256, 142]], 3.200, C.dwood)}<circle cx="262" cy="77" r="1.500" fill="${C.line}" stroke="none"/>
+      <rect x="106" y="86" width="14" height="72" fill="${C.wood}"/><rect x="186" y="86" width="14" height="72" fill="${C.wood}"/>
+      <path d="M98 92 Q153 46 208 92 V108 Q153 66 98 108Z" fill="${C.coral}"/>
+      <circle cx="153" cy="82" r="5" fill="${C.cream}" stroke-width="1.400"/>${_dots([[145, 73], [153, 70], [161, 73]], 2.400, C.cream)}
+      <path d="M200 132 H300 M200 148 H300" stroke-width="2"/><path d="M214 124 v32 M232 124 v32 M270 124 v32 M288 124 v32" stroke-width="3"/>
+      ${_hill('M0 154 Q150 142 300 152 V200 H0Z', '#A9C987')}
+      ${bal(113, 54, C.blue)}${bal(193, 52, C.pink)}${r ? bal(124, 40, C.yellow) + bal(182, 38, C.lgreen) : ''}
+      ${r ? `<rect x="222" y="184" width="10" height="13" rx="3" fill="${e}" stroke-width="1.800"/><rect x="246" y="184" width="10" height="13" rx="3" fill="${e}" stroke-width="1.800"/><ellipse cx="240" cy="176" rx="26" ry="16" fill="${e}"/><circle cx="266" cy="168" r="13" fill="${e}"/><ellipse cx="258" cy="166" rx="7" ry="10" fill="#A4A8AC" stroke-width="1.600"/>` + _line2('M275 172 q9 6 5 20', e, 5) + `<circle cx="270" cy="165" r="1.500" fill="${C.line}" stroke="none"/>` : ''}`;
+  },
+  station(r) {
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 252 : 244}" cy="${r ? 56 : 30}" r="${r ? 24 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 114 Q150 94 300 110 V200 H0Z', '#CFE0B6')}
+      <rect x="10" y="76" width="92" height="54" fill="${C.cream}"/><path d="M2 78 L56 46 L110 78Z" fill="${C.coral}"/><circle cx="56" cy="66" r="8" fill="#fff" stroke-width="1.600"/><path d="M56 66 v-5 M56 66 l4 2" stroke-width="1.400"/>
+      <rect x="22" y="92" width="20" height="18" fill="${C.sky}" stroke-width="1.600"/><rect x="68" y="92" width="20" height="18" fill="${C.sky}" stroke-width="1.600"/>
+      ${_hill('M-6 130 H306 V206 H-6Z', '#B5CE92')}
+      <path d="M112 164 v18 M134 164 v18 M156 164 v18 M178 164 v18 M200 164 v18 M222 164 v18 M244 164 v18 M266 164 v18 M288 164 v18" stroke="${C.dwood}" stroke-width="3"/><path d="M100 168 H306 M100 178 H306" stroke-width="2"/>
+      <path d="M152 86 a8 8 0 0 1 2 -16 a11 11 0 0 1 20 0 a8 8 0 0 1 0 16z" fill="#fff" stroke-width="1.600"/>${r ? `<path d="M186 62 a6 6 0 0 1 2 -12 a8 8 0 0 1 15 0 a6 6 0 0 1 0 12z" fill="#fff" stroke-width="1.600"/>` : ''}
+      <path d="M150 124 v-22 h-4 v-8 h20 v8 h-4 v22z" fill="#5B4636"/>
+      <path d="M136 124 H200 V162 H136 Q128 162 128 152 V134 Q128 124 136 124Z" fill="${C.red}"/>
+      <rect x="196" y="102" width="40" height="60" rx="4" fill="${C.red}"/><rect x="204" y="110" width="24" height="20" rx="3" fill="${C.sky}" stroke-width="1.600"/><path d="M190 102 h52" stroke-width="5"/>
+      <circle cx="129" cy="138" r="5" fill="${C.yellow}" stroke-width="1.600"/>
+      <path d="M236 152 h8" stroke-width="3"/><rect x="244" y="112" width="62" height="50" rx="4" fill="${C.blue}"/><rect x="252" y="120" width="18" height="16" rx="3" fill="${C.sky}" stroke-width="1.600"/><rect x="276" y="120" width="18" height="16" rx="3" fill="${C.sky}" stroke-width="1.600"/>
+      ${_wh(146, 166, 9)}${_wh(170, 166, 9)}${_wh(216, 166, 11)}${_wh(260, 166, 9)}${_wh(288, 166, 9)}`;
+  },
+  nightmarket(r) {
+    const stall = (x, c) => `<rect x="${x}" y="110" width="76" height="48" fill="${C.wood}"/><path d="M${x - 6} 110 h88 l-8 -26 h-72z" fill="${c}"/><path d="M${x + 14} 86 l-4 22 M${x + 38} 86 v22 M${x + 62} 86 l4 22" stroke="#fff" stroke-width="5" opacity=".8"/><rect x="${x + 8}" y="118" width="60" height="16" fill="${C.cream}" stroke-width="1.600"/>` + _dots([[x + 20, 126], [x + 32, 126], [x + 44, 126], [x + 56, 126]], 4, C.orange);
+    let lan = '';
+    for (let i = 0; i < 7; i++) { const t = (i + .5) / 7, x = 300 * t, y = 30 + 88 * t * (1 - t); lan += `<ellipse cx="${x.toFixed(1)}" cy="${(y + 9).toFixed(1)}" rx="7" ry="9" fill="${i % 2 ? C.yellow : C.red}" stroke-width="1.600"/>`; }
+    return `<rect width="300" height="200" fill="#3E4A7A" stroke="none"/>
+      ${_dots([[24, 16], [80, 10], [140, 18], [262, 14], [290, 60], [10, 64]], 1.800, '#FFF6C9')}
+      ${r ? _burst(70, 76, C.coral, .8) + _burst(230, 74, C.yellow, .8) + _burst(150, 84, C.pink, .6) : `<path d="M196 6 A12 12 0 1 0 208 26 A10 10 0 0 1 196 6Z" fill="#FFF6C9"/>`}
+      <path d="M0 30 Q150 74 300 30" stroke-width="1.600"/>${lan}
+      ${stall(4, C.coral)}${stall(220, C.blue)}
+      <path d="M30 78 q-4 -5 0 -10 M52 80 q-4 -5 0 -10 M250 78 q-4 -5 0 -10 M272 80 q-4 -5 0 -10" stroke="#fff" stroke-width="1.800" opacity=".8"/>
+      <rect y="158" width="300" height="42" fill="#6E6A8C" stroke="none"/><path d="M0 158 H300"/>
+      <path d="M40 176 h30 M150 186 h34 M240 174 h30" stroke="#8C88A8" stroke-width="2"/>`;
+  }
+});
+
 /* ---------- 旅行地图 ----------
- * 每个地方在地图上的位置，以及圆点的颜色（g 草木、b 水、w 冰雪、y 沙、p 奇幻、t 热闹的地方） */
+ * 每个地方在地图上的位置，以及圆点的颜色（g 草木、b 水、w 冰雪、y 沙、p 奇幻、t 热闹的地方）。
+ * 圆点的颜色也决定了住在那里时，小铺里卖哪一类本地货 */
+const MAP_W = 1040, MAP_H = 680;
 const MAP_HOME = [410, 302], MAP_FRIEND = [466, 352];
 const MAP_AT = {
-  cloud: [86, 70, 'p'], penguin: [232, 60, 'w'], snow: [362, 98, 'w'], camp: [488, 106, 'w'], moon: [724, 70, 'p'],
-  candy: [80, 158, 'p'], waterfall: [190, 160, 'b'], bamboo: [300, 164, 'g'], cave: [410, 172, 'p'], teahill: [520, 174, 'g'], sea: [636, 160, 'b'],
-  mushwood: [80, 236, 'g'], spring: [190, 238, 'b'], sakura: [300, 238, 'g'], flower: [410, 240, 'g'], town: [520, 242, 't'], island: [716, 238, 'b'],
-  maple: [80, 314, 'g'], orchard: [190, 316, 'g'], rice: [300, 316, 'g'], ferris: [524, 318, 't'], ocean: [652, 324, 'b'],
-  canyon: [80, 394, 'y'], farm: [190, 394, 'g'], meadow: [300, 394, 'g'], lake: [410, 398, 'b'], track: [524, 396, 't'],
-  desert: [124, 468, 'y'], pyramid: [250, 470, 'y'], safari: [386, 470, 'y']
+  cloud: [86, 70, 'p'], penguin: [232, 60, 'w'], snow: [362, 98, 'w'], camp: [488, 106, 'w'], aurora: [606, 52, 'w'], moon: [724, 70, 'p'], spacestation: [860, 64, 'p'], rainbow: [972, 64, 'p'],
+  candy: [80, 158, 'p'], waterfall: [190, 160, 'b'], bamboo: [300, 164, 'g'], cave: [410, 172, 'p'], teahill: [520, 174, 'g'], sea: [636, 160, 'b'], igloo: [880, 150, 'w'],
+  mushwood: [80, 236, 'g'], spring: [190, 238, 'b'], sakura: [300, 238, 'g'], flower: [410, 240, 'g'], town: [520, 242, 't'], island: [716, 238, 'b'], zoo: [850, 236, 't'], station: [960, 240, 't'],
+  maple: [80, 314, 'g'], orchard: [190, 316, 'g'], rice: [300, 316, 'g'], ferris: [524, 318, 't'], ocean: [652, 324, 'b'], beach: [760, 330, 'b'], nightmarket: [856, 318, 't'], castle: [962, 322, 'p'],
+  canyon: [80, 394, 'y'], farm: [190, 394, 'g'], meadow: [300, 394, 'g'], lake: [410, 398, 'b'], track: [524, 396, 't'], harbor: [632, 410, 'b'], piratebay: [748, 436, 'b'], watertown: [866, 402, 'b'],
+  desert: [124, 468, 'y'], pyramid: [250, 470, 'y'], safari: [386, 470, 'y'],
+  sunfield: [110, 556, 'g'], vineyard: [226, 560, 'g'], lavender: [342, 556, 'g'], pandavale: [458, 560, 'g'], coastroad: [580, 548, 'b'],
+  jungle: [150, 636, 'g'], dinovalley: [280, 640, 'y'], volcano: [410, 636, 'y']
 };
 const MAP_COL = { g: '#9DBB7A', b: '#8FB7CC', w: '#FFFDF6', y: '#EBC66B', p: '#B7A3CC', t: '#E08A70' };
-/* 从家到某个地方的那条弯弯的路；u 从 0（家）到 1（目的地），返回路上的那个点 */
-function mapRoute(to) {
-  const a = MAP_HOME, b = to, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1];
+/* 从家（from，不写就是老家）到某个地方的那条弯弯的路；u 从 0（家）到 1（目的地），返回路上的那个点 */
+function mapRoute(to, from) {
+  const a = from || MAP_HOME, b = to, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = b[0] - a[0], dy = b[1] - a[1];
   const c = [mx - dy * .18, my + dx * .18];
   return {
     d: `M${a[0]} ${a[1]} Q${c[0].toFixed(1)} ${c[1].toFixed(1)} ${b[0]} ${b[1]}`,
     at: u => [(1 - u) * (1 - u) * a[0] + 2 * u * (1 - u) * c[0] + u * u * b[0], (1 - u) * (1 - u) * a[1] + 2 * u * (1 - u) * c[1] + u * u * b[1]]
   };
 }
-/* seen(id) 去过没有；cur 是现在正去的地方（没去过也把名字写出来）；friend 表示要不要画栗子家 */
-function mapSVG(seen, cur, friend) {
+/* seen(id) 去过没有；cur 是现在正去的地方（没去过也把名字写出来）；friend 表示要不要画栗子家；home 是现在住在哪个地方（没搬过家就不写）。
+ * 每个地方都包在 data-spot 里，点一下可以看看那里 */
+function mapSVG(seen, cur, friend, home) {
   const label = (x, y, t, dim) => `<text x="${x}" y="${y}" text-anchor="middle" font-size="13" font-weight="bold" fill="${C.line}" stroke="#F8F2DF" stroke-width="3.500" paint-order="stroke" stroke-linejoin="round"${dim ? ' opacity=".55"' : ''}>${t}</text>`;
+  const house = (x, y, c) => `<path d="M${x - 13} ${y + 8} v-13 h26 v13z" fill="${C.cream}"/><path d="M${x - 18} ${y - 4} L${x} ${y - 19} L${x + 18} ${y - 4}Z" fill="${c}"/><path d="M${x - 4} ${y + 8} v-8 h8 v8" fill="${C.wood}" stroke-width="1.800"/>`;
+  const spot = (id, x, y, inner) => `<g class="spot" data-spot="${id}"><circle cx="${x}" cy="${y}" r="26" fill="none" stroke="none" pointer-events="all"/>${inner}</g>`;
+  const tree = pts => pts.map(p => `M${p[0]} ${p[1]} l0 -9 M${p[0] - 4} ${p[1] - 2} q4 -12 8 0`).join(' ');
   let nodes = '', texts = '';
   for (const id in MAP_AT) {
-    const p = MAP_AT[id], ok = seen(id) || id === cur;
-    nodes += ok ? `<circle cx="${p[0]}" cy="${p[1]}" r="${id === cur ? 10.5 : 8.5}" fill="${MAP_COL[p[2]]}"/><circle cx="${p[0]}" cy="${p[1]}" r="2.600" fill="${C.line}" stroke="none"/>`
-      : `<circle cx="${p[0]}" cy="${p[1]}" r="7.500" fill="#EFE8D4" stroke-width="1.800" stroke-dasharray="3 3"/>`;
-    texts += label(p[0], p[1] + 25, ok ? DESTS[id].name : '？', !ok);
+    const p = MAP_AT[id], ok = seen(id) || id === cur || id === home;
+    nodes += spot(id, p[0], p[1], id === home ? house(p[0], p[1], C.coral)
+      : ok ? `<circle cx="${p[0]}" cy="${p[1]}" r="${id === cur ? 10.5 : 8.5}" fill="${MAP_COL[p[2]]}"/><circle cx="${p[0]}" cy="${p[1]}" r="2.600" fill="${C.line}" stroke="none"/>`
+      : `<circle cx="${p[0]}" cy="${p[1]}" r="7.500" fill="#EFE8D4" stroke-width="1.800" stroke-dasharray="3 3"/>`);
+    texts += label(p[0], p[1] + (id === home ? 26 : 25), ok ? (id === home ? '家·' : '') + DESTS[id].name : '？', !ok);
   }
-  const house = (x, y, c) => `<path d="M${x - 13} ${y + 8} v-13 h26 v13z" fill="${C.cream}"/><path d="M${x - 18} ${y - 4} L${x} ${y - 19} L${x + 18} ${y - 4}Z" fill="${c}"/><path d="M${x - 4} ${y + 8} v-8 h8 v8" fill="${C.wood}" stroke-width="1.800"/>`;
-  return `<svg class="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">${G_OPEN('wob-m', 2.4)}
-    <rect width="800" height="520" fill="${C.sky}" stroke="none"/>
-    <path d="M610 426 q9 -6 18 0 M680 470 q9 -6 18 0 M720 390 q9 -6 18 0 M650 250 q9 -6 18 0 M746 160 q9 -6 18 0 M120 34 q9 -6 18 0 M560 30 q9 -6 18 0 M690 300 q9 -6 18 0 M620 496 q9 -6 18 0" stroke="#fff" stroke-width="2.400"/>
-    <path d="M40 152 Q28 112 90 112 Q170 98 250 102 Q300 62 370 54 Q450 46 520 72 Q572 92 590 132 Q640 122 666 150 Q672 178 622 192 Q590 232 592 292 Q602 362 582 422 Q562 492 440 502 Q300 514 150 502 Q50 492 36 422 Q18 300 40 152Z" fill="#CFE0B6"/>
+  const hx = MAP_HOME[0], hy = MAP_HOME[1];
+  nodes += spot('home', hx, hy, home ? `<circle cx="${hx}" cy="${hy}" r="10" fill="${C.lgreen}"/><circle cx="${hx}" cy="${hy}" r="3.600" fill="${C.pink}" stroke-width="1.400"/>` : house(hx, hy, C.coral));
+  texts += label(hx, hy + 26, home ? '小花园' : '家');
+  return `<svg class="map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${MAP_W} ${MAP_H}">${G_OPEN('wob-m', 2.4)}
+    <rect width="${MAP_W}" height="${MAP_H}" fill="${C.sky}" stroke="none"/>
+    <path d="M680 470 q9 -6 18 0 M720 390 q9 -6 18 0 M650 250 q9 -6 18 0 M120 34 q9 -6 18 0 M690 300 q9 -6 18 0 M700 530 q9 -6 18 0 M800 566 q9 -6 18 0 M900 500 q9 -6 18 0 M950 560 q9 -6 18 0 M690 620 q9 -6 18 0 M860 640 q9 -6 18 0 M790 484 q9 -6 18 0 M990 150 q9 -6 18 0 M776 196 q9 -6 18 0 M1000 480 q9 -6 18 0" stroke="#fff" stroke-width="2.400"/>
+    <path d="M40 152 Q28 112 90 112 Q170 98 250 102 Q300 62 370 54 Q450 46 520 72 Q572 92 590 132 Q640 122 666 150 Q672 178 622 192 Q590 232 592 292 Q606 362 618 428 Q640 510 606 584 Q570 652 440 664 Q300 678 150 664 Q52 650 30 560 Q14 480 36 422 Q18 300 40 152Z" fill="#CFE0B6"/>
+    <path d="M812 262 Q800 204 862 196 Q950 180 1012 206 Q1040 250 1030 330 Q1034 420 962 444 Q880 462 828 436 Q796 384 812 262Z" fill="#CFE0B6"/>
     <path d="M298 112 Q328 66 372 58 Q450 50 516 74 Q562 94 554 126 Q470 152 380 138 Q318 138 298 112Z" fill="#F7F8F2" stroke="none"/>
     <path d="M42 368 Q120 352 200 432 Q300 444 432 442 Q474 470 444 498 Q300 512 150 500 Q52 490 38 422Z" fill="#EBD9A6" stroke="none"/>
+    <path d="M222 624 Q300 598 420 606 Q472 620 462 648 Q400 670 300 666 Q232 662 222 624Z" fill="#EBD9A6" stroke="none"/>
+    <path d="M60 612 Q120 588 200 608 Q214 640 180 658 Q100 662 64 640Z" fill="#B5CE92" stroke="none"/>
+    <path d="M822 382 Q866 370 912 384 Q920 416 890 430 Q846 434 824 416Z" fill="#BFDDE3" stroke="none"/>
     <path d="M322 90 l10 -16 l10 16 M398 80 l9 -15 l9 15 M440 96 l8 -13 l8 13 M530 108 l8 -13 l8 13" stroke-width="2"/>
-    <path d="M136 198 l0 -9 M132 196 q4 -12 8 0 M246 204 l0 -9 M242 202 q4 -12 8 0 M356 204 l0 -9 M352 202 q4 -12 8 0 M134 280 l0 -9 M130 278 q4 -12 8 0 M244 356 l0 -9 M240 354 q4 -12 8 0 M466 204 l0 -9 M462 202 q4 -12 8 0 M356 356 l0 -9 M352 354 q4 -12 8 0" stroke="${C.dgreen}" stroke-width="2"/>
-    <path d="M176 448 q10 -8 20 0 M306 486 q10 -8 20 0 M446 474 q10 -8 20 0 M60 440 q10 -8 20 0" stroke="${C.dwood}" stroke-width="1.800"/>
-    <ellipse cx="232" cy="64" rx="46" ry="19" fill="${C.white}"/>
+    <path d="${tree([[136, 198], [246, 204], [356, 204], [134, 280], [244, 356], [466, 204], [356, 356], [906, 282], [1004, 284], [912, 366], [1002, 398], [170, 596], [286, 602], [400, 590], [520, 606], [70, 590], [520, 520]])}" stroke="${C.dgreen}" stroke-width="2"/>
+    <path d="M176 448 q10 -8 20 0 M306 486 q10 -8 20 0 M446 474 q10 -8 20 0 M60 440 q10 -8 20 0 M330 630 q10 -8 20 0" stroke="${C.dwood}" stroke-width="1.800"/>
+    <ellipse cx="232" cy="64" rx="46" ry="19" fill="${C.white}"/><ellipse cx="606" cy="56" rx="46" ry="19" fill="${C.white}"/><ellipse cx="880" cy="154" rx="46" ry="19" fill="${C.white}"/>
     <path d="M44 86 a17 17 0 0 1 4 -34 a23 23 0 0 1 44 -2 a18 18 0 0 1 36 6 a15 15 0 0 1 -2 30z" fill="${C.white}"/>
-    <circle cx="724" cy="72" r="46" fill="#2B3560"/><g stroke="none" fill="#FFF6C9"><circle cx="694" cy="52" r="2"/><circle cx="752" cy="50" r="2.400"/><circle cx="700" cy="96" r="1.800"/><circle cx="748" cy="98" r="2"/><circle cx="722" cy="36" r="1.600"/></g>
-    <ellipse cx="716" cy="242" rx="42" ry="18" fill="${C.sand}"/>
+    <path d="M678 72 a46 46 0 0 1 46 -46 h136 a46 46 0 0 1 0 92 h-136 a46 46 0 0 1 -46 -46z" fill="#2B3560"/><g stroke="none" fill="#FFF6C9"><circle cx="694" cy="52" r="2"/><circle cx="752" cy="50" r="2.400"/><circle cx="700" cy="96" r="1.800"/><circle cx="748" cy="98" r="2"/><circle cx="722" cy="36" r="1.600"/><circle cx="792" cy="40" r="2"/><circle cx="806" cy="96" r="1.800"/><circle cx="828" cy="44" r="1.600"/><circle cx="892" cy="42" r="2"/><circle cx="884" cy="98" r="1.800"/></g>
+    ${_arcBow(972, 88, 40)}<circle cx="934" cy="90" r="11" fill="${C.white}"/><circle cx="1010" cy="90" r="11" fill="${C.white}"/>
+    <ellipse cx="716" cy="242" rx="42" ry="18" fill="${C.sand}"/><ellipse cx="760" cy="334" rx="42" ry="18" fill="${C.sand}"/><ellipse cx="748" cy="440" rx="42" ry="18" fill="${C.sand}"/>
     <circle cx="652" cy="324" r="22" fill="rgba(255,255,255,.3)" stroke="#fff"/>
     <path d="M636 160 l-7 -5 M636 160 l8 -4" stroke="${C.yellow}" stroke-width="3"/>
-    ${house(MAP_HOME[0], MAP_HOME[1], C.coral)}${friend ? house(MAP_FRIEND[0], MAP_FRIEND[1], C.dwood) : ''}
+    <path d="M826 572 h30 l-5 9 h-20z" fill="${C.coral}" stroke-width="1.800"/><path d="M841 572 v-22 l13 18z" fill="${C.white}" stroke-width="1.800"/>
+    <circle cx="968" cy="612" r="26" fill="${C.cream}"/><path d="M968 590 L976 612 L968 634 L960 612Z" fill="${C.coral}" stroke-width="1.800"/><path d="M946 612 h44" stroke-width="1.600"/>
+    ${friend ? house(MAP_FRIEND[0], MAP_FRIEND[1], C.dwood) : ''}
     <path class="map-route" d="" stroke="${C.coral}" stroke-width="3.400" stroke-dasharray="2 9"/>
     ${nodes}</g>
-    ${texts}${label(MAP_HOME[0], MAP_HOME[1] + 26, '家')}${friend ? label(MAP_FRIEND[0], MAP_FRIEND[1] + 26, '栗子家') : ''}
+    ${texts}${friend ? label(MAP_FRIEND[0], MAP_FRIEND[1] + 26, '栗子家') : ''}
     <g class="map-pet"></g></svg>`;
 }
 /* 地图上的宠物：一个小圆牌，里面是宠物；开车的话旁边带着车 */

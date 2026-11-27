@@ -81,7 +81,21 @@ const FOODS = {
   bubbletea:  { name: '珍珠奶茶', ic: 'bubbletea',  drink: true, thirst: 16, happy: 16, sweet: 1, price: 11 },
   barleytea:  { name: '大麦茶',   ic: 'barleytea',  drink: true, thirst: 24, energy: 4, price: 5 },
   plumjuice:  { name: '酸梅汤',   ic: 'plumjuice',  drink: true, thirst: 26, happy: 6, price: 7 },
-  mungsoup:   { name: '绿豆汤',   ic: 'mungsoup',   drink: true, thirst: 24, hunger: 6, price: 7 }
+  mungsoup:   { name: '绿豆汤',   ic: 'mungsoup',   drink: true, thirst: 24, hunger: 6, price: 7 },
+  shoot:      { name: '竹笋',     ic: 'bamboo',     hunger: 16, price: 6 },
+  // 下面这些是各地小铺才有的本地货（见 LOCAL），平常的货架上没有
+  honeycomb:  { name: '蜂巢蜜',   ic: 'honeycomb',  hunger: 8,  happy: 16, sweet: 1, price: 14 },
+  berrypie:   { name: '野莓派',   ic: 'berrypie',   hunger: 22, happy: 8, price: 13 },
+  shrimpchip: { name: '虾片',     ic: 'shrimpchip', hunger: 14, happy: 8, price: 9 },
+  saltsoda:   { name: '海盐汽水', ic: 'saltsoda',   drink: true, thirst: 26, happy: 8, price: 9 },
+  hotpot:     { name: '小火锅',   ic: 'hotpot',     hunger: 30, thirst: 6, energy: 4, price: 14 },
+  gingermilk: { name: '姜汁热奶', ic: 'gingermilk', drink: true, thirst: 20, energy: 10, price: 10 },
+  datecake:   { name: '椰枣糕',   ic: 'datecake',   hunger: 20, energy: 8, price: 12 },
+  minttea:    { name: '薄荷凉茶', ic: 'minttea',    drink: true, thirst: 30, price: 8 },
+  starcandy:  { name: '星星糖',   ic: 'starcandy',  hunger: 4,  happy: 18, sweet: 1, price: 10 },
+  stardrink:  { name: '星光汽水', ic: 'stardrink',  drink: true, thirst: 22, happy: 12, price: 12 },
+  hotdog:     { name: '热狗',     ic: 'hotdog',     hunger: 24, happy: 6, price: 11 },
+  crepe:      { name: '可丽饼',   ic: 'crepe',      hunger: 16, happy: 12, sweet: 1, price: 12 }
 };
 const SEEDS = {
   carrot:     { name: '胡萝卜', ic: 'carrot',     time: 60,  give: 3, food: 'carrot',     price: 5 },
@@ -164,7 +178,20 @@ const WEARS = {
   gradcap: { name: '博士帽',   ic: 'gradcap',    price: 110 },
   wizard:  { name: '魔法帽',   ic: 'wizard',     price: 120 },
   halo:    { name: '天使光环', ic: 'halo',       price: 130 },
-  crown:   { name: '小皇冠',   ic: 'crown',      price: 150 }
+  crown:   { name: '小皇冠',   ic: 'crown',      price: 150 },
+  // 各地小铺才有的
+  butterfly:   { name: '蝴蝶发夹', ic: 'butterfly',   price: 45 },
+  acornhat:    { name: '橡果帽',   ic: 'acornhat',    price: 60 },
+  shellclip:   { name: '贝壳发夹', ic: 'shellclip',   price: 50 },
+  sailor:      { name: '水手帽',   ic: 'sailor',      price: 70 },
+  knitcap:     { name: '毛线帽',   ic: 'knitcap',     price: 60 },
+  earmuff:     { name: '毛绒耳罩', ic: 'earmuff',     price: 65 },
+  explorer:    { name: '探险帽',   ic: 'explorer',    price: 70 },
+  cowboy:      { name: '牛仔帽',   ic: 'cowboy',      price: 75 },
+  antenna:     { name: '外星天线', ic: 'antenna',     price: 90 },
+  unicornhorn: { name: '独角兽角', ic: 'unicornhorn', price: 110 },
+  starglasses: { name: '星星眼镜', ic: 'starglasses', price: 70 },
+  tophat:      { name: '礼帽',     ic: 'tophat',      price: 85 }
 };
 /* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
@@ -176,11 +203,32 @@ const GEAR = {
   tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山、营地和长颈鹿草原', to: ['snow', 'camp', 'safari'] },
   goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] },
   boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛和企鹅冰原', to: ['island', 'penguin'] },
-  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡和糖果王国', to: ['cloud', 'candy'] },
-  rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面', to: ['moon'] }
+  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡、糖果王国和彩虹桥', to: ['cloud', 'candy', 'rainbow'] },
+  rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面和太空站', to: ['moon', 'spacestation'] },
+  ticket:   { name: '游园年票', ic: 'ticket',   price: 75,  desc: '可以去动物园、小火车站和夜市', to: ['zoo', 'station', 'nightmarket'] },
+  rod:      { name: '钓鱼竿',   ic: 'rod',      price: 85,  desc: '可以去渔港、贝壳沙滩和水乡', to: ['harbor', 'beach', 'watertown'] },
+  compass:  { name: '指南针',   ic: 'compass',  price: 95,  desc: '可以去热带雨林、熊猫竹谷和恐龙谷', to: ['jungle', 'pandavale', 'dinovalley'] },
+  sled:     { name: '小雪橇',   ic: 'sled',     price: 110, desc: '可以去极光冰原和冰屋村', to: ['aurora', 'igloo'] },
+  treasure: { name: '藏宝图',   ic: 'treasure', price: 120, desc: '可以去海盗湾、古城堡和火山口', to: ['piratebay', 'castle', 'volcano'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill'];
-const CAR_DESTS = ['track', 'canyon'];   // 只有开车才到得了的地方
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill', 'vineyard', 'sunfield', 'lavender'];
+const CAR_DESTS = ['track', 'canyon', 'coastroad'];   // 只有开车才到得了的地方
+/* 各地小铺的本地货：住在哪一类地方（和地图上圆点的颜色一样），小铺里就多卖那一类的东西。
+ * 每个地方从自己那一类里轮着挑四样，再加上当地的特产，所以每个地方卖的都不太一样 */
+const LOCAL = {
+  g: ['food:honeycomb', 'wear:butterfly', 'furn:hammock', 'food:berrypie', 'wear:acornhat', 'furn:birdhouse'],
+  b: ['food:shrimpchip', 'wear:shellclip', 'furn:surfboard', 'food:saltsoda', 'wear:sailor', 'furn:lifebuoy'],
+  w: ['food:hotpot', 'wear:knitcap', 'furn:fireplace', 'food:gingermilk', 'wear:earmuff', 'furn:snowman'],
+  y: ['food:datecake', 'wear:explorer', 'furn:cactus', 'food:minttea', 'wear:cowboy', 'furn:sandglass'],
+  p: ['food:starcandy', 'wear:antenna', 'furn:moonlamp', 'food:stardrink', 'wear:unicornhorn', 'furn:telescope'],
+  t: ['food:hotdog', 'wear:starglasses', 'furn:gacha', 'food:crepe', 'wear:tophat', 'furn:neon']
+};
+const LOCAL_ONLY = new Set([].concat(...Object.keys(LOCAL).map(k => LOCAL[k])));
+function localGoods(d) {
+  const reg = MAP_AT[d][2], pool = LOCAL[reg], i = Object.keys(MAP_AT).filter(k => MAP_AT[k][2] === reg).indexOf(d);
+  return [0, 1, 2, 3].map(j => { const a = pool[(i + j) % pool.length].split(':'); return { kind: a[0], id: a[1] }; });
+}
+const souvPrice = k => { const s = SOUVS[k]; return 8 + Math.round(((s.hunger || 0) + (s.thirst || 0) + (s.happy || 0) + (s.energy || 0)) / 3); };   // 住在当地时，特产在小铺里卖多少
 const TASKS = [
   { id: 'feed',    name: '喂宠物吃 3 次饭',   need: 3, coin: 15, ic: 'apple' },
   { id: 'drink',   name: '给宠物喝 2 次水',   need: 2, coin: 10, ic: 'water' },
@@ -213,7 +261,12 @@ const STICKERS = [
   { id: 's19', ic: 'rocket',    name: '环游世界',     c: 'trip', n: 25 },
   { id: 's20', ic: 'camera',    name: '风景收藏家',   c: 'cards', n: 24 },
   { id: 's21', ic: 'minicar',   name: '小小车手',     c: 'cars', n: 1 },
-  { id: 's22', ic: 'mapic',     name: '走遍地图',     c: 'places', n: 20 }
+  { id: 's22', ic: 'mapic',     name: '走遍地图',     c: 'places', n: 20 },
+  { id: 's23', ic: 'house',     name: '乔迁之喜',     c: 'move', n: 1 },
+  { id: 's24', ic: 'compass',   name: '四海为家',     c: 'move', n: 6 },
+  { id: 's25', ic: 'heart',     name: '热闹的一家',   c: 'pals', n: 3 },
+  { id: 's26', ic: 'bus',       name: '车库满满',     c: 'cars', n: 6 },
+  { id: 's27', ic: 'treasure',  name: '大探险家',     c: 'places', n: 40 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -224,13 +277,13 @@ function newState(type, name) {
     v: 2, pet: { type, name }, level: 1, exp: 0, coins: 60,
     stats: { hunger: 62, thirst: 68, clean: 74, happy: 70, energy: 86 },
     inv, seeds: { carrot: 2, lettuce: 2, tulip: 1 }, owned: [], wear: null, gear: {},
-    floor: 1, furn: furnDefault(), wallPick: null, dishes: {}, cookbook: {},
+    floor: 1, furn: furnDefault(), wallPick: null, dishes: {}, cookbook: {}, home: null, pals: [],
     plots: [null, null, null, null, null, null],
     sleeping: false, last: Date.now(),
     trip: null, mail: [], cards: {}, cardLog: [], souv: {}, visitor: null, albumNew: false,
     daily: { day: 0, signed: false, prog: {}, claimed: {} }, streak: 0,
     sick: null, runaway: null, meds: {}, risk: { cold: 0, tummy: 0, throat: 0, fever: 0 }, sweet: 0, immune: 0, souvSeen: {},
-    counters: { feed: 0, water: 0, harvest: 0, game: 0, bath: 0, pet: 0, trip: 0, guest: 0, cure: 0 },
+    counters: { feed: 0, water: 0, harvest: 0, game: 0, bath: 0, pet: 0, trip: 0, guest: 0, cure: 0, move: 0 },
     gameLv: { math: 3, catch: 2, fly: 2, memory: 2, melody: 2 },   // 小游戏等级：口算是年级，其余是 1 轻松 / 2 普通 / 3 挑战
     stickers: [], phrases: [], soundOn: true
   };
@@ -257,7 +310,10 @@ function loadState() {
     if (s.runaway && !ILLS[s.runaway.type]) s.runaway = null;
     if (!s.furn || !Array.isArray(s.furn.own) || !Array.isArray(s.furn.put)) s.furn = furnDefault();   // 旧存档：补上原来画在背景里的那几件家具
     s.furn.put = s.furn.put.filter(p => FURNS[p.id]);
-    if (s.floor !== 2) s.floor = 1;
+    if (s.floor !== 2 && s.floor !== 0) s.floor = 1;
+    s.furn.put.forEach(p => { if ((FURNS[p.id].car || p.id === 'parkmat') && p.f !== 0) p.f = 0; });   // 旧存档：小车和停车位从一楼搬到负一楼的车库
+    if (!DESTS[s.home]) s.home = null;
+    s.pals = (Array.isArray(s.pals) ? s.pals : []).filter(p => p && PETS[p.type] && p.type !== s.pet.type);
     if (!s.meds) s.meds = {};
     return s;
   } catch (e) { return null; }
@@ -393,6 +449,7 @@ function renderPet(force) {
   $('#hud-avatar').innerHTML = petSVG(S.pet.type, ['sleep', 'sad', 'cold', 'tummy', 'throat', 'fever'].includes(mood) ? mood : 'normal', S.wear);
   $('#scene-home').classList.toggle('night', S.sleeping);
   document.documentElement.style.setProperty('--grow', (0.84 + Math.min(S.level, 10) * 0.016).toFixed(3));
+  renderPals();
 }
 function setTempMood(m, ms) {
   tempMood = m; clearTimeout(tempTimer);
@@ -633,7 +690,7 @@ function talent() {
   S.stats.energy = clamp(S.stats.energy - 3, 0, 100); addStat('happy', 8); addExp(4);
   if (type === 'bird') birdSing();
   else {
-    petAnim({ cat: 'trick-roll', dog: 'trick-spin', rabbit: 'trick-jump', hamster: 'trick-flip' }[type], 1300);
+    petAnim(PETS[type].trick || { cat: 'trick-roll', dog: 'trick-spin', rabbit: 'trick-jump', hamster: 'trick-flip' }[type], 1300);
     setTempMood('joy', 1400); Sound.sfx.ok();
     say(pick(['看我的！', '厉害吧？嘿嘿~', '当当当当~ 表演完毕！']));
   }
@@ -944,9 +1001,11 @@ function startTrip(sel) {
   if (sel.bell) S.gear.bell--;
   if (sel.drink) S.inv[sel.drink]--;
   const isFav = !!dishBento || PETS[S.pet.type].fav === sel.food;   // 亲手做的菜和最爱的食物一样好：一定带回特产
-  const to = sel.tool && GEAR[sel.tool].to;   // 带了能去远方的用品，四次里有三次会去那里
+  const live = d => d !== S.home;   // 不会去自己住的地方旅行
+  const to = sel.tool && GEAR[sel.tool].to && GEAR[sel.tool].to.filter(live);   // 带了能去远方的用品，四次里有三次会去那里
   const car = sel.car && FURNS[sel.car] && FURNS[sel.car].car ? sel.car : null, v = car ? FURNS[car].car : 1;
-  const dest = to && Math.random() < .75 ? pick(to) : car && Math.random() < .45 ? pick(CAR_DESTS) : pick(BASE_DESTS);
+  const carTo = CAR_DESTS.filter(live);
+  const dest = to && to.length && Math.random() < .75 ? pick(to) : car && carTo.length && Math.random() < .45 ? pick(carTo) : pick(BASE_DESTS.filter(live));
   const rareP = .15 + (sel.bell ? .3 : 0) + (isFav ? .1 : 0) + (sel.food === 'cake' ? .1 : 0);
   const rare = Math.random() < rareP;
   S.trip = {
@@ -989,7 +1048,7 @@ function tickTrip() {
 }
 function finishTrip() {
   const t = S.trip, st = S.stats, d = DESTS[t.dest];
-  const chilly = (t.dest === 'snow' || t.dest === 'camp' || t.dest === 'penguin') && !S.immune && Math.random() < .2;   // 去冷的地方，偶尔会着凉
+  const chilly = MAP_AT[t.dest][2] === 'w' && !S.immune && Math.random() < .2;   // 去冷的地方，偶尔会着凉
   if (!t.mailed) S.mail.push(t.card);
   S.trip = null;
   st.hunger = Math.max(30, st.hunger - 25); st.clean = Math.max(28, st.clean - 32);
@@ -1029,17 +1088,17 @@ function openMailbox() {
   $('#to-album', m).onclick = () => { closeModal(); switchScene('album'); };
   afterAction();
 }
-/* ---------- 小车和旅行地图 ---------- */
+/* ---------- 小车、旅行地图和搬家 ---------- */
 const myCars = () => S.furn.own.filter(id => FURNS[id] && FURNS[id].car);
 const beenTo = d => !!(S.cards[d + ':a'] || S.cards[d + ':b'] || S.souvSeen[DESTS[d].souv]);
-/* 新买的车直接停到一楼；第一次买车送一块停车位 */
+const homePos = () => S.home && MAP_AT[S.home] ? MAP_AT[S.home] : MAP_HOME;   // 家现在在地图上的哪里
+const homeName = () => S.home ? DESTS[S.home].name : '小花园';
+/* 新买的车直接停进负一楼的车库：按屏幕看得见的宽度一排停 2～4 辆，先靠墙停两排（在宠物身后），再停到前面 */
 function parkCar(id) {
-  if (!S.furn.own.includes('parkmat')) {
-    S.furn.own.push('parkmat');
-    const m = { id: 'parkmat', f: 1, x: 170, y: 496 }; clampFurn(m); S.furn.put.push(m);
-  }
-  const mat = S.furn.put.find(p => p.id === 'parkmat' && p.f === 1);
-  const p = { id, f: 1, x: (mat ? mat.x : 170) + 36 * (myCars().length - 1), y: mat ? mat.y - 14 : 480 };
+  const n = S.furn.put.filter(p => FURNS[p.id] && FURNS[p.id].car).length;
+  const halfW = $('#stage').clientWidth / (2 * stageU), x0 = Math.max(0, 400 - halfW), x1 = Math.min(800, 400 + halfW);
+  const per = clamp(Math.floor((x1 - x0) / 180), 2, 4), row = Math.floor(n / per) % 3;
+  const p = { id, f: 0, x: x0 + (x1 - x0) * (n % per + .5) / per + (row === 1 ? 24 : 0), y: [404, 452, 498][row] };
   clampFurn(p); S.furn.put.push(p);
   renderFurn();
 }
@@ -1050,16 +1109,16 @@ function tripStage() {
 }
 function mapHTML() {
   const n = Object.keys(DESTS).filter(beenTo).length;
-  return `<p class="map-say"></p><div class="mapbox"><div class="mapin">${mapSVG(beenTo, S.trip ? S.trip.dest : null, !!S.runaway)}</div></div>` +
-    `<p class="album-note" style="margin:8px 0 0">去过的地方会亮起来 · 已经去过 ${n} / ${Object.keys(DESTS).length} 个地方</p>`;
+  return `<p class="map-say"></p><div class="mapbox"><div class="mapin">${mapSVG(beenTo, S.trip ? S.trip.dest : null, !!S.runaway, S.home)}</div></div>` +
+    `<p class="album-note" style="margin:8px 0 0">已经去过 ${n} / ${Object.keys(DESTS).length} 个地方 · 点一个地方看看，去过的地方可以搬过去住</p>`;
 }
 /* 把地图上的宠物挪到它现在的位置（页面上有几张地图就挪几张）；center 表示顺便把地图滚到它那里 */
 function updateMap(center) {
   const pets = $$('.map-pet'); if (!pets.length || !S) return;
-  let pos = MAP_HOME, text = S.pet.name + ' 在家里', d = '', car = null;
+  let pos = homePos(), text = S.pet.name + ' 在家里' + (S.home ? '（' + homeName() + '）' : ''), d = '', car = null;
   if (S.runaway) { pos = MAP_FRIEND; text = S.pet.name + ' 在栗子家，等你去接它'; }
   else if (S.trip && MAP_AT[S.trip.dest]) {
-    const t = S.trip, st = tripStage(), r = mapRoute(MAP_AT[t.dest]), name = DESTS[t.dest].name;
+    const t = S.trip, st = tripStage(), r = mapRoute(MAP_AT[t.dest], homePos()), name = DESTS[t.dest].name;
     pos = r.at(st.u); d = r.d; car = t.car && FURNS[t.car] ? FURNS[t.car] : null;
     text = st.at === 'go' ? `${S.pet.name} ${car ? '开着' + car.name : '背着小包'}，正在去「${name}」的路上`
       : st.at === 'stay' ? `${S.pet.name} 正在「${name}」玩` : `${S.pet.name} 正在回家的路上，${leftText()}`;
@@ -1075,13 +1134,112 @@ function updateMap(center) {
   $$('.map-say').forEach(p => { p.textContent = text; });
   if (center) $$('.mapbox').forEach(b => {
     const w = b.firstChild.clientWidth, h = b.firstChild.clientHeight;
-    b.scrollLeft = pos[0] / 800 * w - b.clientWidth / 2; b.scrollTop = pos[1] / 520 * h - b.clientHeight / 2;
+    b.scrollLeft = pos[0] / MAP_W * w - b.clientWidth / 2; b.scrollTop = pos[1] / MAP_H * h - b.clientHeight / 2;
   });
 }
 function openMap() {
   Sound.sfx.page();
   openModal('<h2>旅行地图</h2>' + mapHTML(), { wide: true });
   updateMap(true);
+}
+
+/* 点地图上的一个地方：没去过的告诉你怎么去；去过的可以看看那里的小铺卖什么，还可以搬过去住 */
+function howToGo(d) {
+  if (BASE_DESTS.includes(d)) return '出门旅行，就有机会走到这里';
+  if (CAR_DESTS.includes(d)) return '开着小车去旅行，才有机会到这里';
+  const g = Object.keys(GEAR).find(k => (GEAR[k].to || []).includes(d));
+  return g ? '带上「' + GEAR[g].name + '」去旅行，就有机会到这里' : '';
+}
+const moveFee = () => myCars().length ? 0 : 30;   // 有车就自己搬，没车要请搬家公司
+const goodsOf = g => g.kind === 'food' ? FOODS[g.id] : g.kind === 'wear' ? WEARS[g.id] : FURNS[g.id];
+function openPlace(id, inModal) {
+  const old = id === 'home';
+  if (!old && !DESTS[id]) return;
+  Sound.sfx.click();
+  const name = old ? '小花园' : DESTS[id].name, here = old ? !S.home : S.home === id, been = old || beenTo(id), fee = moveFee();
+  let h = `<h2>${name}</h2>`;
+  if (!old) { const cid = S.cards[id + ':b'] ? id + ':b' : S.cards[id + ':a'] ? id + ':a' : null; if (cid) h += pcHTML(cid, 'big'); }
+  if (!been) h += `<p>还没去过这里。<br>${howToGo(id)}。</p><p class="hint">去过以后，就可以搬到这里住</p>`;
+  else {
+    if (old) h += '<p>最开始住的地方。这里的杂货铺什么都有，就是没有外地的本地货。</p>';
+    else {
+      const sv = SOUVS[DESTS[id].souv];
+      h += `<p>住在这里，小铺里还会卖：</p><div class="gift-list"><span>${icon(sv.ic)}${sv.name}</span>` +
+        localGoods(id).map(g => { const it = goodsOf(g); return `<span>${icon(it.ic || 'sofa')}${it.name}</span>`; }).join('') + '</div>';
+    }
+    h += here ? '<p class="hint">现在的家就在这里</p>'
+      : `<div class="row"><button class="btn green" id="mv-go">搬到这里住</button></div><p class="hint">${fee ? '请搬家公司要 ' + fee + ' 颗橡果；有小车就能自己搬，不花钱' : '开着自己的小车搬家，不花钱'}</p>`;
+  }
+  h += `<div class="row"><button class="btn plain" id="mv-back">${inModal ? '回地图' : '关上'}</button></div>`;
+  const m = openModal(h);
+  $('#mv-back', m).onclick = () => { Sound.sfx.click(); if (inModal) openMap(); else closeModal(); };
+  const go = $('#mv-go', m);
+  if (go) go.onclick = () => moveHome(id);
+}
+function moveHome(id) {
+  if (bath || blocked()) return;
+  if (S.sick) { toast('生病了，等病好了再搬家吧'); return; }
+  const fee = moveFee();
+  if (S.coins < fee) { Sound.sfx.bad(); toast('橡果不够请搬家公司，去游乐场捡一些吧'); return; }
+  S.coins -= fee; S.home = id === 'home' ? null : id; S.counters.move = (S.counters.move || 0) + 1;
+  closeModal(); shopTab = S.home ? 'local' : 'food';
+  if (scene !== 'home') switchScene('home');
+  renderHomeView(); updateHUD();
+  Sound.sfx.trip(); confetti(); banner('搬到「' + homeName() + '」啦'); setTempMood('joy', 2200);
+  say(S.home ? '新家到啦！窗外就是' + homeName() + '~' : '回到小花园啦，还是老家亲切~', 3600);
+  checkStickers(); save();
+}
+/* 搬家以后跟着变的东西：一楼窗外的风景、商店的招牌、小屋左边的门牌 */
+function renderHomeView() {
+  const v = $('#scene-home .bg.f1 .win-view');
+  if (v) v.innerHTML = S.home && CARD_BG[S.home]
+    ? `<g transform="translate(70.500 96) scale(.730)" stroke-width="3">${CARD_BG[S.home](false)}</g><path class="win-dark" d="M102 242 V152 Q102 96 180 96 Q258 96 258 152 V242Z" stroke="none"/>` : '';
+  const sign = $('#scene-shop .shop-sign');
+  if (sign) sign.textContent = S.home ? DESTS[S.home].name + '小铺' : '小小杂货铺';
+  $('#home-tag').innerHTML = icon('mapic') + '<em>' + homeName() + '</em>';
+}
+
+/* ---------- 家里的其他小伙伴 ----------
+ * S.pet 是现在陪着你的那一只，S.pals 是家里另外几只。大家一起吃饭、一起长大，随时可以换一只来陪你 */
+const PET_PRICE = 180;
+let palSig = '';
+function renderPals(force) {
+  const el = $('#pals'); if (!el) return;
+  const sig = S.pals.map(p => p.type).join(',') + '|' + (S.sleeping ? 1 : 0);
+  if (!force && sig === palSig) return;
+  palSig = sig;
+  el.innerHTML = S.pals.slice(0, 4).map((p, i) => `<button class="pal p${i}" data-pal="${p.type}" title="${esc(p.name)}">${petSVG(p.type, S.sleeping ? 'sleep' : 'happy')}</button>`).join('');
+}
+function openPal(type) {
+  const p = S.pals.find(q => q.type === type); if (!p || decor || bath) return;
+  Sound.sfx[PETS[type].fly ? 'chirp' : 'pop']();
+  const m = openModal(`<div class="hero">${petSVG(type, 'happy')}</div><h2>${esc(p.name)}</h2><p>${PETS[type].name} · ${PETS[type].desc}</p>
+    <div class="row"><button class="btn green" id="pal-swap">换它来陪我</button><button class="btn plain" data-close>摸摸头就好</button></div>`);
+  $('#pal-swap', m).onclick = () => { closeModal(); swapPet(type); };
+}
+function swapPet(type) {
+  const i = S.pals.findIndex(q => q.type === type); if (i < 0 || bath) return;
+  if (blocked()) return;
+  const cur = S.pet; S.pet = S.pals[i]; S.pals[i] = cur;
+  petSig = ''; resetIdle();
+  renderPet(true); renderPals(true); updateHUD(); updateActions(); renderWall(); renderAlert();
+  if (scene === 'shop') renderShop();
+  Sound.sfx.ok(); setTempMood('joy', 1600); say('换我来陪你啦！我是' + S.pet.name + '~', 3000);
+  save();
+}
+function adoptPet(type) {
+  if (!PETS[type] || S.pet.type === type || S.pals.some(p => p.type === type)) return;
+  if (S.coins < PET_PRICE) { Sound.sfx.bad(); toast('橡果不够啦，去游乐场玩游戏捡一些吧'); return; }
+  const m = openModal(`<div class="hero">${petSVG(type, 'happy')}</div><h2>领养${PETS[type].name}</h2><p>给新伙伴起个名字吧</p>
+    <input id="ad-name" class="text-input" maxlength="6" value="${PETS[type].defName}" autocomplete="off">
+    <div class="row"><button class="btn green" id="ad-ok">带它回家（${acorns(PET_PRICE)}）</button></div>`);
+  $('#ad-ok', m).onclick = () => {
+    if (S.coins < PET_PRICE || S.pals.some(p => p.type === type)) { closeModal(); return; }
+    const name = ($('#ad-name', m).value || '').trim().slice(0, 6) || PETS[type].defName;
+    S.coins -= PET_PRICE; S.pals.push({ type, name });
+    closeModal(); Sound.sfx.level(); confetti(); banner('欢迎 ' + name + ' 来到家里');
+    renderPals(true); updateHUD(); renderShop(); checkStickers(); save();
+  };
 }
 
 /* ---------- 旅行手帐（明信片 / 特产 / 贴纸） ---------- */
@@ -1274,29 +1432,46 @@ function renderShop() {
   const card = (ic, name, d1, d2, price, kind, id, owned) =>
     `<div class="sitem">${icon(ic, 'big')}<b>${name}</b><small>${d1}</small><small>${d2}</small>` +
     (owned ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="${kind}:${id}">${acorns(price)}</button>`) + '</div>';
+  const fav = PETS[S.pet.type].fav;
+  const foodCard = k => { const f = FOODS[k]; return card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); };
+  const wearCard = k => card(WEARS[k].ic, WEARS[k].name, '给宠物戴上', '', WEARS[k].price, 'wear', k, S.owned.includes(k));
+  const where = { floor: '放在地上', rug: '铺在地上', wall: '挂在墙上' };
+  const furnCard = (k, kind) => {
+    const f = FURNS[k];
+    return `<div class="sitem"><div class="thumb">${furnSVG(k)}</div><b>${f.name}</b><small>${kind === 'car' ? f.tip : where[f.type]}</small><small>${kind === 'car' ? '停进车库' : ''}</small>` +
+      (S.furn.own.includes(k) ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="${kind || 'furn'}:${k}">${acorns(f.price)}</button>`) + '</div>';
+  };
   let h = '';
-  if (shopTab === 'food' || shopTab === 'drink' || shopTab === 'veg') {
-    const fav = PETS[S.pet.type].fav;
-    for (const k in FOODS) { const f = FOODS[k]; if ((f.drink ? 'drink' : isProduce(k) ? 'veg' : 'food') !== shopTab) continue; h += card(f.ic, f.name, fxText(f) + (k === fav ? ' 最爱' : ''), '我有 ' + (S.inv[k] || 0) + ' 份', f.price, 'food', k); }
+  if (shopTab === 'local') {   // 本地货：住在哪里，就卖哪里才有的东西
+    const d = S.home;
+    if (!d) h = '<p class="shop-note">这里是小花园的杂货铺。搬到去过的地方住，那里的小铺会多卖几样只有当地才有的东西</p>' +
+      '<p class="shop-note"><button class="btn small green" data-shopmap="1">打开地图，挑个地方搬家</button></p>';
+    else {
+      const k = DESTS[d].souv, sv = SOUVS[k];
+      h = `<p class="shop-note">这里是「${DESTS[d].name}」的小铺，下面这些只有住在这儿才买得到</p>` +
+        card(sv.ic, sv.name, fxText(sv), '当地特产 · 我有 ' + (S.souv[k] || 0) + ' 份', souvPrice(k), 'souv', k) +
+        localGoods(d).map(g => g.kind === 'food' ? foodCard(g.id) : g.kind === 'wear' ? wearCard(g.id) : furnCard(g.id)).join('') +
+        '<p class="shop-note"><button class="btn small plain" data-shopmap="1">看看别的地方卖什么</button></p>';
+    }
+  } else if (shopTab === 'food' || shopTab === 'drink' || shopTab === 'veg') {
+    for (const k in FOODS) { const f = FOODS[k]; if (LOCAL_ONLY.has('food:' + k) || (f.drink ? 'drink' : isProduce(k) ? 'veg' : 'food') !== shopTab) continue; h += foodCard(k); }
   } else if (shopTab === 'seed') {
     for (const k in SEEDS) { const s = SEEDS[k]; h += card(s.ic, s.name + '种子', s.food ? '能结 ' + s.give + ' 个' : s.med ? '能做 ' + s.give + ' 份' + MEDS[s.med].name : '开花能换 ' + s.coins + ' 橡果', '我有 ' + (S.seeds[k] || 0) + ' 颗', s.price, 'seed', k); }
   } else if (shopTab === 'med') {
     for (const k in MEDS) { const m = MEDS[k]; h += card(m.ic, m.name, m.desc, m.pack ? '' : '我有 ' + (S.meds[k] || 0) + ' 份', m.price, 'med', k); }
   } else if (shopTab === 'wear') {
-    for (const k in WEARS) { const w = WEARS[k]; h += card(w.ic, w.name, '给宠物戴上', '', w.price, 'wear', k, S.owned.includes(k)); }
+    for (const k in WEARS) if (!LOCAL_ONLY.has('wear:' + k)) h += wearCard(k);
   } else if (shopTab === 'furn') {
-    const kind = { floor: '放在地上', rug: '铺在地上', wall: '挂在墙上' };
-    for (const k in FURNS) {
-      const f = FURNS[k]; if (!f.price || f.car) continue;
-      h += `<div class="sitem"><div class="thumb">${furnSVG(k)}</div><b>${f.name}</b><small>${kind[f.type]}</small><small></small>` +
-        (S.furn.own.includes(k) ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="furn:${k}">${acorns(f.price)}</button>`) + '</div>';
-    }
+    for (const k in FURNS) { const f = FURNS[k]; if (!f.price || f.car || LOCAL_ONLY.has('furn:' + k)) continue; h += furnCard(k); }
   } else if (shopTab === 'car') {
-    h = '<p class="shop-note">开车去旅行，路上更快，还能去只有开车才到得了的地方</p>';
-    for (const k in FURNS) {
-      const f = FURNS[k]; if (!f.car) continue;
-      h += `<div class="sitem"><div class="thumb">${furnSVG(k)}</div><b>${f.name}</b><small>${f.tip}</small><small>停在小屋一楼</small>` +
-        (S.furn.own.includes(k) ? '<button class="btn small gray" disabled>已拥有</button>' : `<button class="btn small" data-buy="car:${k}">${acorns(f.price)}</button>`) + '</div>';
+    h = '<p class="shop-note">开车去旅行，路上更快，还能去只有开车才到得了的地方。有了车，搬家也不用花钱</p>';
+    for (const k in FURNS) if (FURNS[k].car) h += furnCard(k, 'car');
+  } else if (shopTab === 'pet') {
+    h = '<p class="shop-note">家里可以养好几只小伙伴，大家一起吃饭、一起长大。点“换它来”，就由它陪你玩</p>';
+    for (const k in PETS) {
+      const p = PETS[k], pal = S.pals.find(q => q.type === k), mine = S.pet.type === k;
+      h += `<div class="sitem"><div class="thumb pet-thumb">${petSVG(k, 'happy')}</div><b>${mine ? esc(S.pet.name) : pal ? esc(pal.name) : p.name}</b><small>${mine || pal ? p.name : p.desc}</small><small></small>` +
+        (mine ? '<button class="btn small gray" disabled>正陪着你</button>' : pal ? `<button class="btn small green" data-buy="swap:${k}">换它来</button>` : `<button class="btn small" data-buy="pet:${k}">${acorns(PET_PRICE)}</button>`) + '</div>';
     }
   } else {
     for (const k in GEAR) { const g = GEAR[k]; h += card(g.ic, g.name, g.desc, g.once ? '用一次少一个 · 有 ' + (S.gear[k] || 0) + ' 个' : '可以一直用', g.price, 'gear', k, !g.once && !!S.gear[k]); }
@@ -1304,16 +1479,21 @@ function renderShop() {
   $('#shop-grid').innerHTML = h;
 }
 function buy(kind, id, btn) {
-  const item = { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS, furn: FURNS, car: FURNS }[kind][id];
+  if (kind === 'pet') { adoptPet(id); return; }
+  if (kind === 'swap') { swapPet(id); return; }
+  if (kind === 'souv' && !(S.home && DESTS[S.home].souv === id)) return;   // 特产只有住在当地才买得到
+  const item = kind === 'souv' ? Object.assign({ price: souvPrice(id) }, SOUVS[id]) : { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS, furn: FURNS, car: FURNS }[kind][id];
   if (!item) return;
-  if (kind === 'car' && S.furn.own.includes(id)) return;
+  if ((kind === 'car' || kind === 'furn') && S.furn.own.includes(id)) return;
+  if (kind === 'wear' && S.owned.includes(id)) return;
   if (S.coins < item.price) { Sound.sfx.bad(); toast('橡果不够啦，去游乐场玩游戏捡一些吧'); return; }
   S.coins -= item.price;
   if (kind === 'food') S.inv[id] = (S.inv[id] || 0) + 1;
+  else if (kind === 'souv') { S.souv[id] = (S.souv[id] || 0) + 1; S.souvSeen[id] = 1; }
   else if (kind === 'seed') S.seeds[id] = (S.seeds[id] || 0) + 1;
   else if (kind === 'med') { if (item.pack) { item.pack.forEach(k => { S.meds[k] = (S.meds[k] || 0) + 1; }); toast('买到啦！四种药各多了一份'); } else S.meds[id] = (S.meds[id] || 0) + 1; }
-  else if (kind === 'furn') { if (S.furn.own.includes(id)) return; S.furn.own.push(id); toast('买到啦！回小屋点“布置”，把' + item.name + '摆出来'); }
-  else if (kind === 'car') { S.furn.own.push(id); parkCar(id); toast('买到啦！' + item.name + '停在小屋一楼了，准备行囊的时候可以开上它'); }
+  else if (kind === 'furn') { S.furn.own.push(id); toast('买到啦！回小屋点“布置”，把' + item.name + '摆出来'); }
+  else if (kind === 'car') { S.furn.own.push(id); parkCar(id); toast('买到啦！' + item.name + '停进负一楼的车库了，准备行囊的时候可以开上它'); }
   else if (kind === 'gear') { S.gear[id] = (S.gear[id] || 0) + 1; if (!item.once) toast('买到啦！准备行囊的时候记得带上' + item.name); }
   else { S.owned.push(id); S.wear = id; renderPet(true); toast(gone() ? '买到啦！等 ' + S.pet.name + ' 回家就能戴上' : '买到啦！已经帮 ' + S.pet.name + ' 戴上了'); }
   const r = btn.getBoundingClientRect();
@@ -1343,7 +1523,7 @@ function progress(key) {
   if (before < t.need && before + 1 >= t.need) setTimeout(() => toast('任务完成：' + t.name + '，去领奖励吧'), 900);
   updateDots();
 }
-function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : s.c === 'cars' ? myCars().length : s.c === 'places' ? Object.keys(DESTS).filter(beenTo).length : (S.counters[s.c] || 0); }
+function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : s.c === 'cars' ? myCars().length : s.c === 'pals' ? S.pals.length + 1 : s.c === 'places' ? Object.keys(DESTS).filter(beenTo).length : (S.counters[s.c] || 0); }
 function checkStickers() {
   STICKERS.forEach(s => {
     if (!S.stickers.includes(s.id) && stickerValue(s) >= s.n) {
@@ -1376,7 +1556,7 @@ function openMenu() {
   const m = openModal(`<h2>设置</h2><p class="hint" style="margin:0 0 8px">这一轮已经玩了 ${Math.floor(PT.secs / 60)} 分钟，玩满 ${PLAY_LIMIT / 60} 分钟要休息 ${COOL_DOWN / 60} 分钟</p>
     <div class="row"><button class="btn small plain" id="m-rename">改名字</button><button class="btn small green" id="m-title">回到封面</button></div>
     <h3>给爸爸妈妈的话</h3>
-    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。每连续玩 15 分钟会强制休息 5 分钟，倒计时结束才能继续（中途离开 5 分钟以上会重新计时）。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。</p>
+    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。每连续玩 15 分钟会强制休息 5 分钟，倒计时结束才能继续（中途离开 5 分钟以上会重新计时）。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。在手帐的地图上点一个去过的地方可以搬家；住在不同的地方，商店的“本地”里会多出当地才有的东西。商店的“宠物”里可以再领养小伙伴。</p>
     <div class="row"><button class="btn small gray" id="m-reset">重新领养一只</button></div>`);
   $('#m-rename', m).onclick = () => {
     const m2 = openModal(`<h2>新名字</h2><input id="rn" class="text-input" maxlength="6" value="${esc(S.pet.name)}" autocomplete="off"><div class="row"><button class="btn" id="rn-ok">好啦</button></div>`);
@@ -1599,7 +1779,7 @@ function cook(a, b) {
   }, 1700);
 }
 
-/* ---------- 两层楼和家具 ----------
+/* ---------- 三层楼（负一楼车库、一楼、二楼阁楼）和家具 ----------
  * 家具的位置用和房间背景同一把尺子（宽 800、高 500）：
  * 地上的家具和地毯记的是“底边中点”，墙上的记的是“正中心” */
 let stageU = 1;                       // 房间里 1 个单位等于屏幕上多少像素，fitStage 里更新
@@ -1674,7 +1854,7 @@ function renderDecorBar() {
 }
 function placeFurn(id) {
   const f = FURNS[id]; if (!decor || !f || S.furn.put.some(p => p.id === id)) return;
-  if (f.car && S.floor !== 1) { toast('小车上不了楼梯，只能停在一楼哦'); return; }
+  if (f.car && S.floor !== 0) { toast('小车要停在负一楼的车库里，先点“车库”下去再摆'); return; }
   const p = { id, f: S.floor, x: f.type === 'floor' ? 300 : 400, y: f.type === 'wall' ? 190 : f.type === 'rug' ? 494 : 444 };
   clampFurn(p); S.furn.put.push(p); decor.sel = id;
   Sound.sfx.pop(); renderFurn(); renderDecorBar();
@@ -1709,14 +1889,18 @@ function furnUp() {
   $$('#furn .fi').forEach(x => x.classList.toggle('sel', x.dataset.fid === decor.sel));
 }
 
-/* 上楼和下楼：画面和宠物一起换楼层 */
+/* 上楼和下楼：负一楼是车库（S.floor 记作 0）、一楼、二楼是阁楼；画面和宠物一起换楼层 */
 function updateFloorBtn() {
-  $('#floor-btn').innerHTML = icon(S.floor === 1 ? 'stairsup' : 'stairsdown') + (S.floor === 1 ? '上楼' : '下楼');
-  $('#scene-home').classList.toggle('floor2', S.floor === 2);
+  const up = $('#floor-btn'), dn = $('#floor-btn2'), h = $('#scene-home');
+  up.style.display = S.floor < 2 ? '' : 'none'; dn.style.display = S.floor > 0 ? '' : 'none';
+  up.innerHTML = icon('stairsup') + (S.floor === 0 ? '回一楼' : '上楼');
+  dn.innerHTML = icon('stairsdown') + (S.floor === 2 ? '下楼' : '车库');
+  h.classList.toggle('floor2', S.floor === 2); h.classList.toggle('floor0', S.floor === 0);
 }
-function goFloor() {
-  if (floorBusy || bath) return;
-  if (S.sleeping && !gone()) { toast('嘘… 它在睡觉，等它醒了再一起' + (S.floor === 1 ? '上楼' : '下楼') + '吧'); return; }
+function goFloor(dir) {
+  const to = S.floor + dir;
+  if (floorBusy || bath || to < 0 || to > 2) return;
+  if (S.sleeping && !gone()) { toast('嘘… 它在睡觉，等它醒了再一起' + (dir > 0 ? '上楼' : '下楼') + '吧'); return; }
   floorBusy = true; Sound.sfx.click();
   const z = $('#pet-zone');
   $('#bubble').classList.remove('show'); $('#prop').classList.remove('show');
@@ -1724,11 +1908,16 @@ function goFloor() {
   setTimeout(() => {
     floorBusy = false;
     if (!S) return;
-    S.floor = S.floor === 1 ? 2 : 1;
+    S.floor = to;
     if (decor) decor.sel = null;
     updateFloorBtn(); renderFurn(); renderDecorBar(); resetIdle();
     z.classList.remove('stair'); Sound.sfx.pop(); save();
-    if (!gone() && !decor) setTimeout(() => { if (S && scene === 'home') say(S.floor === 2 ? pick(['二楼好安静呀~', '从小圆窗能看到好远！']) : '还是楼下热闹~'); }, 600);
+    if (!gone() && !decor) setTimeout(() => {
+      if (!S || scene !== 'home' || S.sleeping || gone()) return;
+      say(to === 2 ? pick(['二楼好安静呀~', '从小圆窗能看到好远！'])
+        : to === 0 ? pick(myCars().length ? ['我的小车都停在这儿！', '好想开车出去兜风~'] : ['车库里空空的，还没有小车呢', '这里可以停小车哦~'])
+        : pick(['还是一楼热闹~', '回到客厅啦~']));
+    }, 600);
   }, 520);
 }
 
@@ -1739,6 +1928,7 @@ function buildScenes() {
   if (built) return; built = true;
   $('#scene-home .bg.f1').innerHTML = sceneHomeSVG();
   $('#scene-home .bg.f2').innerHTML = sceneAtticSVG();
+  $('#scene-home .bg.f0').innerHTML = sceneGarageSVG();
   $('#scene-garden .bg').innerHTML = sceneGardenSVG();
   $('#scene-play .bg').innerHTML = scenePlaySVG();
   $('#scene-shop .bg').innerHTML = sceneShopSVG();
@@ -1890,7 +2080,7 @@ function tick() {
 
 /* ---------- 开始界面 ---------- */
 function initTitle() {
-  $('#title-pets').innerHTML = Object.keys(PETS).map((k, i) => `<div class="tp" style="animation-delay:${(i * .3).toFixed(2)}s">${petSVG(k, 'happy')}</div>`).join('');
+  $('#title-pets').innerHTML = Object.keys(PETS).sort(() => Math.random() - .5).slice(0, 6).map((k, i) => `<div class="tp" style="animation-delay:${(i * .3).toFixed(2)}s">${petSVG(k, 'happy')}</div>`).join('');
   const has = !!loadState();
   $('#btn-continue').style.display = has ? '' : 'none';
   $('#btn-new').textContent = has ? '重新领养' : '开始领养';
@@ -1924,9 +2114,9 @@ function enterGame(isNew) {
   showScreen('game'); buildScenes();
   if (!isNew) applyOffline();
   Sound.setOn(S.soundOn !== false);
-  petSig = ''; tempMood = null; shopTab = 'food'; albumTab = 'cards';
+  petSig = ''; palSig = ''; tempMood = null; shopTab = S.home ? 'local' : 'food'; albumTab = 'cards';
   decor = null; drag = null; $('#scene-home').classList.remove('decor'); $('#screen-game').classList.remove('decor-on'); $('#pet-zone').classList.remove('stair');
-  renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); updateFloorBtn(); renderFurn(); renderDecorBar(); updateDots(); renderAlert(); switchScene('home');
+  renderPet(true); updateHUD(); updateActions(); updateSoundBtn(); resetIdle(); renderAway(); renderHomeView(); updateFloorBtn(); renderFurn(); renderDecorBar(); updateDots(); renderAlert(); switchScene('home');
   // 第一次进屋时，把默认家具挪进这台设备看得见的范围（手机屏幕窄，两边会被裁掉）
   if (!S.furn.fit) { S.furn.put.forEach(clampFurn); S.furn.fit = 1; renderFurn(); }
   stopTicker(); lastTick = Date.now(); ticker = setInterval(tick, 1000);
@@ -1964,7 +2154,12 @@ function bindEvents() {
     if (s && decor) stowFurn(s.dataset.stow);
     else if (c && !decor) { Sound.sfx.click(); openCardPicker(+c.dataset.slot); }
   });
-  $('#floor-btn').onclick = () => goFloor();
+  $('#floor-btn').onclick = () => goFloor(1);
+  $('#floor-btn2').onclick = () => goFloor(-1);
+  $('#home-tag').onclick = () => { if (!bath) openMap(); };
+  $('#pals').addEventListener('click', e => { const b = e.target.closest('[data-pal]'); if (b) openPal(b.dataset.pal); });
+  // 地图上的每个地方都可以点（手帐里的地图和弹出来的地图都算）
+  document.addEventListener('click', e => { const s = e.target.closest ? e.target.closest('[data-spot]') : null; if (s && S) openPlace(s.dataset.spot, !!s.closest('.modal')); });
   $('#decor-bar').addEventListener('click', e => {
     const p = e.target.closest('[data-place]');
     if (p) placeFurn(p.dataset.place);
@@ -1977,6 +2172,7 @@ function bindEvents() {
     const t = e.target.closest('.tab'), b = e.target.closest('[data-buy]');
     if (t) { Sound.sfx.click(); shopTab = t.dataset.tab; renderShop(); }
     if (b) { const a = b.dataset.buy.split(':'); buy(a[0], a[1], b); }
+    if (e.target.closest('[data-shopmap]')) openMap();
   });
   $('#scene-album').addEventListener('click', e => {
     const t = e.target.closest('.tab'), c = e.target.closest('.pc[data-card]');
