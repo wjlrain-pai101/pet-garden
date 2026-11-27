@@ -527,3 +527,29 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .map-pet { transition: transform 1s linear; pointer-events: none; }
 .spot { cursor: pointer; }
 .shop-note { grid-column: 1 / -1; text-align: center; font-size: 14.5px; opacity: .8; margin: 0 0 2px; }
+
+/* ---------- 新小游戏：消消乐、国际象棋、五子棋 ---------- */
+.m3-wrap, .ch-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 10px; }
+.m3-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: min(100%, 440px, calc(100dvh - 150px)); }
+.m3 { aspect-ratio: 1; border: 2px solid var(--line); border-radius: 10px; padding: 2px; transition: transform .12s; }
+.m3 svg.ic { width: 100%; height: 100%; display: block; }
+.m3.sel { transform: scale(1.1); box-shadow: 0 0 0 3px var(--dcoral); z-index: 1; position: relative; }
+.m3.gone { animation: m3gone .26s ease-in forwards; }
+.m3.drop { animation: m3drop .28s ease-out; }
+.m3.no { animation: m3no .3s; }
+@keyframes m3gone { to { transform: scale(.1) rotate(40deg); opacity: 0; } }
+@keyframes m3drop { from { transform: translateY(-70%); opacity: .2; } }
+@keyframes m3no { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.ch-board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(100%, 470px, calc(100dvh - 140px)); border: 2.5px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: var(--sh); }
+.ch-sq { aspect-ratio: 1; padding: 1px; border: 0; border-radius: 0; background: #F6EED8; position: relative; }
+.ch-sq.dk { background: #C6D7AC; }
+.ch-sq svg.ic { width: 100%; height: 100%; display: block; }
+.ch-sq.last { box-shadow: inset 0 0 0 3px rgba(224, 138, 112, .75); }
+.ch-sq.sel { background: #F3D98B; }
+.ch-sq.tgt::after { content: ""; position: absolute; left: 50%; top: 50%; width: 28%; height: 28%; margin: -14% 0 0 -14%; border-radius: 50%; background: rgba(107, 79, 58, .45); }
+.ch-sq.tgt.cap::after { width: 84%; height: 84%; margin: -42% 0 0 -42%; background: none; border: 3px solid rgba(217, 112, 95, .85); box-sizing: border-box; }
+.gm-board { display: grid; grid-template-columns: repeat(11, 1fr); width: min(100%, 470px, calc(100dvh - 140px)); background: #E9D3A0; border: 2.5px solid var(--line); border-radius: 8px; padding: 4px; box-shadow: var(--sh); }
+.gm { aspect-ratio: 1; position: relative; border: 0; padding: 0; border-radius: 0; background: linear-gradient(var(--line), var(--line)) 50% 50% / 100% 1.5px no-repeat, linear-gradient(var(--line), var(--line)) 50% 50% / 1.5px 100% no-repeat; }
+.gm i { position: absolute; inset: 9%; border-radius: 50%; border: 2px solid var(--line); background: #FFFDF6; }
+.gm.b i { background: #5B4636; }
+.gm.new i { box-shadow: 0 0 0 3px rgba(224, 138, 112, .85); }

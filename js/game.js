@@ -83,6 +83,11 @@ const FOODS = {
   plumjuice:  { name: '酸梅汤',   ic: 'plumjuice',  drink: true, thirst: 26, happy: 6, price: 7 },
   mungsoup:   { name: '绿豆汤',   ic: 'mungsoup',   drink: true, thirst: 24, hunger: 6, price: 7 },
   shoot:      { name: '竹笋',     ic: 'bamboo',     hunger: 16, price: 6 },
+  baozi:      { name: '小笼包',   ic: 'baozi',      hunger: 24, price: 9 },
+  sandwich:   { name: '三明治',   ic: 'sandwich',   hunger: 26, price: 10 },
+  sushi:      { name: '寿司',     ic: 'sushi',      hunger: 20, happy: 6, price: 10 },
+  cupcake:    { name: '纸杯蛋糕', ic: 'cupcake',    hunger: 10, happy: 15, sweet: 1, price: 11 },
+  milkshake:  { name: '草莓奶昔', ic: 'milkshake',  drink: true, thirst: 18, happy: 14, sweet: 1, price: 10 },
   // 下面这些是各地小铺才有的本地货（见 LOCAL），平常的货架上没有
   honeycomb:  { name: '蜂巢蜜',   ic: 'honeycomb',  hunger: 8,  happy: 16, sweet: 1, price: 14 },
   berrypie:   { name: '野莓派',   ic: 'berrypie',   hunger: 22, happy: 8, price: 13 },
@@ -95,7 +100,13 @@ const FOODS = {
   starcandy:  { name: '星星糖',   ic: 'starcandy',  hunger: 4,  happy: 18, sweet: 1, price: 10 },
   stardrink:  { name: '星光汽水', ic: 'stardrink',  drink: true, thirst: 22, happy: 12, price: 12 },
   hotdog:     { name: '热狗',     ic: 'hotdog',     hunger: 24, happy: 6, price: 11 },
-  crepe:      { name: '可丽饼',   ic: 'crepe',      hunger: 16, happy: 12, sweet: 1, price: 12 }
+  crepe:      { name: '可丽饼',   ic: 'crepe',      hunger: 16, happy: 12, sweet: 1, price: 12 },
+  chestnutcake: { name: '栗子糕',   ic: 'chestnutcake', hunger: 22, happy: 8, price: 12 },
+  coconutcake:  { name: '椰子糕',   ic: 'coconutcake',  hunger: 18, happy: 10, price: 11 },
+  snowcake:     { name: '雪球蛋糕', ic: 'snowcake',     hunger: 12, happy: 16, sweet: 1, price: 12 },
+  cactuscandy:  { name: '仙人掌软糖', ic: 'cactuscandy', hunger: 6,  thirst: 8, happy: 14, sweet: 1, price: 9 },
+  rainbowcake:  { name: '彩虹蛋糕', ic: 'rainbowcake',  hunger: 14, happy: 18, sweet: 1, price: 14 },
+  pretzel:      { name: '椒盐卷饼', ic: 'pretzel',      hunger: 22, happy: 6, price: 10 }
 };
 const SEEDS = {
   carrot:     { name: '胡萝卜', ic: 'carrot',     time: 60,  give: 3, food: 'carrot',     price: 5 },
@@ -179,6 +190,10 @@ const WEARS = {
   wizard:  { name: '魔法帽',   ic: 'wizard',     price: 120 },
   halo:    { name: '天使光环', ic: 'halo',       price: 130 },
   crown:   { name: '小皇冠',   ic: 'crown',      price: 150 },
+  catears:       { name: '猫耳朵',   ic: 'catears',       price: 55 },
+  strawberryhat: { name: '草莓帽',   ic: 'strawberryhat', price: 65 },
+  detective:     { name: '侦探帽',   ic: 'detective',     price: 90 },
+  tiara:         { name: '小发冠',   ic: 'tiara',         price: 140 },
   // 各地小铺才有的
   butterfly:   { name: '蝴蝶发夹', ic: 'butterfly',   price: 45 },
   acornhat:    { name: '橡果帽',   ic: 'acornhat',    price: 60 },
@@ -191,7 +206,13 @@ const WEARS = {
   antenna:     { name: '外星天线', ic: 'antenna',     price: 90 },
   unicornhorn: { name: '独角兽角', ic: 'unicornhorn', price: 110 },
   starglasses: { name: '星星眼镜', ic: 'starglasses', price: 70 },
-  tophat:      { name: '礼帽',     ic: 'tophat',      price: 85 }
+  tophat:      { name: '礼帽',     ic: 'tophat',      price: 85 },
+  ladybug:     { name: '瓢虫发夹', ic: 'ladybug',     price: 50 },
+  crabhat:     { name: '螃蟹帽',   ic: 'crabhat',     price: 75 },
+  reindeer:    { name: '鹿角发箍', ic: 'reindeer',    price: 70 },
+  pharaoh:     { name: '法老头巾', ic: 'pharaoh',     price: 95 },
+  mooncrown:   { name: '月亮头冠', ic: 'mooncrown',   price: 105 },
+  jester:      { name: '小丑帽',   ic: 'jester',      price: 80 }
 };
 /* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
@@ -201,32 +222,33 @@ const GEAR = {
   lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇、乐园和水晶山洞', to: ['bamboo', 'town', 'ferris', 'cave'] },
   camera:   { name: '小相机',   ic: 'camera',   price: 70, desc: '更容易多带回一张明信片' },
   tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山、营地和长颈鹿草原', to: ['snow', 'camp', 'safari'] },
-  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界', to: ['ocean'] },
-  boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛和企鹅冰原', to: ['island', 'penguin'] },
-  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡、糖果王国和彩虹桥', to: ['cloud', 'candy', 'rainbow'] },
+  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界和珊瑚礁', to: ['ocean', 'coral'] },
+  boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛、企鹅冰原和玩具岛', to: ['island', 'penguin', 'toyisland'] },
+  hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡、糖果王国、彩虹桥和浮空岛', to: ['cloud', 'candy', 'rainbow', 'floatisle'] },
   rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面和太空站', to: ['moon', 'spacestation'] },
-  ticket:   { name: '游园年票', ic: 'ticket',   price: 75,  desc: '可以去动物园、小火车站和夜市', to: ['zoo', 'station', 'nightmarket'] },
+  ticket:   { name: '游园年票', ic: 'ticket',   price: 75,  desc: '可以去动物园、小火车站、夜市和马戏团', to: ['zoo', 'station', 'nightmarket', 'circus'] },
   rod:      { name: '钓鱼竿',   ic: 'rod',      price: 85,  desc: '可以去渔港、贝壳沙滩和水乡', to: ['harbor', 'beach', 'watertown'] },
-  compass:  { name: '指南针',   ic: 'compass',  price: 95,  desc: '可以去热带雨林、熊猫竹谷和恐龙谷', to: ['jungle', 'pandavale', 'dinovalley'] },
-  sled:     { name: '小雪橇',   ic: 'sled',     price: 110, desc: '可以去极光冰原和冰屋村', to: ['aurora', 'igloo'] },
+  compass:  { name: '指南针',   ic: 'compass',  price: 95,  desc: '可以去热带雨林、熊猫竹谷、恐龙谷和树屋村', to: ['jungle', 'pandavale', 'dinovalley', 'treehouse'] },
+  sled:     { name: '小雪橇',   ic: 'sled',     price: 110, desc: '可以去极光冰原、冰屋村和北极冰川', to: ['aurora', 'igloo', 'glacier'] },
+  binoculars: { name: '望远镜', ic: 'binoculars', price: 115, desc: '可以去鲸鱼湾和火烈鸟岛', to: ['whale', 'flamingo'] },
   treasure: { name: '藏宝图',   ic: 'treasure', price: 120, desc: '可以去海盗湾、古城堡和火山口', to: ['piratebay', 'castle', 'volcano'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill', 'vineyard', 'sunfield', 'lavender'];
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill', 'vineyard', 'sunfield', 'lavender', 'beefarm', 'clocktower'];
 const CAR_DESTS = ['track', 'canyon', 'coastroad'];   // 只有开车才到得了的地方
 /* 各地小铺的本地货：住在哪一类地方（和地图上圆点的颜色一样），小铺里就多卖那一类的东西。
- * 每个地方从自己那一类里轮着挑四样，再加上当地的特产，所以每个地方卖的都不太一样 */
+ * 每个地方从自己那一类里轮着挑六样，再加上当地的特产，所以每个地方卖的都不太一样 */
 const LOCAL = {
-  g: ['food:honeycomb', 'wear:butterfly', 'furn:hammock', 'food:berrypie', 'wear:acornhat', 'furn:birdhouse'],
-  b: ['food:shrimpchip', 'wear:shellclip', 'furn:surfboard', 'food:saltsoda', 'wear:sailor', 'furn:lifebuoy'],
-  w: ['food:hotpot', 'wear:knitcap', 'furn:fireplace', 'food:gingermilk', 'wear:earmuff', 'furn:snowman'],
-  y: ['food:datecake', 'wear:explorer', 'furn:cactus', 'food:minttea', 'wear:cowboy', 'furn:sandglass'],
-  p: ['food:starcandy', 'wear:antenna', 'furn:moonlamp', 'food:stardrink', 'wear:unicornhorn', 'furn:telescope'],
-  t: ['food:hotdog', 'wear:starglasses', 'furn:gacha', 'food:crepe', 'wear:tophat', 'furn:neon']
+  g: ['food:honeycomb', 'wear:butterfly', 'furn:hammock', 'food:berrypie', 'wear:acornhat', 'furn:birdhouse', 'food:chestnutcake', 'wear:ladybug', 'furn:swing'],
+  b: ['food:shrimpchip', 'wear:shellclip', 'furn:surfboard', 'food:saltsoda', 'wear:sailor', 'furn:lifebuoy', 'food:coconutcake', 'wear:crabhat', 'furn:sandcastle'],
+  w: ['food:hotpot', 'wear:knitcap', 'furn:fireplace', 'food:gingermilk', 'wear:earmuff', 'furn:snowman', 'food:snowcake', 'wear:reindeer', 'furn:skis'],
+  y: ['food:datecake', 'wear:explorer', 'furn:cactus', 'food:minttea', 'wear:cowboy', 'furn:sandglass', 'food:cactuscandy', 'wear:pharaoh', 'furn:cameltoy'],
+  p: ['food:starcandy', 'wear:antenna', 'furn:moonlamp', 'food:stardrink', 'wear:unicornhorn', 'furn:telescope', 'food:rainbowcake', 'wear:mooncrown', 'furn:cloudsofa'],
+  t: ['food:hotdog', 'wear:starglasses', 'furn:gacha', 'food:crepe', 'wear:tophat', 'furn:neon', 'food:pretzel', 'wear:jester', 'furn:arcade']
 };
 const LOCAL_ONLY = new Set([].concat(...Object.keys(LOCAL).map(k => LOCAL[k])));
 function localGoods(d) {
   const reg = MAP_AT[d][2], pool = LOCAL[reg], i = Object.keys(MAP_AT).filter(k => MAP_AT[k][2] === reg).indexOf(d);
-  return [0, 1, 2, 3].map(j => { const a = pool[(i + j) % pool.length].split(':'); return { kind: a[0], id: a[1] }; });
+  return [0, 1, 2, 3, 4, 5].map(j => { const a = pool[(i + j) % pool.length].split(':'); return { kind: a[0], id: a[1] }; });
 }
 const souvPrice = k => { const s = SOUVS[k]; return 8 + Math.round(((s.hunger || 0) + (s.thirst || 0) + (s.happy || 0) + (s.energy || 0)) / 3); };   // 住在当地时，特产在小铺里卖多少
 const TASKS = [
@@ -266,7 +288,10 @@ const STICKERS = [
   { id: 's24', ic: 'compass',   name: '四海为家',     c: 'move', n: 6 },
   { id: 's25', ic: 'heart',     name: '热闹的一家',   c: 'pals', n: 3 },
   { id: 's26', ic: 'bus',       name: '车库满满',     c: 'cars', n: 6 },
-  { id: 's27', ic: 'treasure',  name: '大探险家',     c: 'places', n: 40 }
+  { id: 's27', ic: 'treasure',  name: '大探险家',     c: 'places', n: 40 },
+  { id: 's28', ic: 'chess',     name: '棋盘高手',     c: 'game', n: 50 },
+  { id: 's29', ic: 'heart',     name: '动物园园长',   c: 'pals', n: 8 },
+  { id: 's30', ic: 'binoculars', name: '走到世界尽头', c: 'places', n: 55 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -284,7 +309,7 @@ function newState(type, name) {
     daily: { day: 0, signed: false, prog: {}, claimed: {} }, streak: 0,
     sick: null, runaway: null, meds: {}, risk: { cold: 0, tummy: 0, throat: 0, fever: 0 }, sweet: 0, immune: 0, souvSeen: {},
     counters: { feed: 0, water: 0, harvest: 0, game: 0, bath: 0, pet: 0, trip: 0, guest: 0, cure: 0, move: 0 },
-    gameLv: { math: 3, catch: 2, fly: 2, memory: 2, melody: 2 },   // 小游戏等级：口算是年级，其余是 1 轻松 / 2 普通 / 3 挑战
+    gameLv: { math: 3, catch: 2, fly: 2, memory: 2, melody: 2, match: 2, chess: 1, gomoku: 2 },   // 小游戏等级：口算是年级，其余是 1 轻松 / 2 普通 / 3 挑战
     stickers: [], phrases: [], soundOn: true
   };
 }

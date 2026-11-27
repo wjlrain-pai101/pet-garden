@@ -1,6 +1,6 @@
 'use strict';
 /* ==========================================================
- *  萌宠小花园 · 林间空地的五个小游戏（素材全部用手绘图标）
+ *  萌宠小花园 · 林间空地的八个小游戏（素材全部用手绘图标）
  * ========================================================== */
 const Games = (function () {
   const LIST = [
@@ -8,7 +8,10 @@ const Games = (function () {
     { id: 'fly',    name: '飞飞摘星',   ic: 'star',    desc: '飞上天空摘星星',   how: '上下移动手指或鼠标（也可以用 ↑ ↓ 键），飞起来摘星星、气球和彩虹。躲开打雷的乌云，一共有 3 颗爱心！' },
     { id: 'memory', name: '翻翻乐',     ic: 'book',    desc: '找出一样的卡片',   how: '每次翻开两张卡片，找到一模一样的就配对成功。用的步数越少，奖励越多！' },
     { id: 'melody', name: '鹦鹉学唱',   ic: 'note',    desc: '记住旋律跟着弹',   how: '先仔细听一段旋律，再按同样的顺序点彩色琴键。每过一关，旋律会多一个音哦！' },
-    { id: 'math',   name: '口算小达人', ic: 'tasks',   desc: '算对了有奖励',     how: '一共 10 道口算题，一到六年级都有，先选好年级再开始。选出正确答案，算对越多橡果越多！' }
+    { id: 'math',   name: '口算小达人', ic: 'tasks',   desc: '算对了有奖励',     how: '一共 10 道口算题，一到六年级都有，先选好年级再开始。选出正确答案，算对越多橡果越多！' },
+    { id: 'match',  name: '水果消消乐', ic: 'match3',  desc: '三个一样连成线',   how: '点一个水果，再点它旁边的水果，两个就会交换位置。三个或更多一样的水果连成一排就会消掉，连着消分数更高。步数有限，消得越多橡果越多！' },
+    { id: 'chess',  name: '国际象棋',   ic: 'chess',   desc: '和电脑下一盘棋',   how: '你走白棋，电脑走黑棋。点一下自己的棋子，再点亮起来的格子就能走。把对方的国王将死就赢啦！兵走到最后一排会变成皇后。' },
+    { id: 'gomoku', name: '五子棋',     ic: 'gomoku',  desc: '先连成五个就赢',   how: '你下黑子，电脑下白子，轮流在格子里落子。横着、竖着或斜着先连成五个的赢。别忘了拦住对方哦！' }
   ];
   let cur = null;
   const imgCache = {};
@@ -16,7 +19,7 @@ const Games = (function () {
   /* 等级：口算按年级分，其余游戏分三档难度。选好以后会记住 */
   const GRADES = ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级'], DIFFS = ['轻松', '普通', '挑战'];
   const levelsOf = id => id === 'math' ? GRADES : DIFFS;
-  function lvOf(id) { const all = levelsOf(id), v = (S.gameLv || {})[id]; return v >= 1 && v <= all.length ? v : (id === 'math' ? 3 : 2); }
+  function lvOf(id) { const all = levelsOf(id), v = (S.gameLv || {})[id]; return v >= 1 && v <= all.length ? v : (id === 'math' ? 3 : id === 'chess' ? 1 : 2); }
   const levelName = id => levelsOf(id)[lvOf(id) - 1];
 
   /* 宠物在家就用宠物；出门旅行了，就由来做客的小伙伴陪着玩 */
@@ -428,6 +431,284 @@ const Games = (function () {
       }, ok ? 800 : 1600);
     });
     make();
+  };
+
+  /* ---------- 6. 水果消消乐 ---------- */
+  IMPL.match = function (G) {
+    const N = 7, KINDS = ['apple', 'strawberry', 'orange', 'grape', 'lemon', 'watermelon'].slice(0, [0, 5, 6, 6][G.lv]);
+    const TINT = { apple: '#F6D9D2', strawberry: '#F9DCE0', orange: '#FBE5C8', grape: '#E4DAF0', lemon: '#FBF3C4', watermelon: '#DCEBCF' };
+    let moves = [0, 24, 20, 18][G.lv], score = 0, sel = -1, busy = false;
+    const bd = [];   // 每一格是第几种水果；-1 表示刚消掉、还空着
+    const rnd = () => rand(0, KINDS.length - 1);
+    const k = (r, c) => r >= 0 && r < N && c >= 0 && c < N ? bd[r * N + c] : -1;
+    for (let i = 0; i < N * N; i++) {   // 一开始不能有现成的三连
+      const r = Math.floor(i / N), c = i % N; let v;
+      do v = rnd(); while ((k(r, c - 1) === v && k(r, c - 2) === v) || (k(r - 1, c) === v && k(r - 2, c) === v));
+      bd[i] = v;
+    }
+    function matches() {   // 所有连成三个以上的格子
+      const hit = new Set();
+      for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+        const v = k(r, c); if (v < 0) continue;
+        if (k(r, c + 1) === v && k(r, c + 2) === v) { let x = c; while (k(r, x) === v) { hit.add(r * N + x); x++; } }
+        if (k(r + 1, c) === v && k(r + 2, c) === v) { let y = r; while (k(y, c) === v) { hit.add(y * N + c); y++; } }
+      }
+      return hit;
+    }
+    const swap = (a, b) => { const t = bd[a]; bd[a] = bd[b]; bd[b] = t; };
+    function canMove() {   // 还有没有换一下就能消的走法
+      for (let i = 0; i < N * N; i++) for (const j of [i + 1, i + N]) {
+        if (j >= N * N || (j === i + 1 && j % N === 0)) continue;
+        swap(i, j); const ok = matches().size > 0; swap(i, j);
+        if (ok) return true;
+      }
+      return false;
+    }
+    function shuffle() { do { for (let i = N * N - 1; i > 0; i--) swap(i, rand(0, i)); } while (matches().size || !canMove()); }
+    if (!canMove()) shuffle();
+    G.body.innerHTML = '<div class="m3-wrap"><div class="m3-grid" id="m3-grid"></div></div>';
+    const grid = $('#m3-grid');
+    function draw(fx) {   // fx：格子编号 → 这一格要播的动画
+      grid.innerHTML = bd.map((v, i) => `<button class="m3${i === sel ? ' sel' : ''}${fx && fx[i] ? ' ' + fx[i] : ''}" data-i="${i}" style="background:${v < 0 ? 'transparent' : TINT[KINDS[v]]}">${v < 0 ? '' : icon(KINDS[v])}</button>`).join('');
+      G.info(`还能走 ${moves} 步　分数 ${score}`);
+    }
+    function resolve(chain) {   // 消掉 → 往下掉 → 补新的 → 再看有没有连上的（连着消分数更高）
+      const hit = matches();
+      if (!hit.size) {
+        if (moves <= 0) { G.later(() => G.end(clamp(Math.round(score / [0, 44, 40, 36][G.lv]), 3, [0, 28, 36, 46][G.lv]), `得了 ${score} 分${score >= 1000 ? '，太厉害啦' : ''}`), 500); return; }
+        if (!canMove()) { toast('没有能消的了，重新洗一洗'); shuffle(); draw(); }
+        busy = false; return;
+      }
+      score += hit.size * 10 * chain; Sound.sfx[chain > 1 ? 'coin' : 'pop']();
+      const fx = {}; hit.forEach(i => { fx[i] = 'gone'; }); draw(fx);
+      G.later(() => {
+        hit.forEach(i => { bd[i] = -1; });
+        const fx2 = {};
+        for (let c = 0; c < N; c++) {
+          let w = N - 1;
+          for (let r = N - 1; r >= 0; r--) if (bd[r * N + c] >= 0) { if (w !== r) { bd[w * N + c] = bd[r * N + c]; bd[r * N + c] = -1; fx2[w * N + c] = 'drop'; } w--; }
+          for (; w >= 0; w--) { bd[w * N + c] = rnd(); fx2[w * N + c] = 'drop'; }
+        }
+        draw(fx2);
+        G.later(() => resolve(chain + 1), 300);
+      }, 260);
+    }
+    G.on(grid, 'click', e => {
+      const b = e.target.closest('.m3'); if (!b || busy) return;
+      const i = +b.dataset.i;
+      if (sel < 0 || sel === i) { sel = sel === i ? -1 : i; Sound.sfx.pop(); draw(); return; }
+      const adj = Math.abs(sel - i) === N || (Math.abs(sel - i) === 1 && Math.floor(sel / N) === Math.floor(i / N));
+      if (!adj) { sel = i; Sound.sfx.pop(); draw(); return; }
+      const a = sel; sel = -1; swap(a, i);
+      if (!matches().size) { swap(a, i); Sound.sfx.bad(); const fx = {}; fx[a] = fx[i] = 'no'; draw(fx); return; }
+      moves--; busy = true; draw(); G.later(() => resolve(1), 120);
+    });
+    draw();
+  };
+
+  /* ---------- 7. 国际象棋 ----------
+   * 棋盘是 64 格的数组，0 是左上角（a8），63 是右下角（h1）。大写是白棋（你），小写是黑棋（电脑）。
+   * 规则是完整的：王车易位、吃过路兵、兵走到底变皇后、不能送王 */
+  IMPL.chess = function (G) {
+    const VAL = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 0 };
+    let B = 'rnbqkbnrpppppppp'.split('').concat(Array(32).fill(''), 'PPPPPPPPRNBQKBNR'.split(''));
+    let cast = { K: true, Q: true, k: true, q: true }, ep = -1;
+    const isW = p => p === p.toUpperCase(), on = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
+    const N_D = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]], K_D = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+    const R_D = [[-1, 0], [1, 0], [0, -1], [0, 1]], B_D = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+    function attacked(sq, by) {   // sq 这一格会不会被 by 这一方吃到
+      const r = sq >> 3, c = sq & 7, w = by === 'w', pr = w ? r + 1 : r - 1;   // 白兵往上走，所以能吃到这一格的白兵在它下面一行
+      for (const dc of [-1, 1]) if (on(pr, c + dc) && B[pr * 8 + c + dc] === (w ? 'P' : 'p')) return true;
+      for (const d of N_D) { const a = r + d[0], b = c + d[1]; if (on(a, b) && B[a * 8 + b] === (w ? 'N' : 'n')) return true; }
+      for (const d of K_D) { const a = r + d[0], b = c + d[1]; if (on(a, b) && B[a * 8 + b] === (w ? 'K' : 'k')) return true; }
+      const slide = (dirs, s1, s2) => {
+        for (const d of dirs) { let a = r + d[0], b = c + d[1]; while (on(a, b)) { const p = B[a * 8 + b]; if (p) { if (p === s1 || p === s2) return true; break; } a += d[0]; b += d[1]; } }
+        return false;
+      };
+      return w ? slide(R_D, 'R', 'Q') || slide(B_D, 'B', 'Q') : slide(R_D, 'r', 'q') || slide(B_D, 'b', 'q');
+    }
+    function pseudo(s) {   // 这一方所有“看起来能走”的走法（还没检查会不会送王）
+      const out = [], w = s === 'w';
+      for (let i = 0; i < 64; i++) {
+        const p = B[i]; if (!p || isW(p) !== w) continue;
+        const r = i >> 3, c = i & 7, t = p.toLowerCase();
+        const add = (a, b, extra) => { out.push(Object.assign({ f: i, t: a * 8 + b }, extra)); };
+        if (t === 'p') {
+          const d = w ? -1 : 1, start = w ? 6 : 1, last = w ? 0 : 7;
+          if (on(r + d, c) && !B[(r + d) * 8 + c]) {
+            add(r + d, c, r + d === last ? { promo: 1 } : null);
+            if (r === start && !B[(r + 2 * d) * 8 + c]) add(r + 2 * d, c, { two: 1 });
+          }
+          for (const dc of [-1, 1]) if (on(r + d, c + dc)) {
+            const q = (r + d) * 8 + c + dc, x = B[q];
+            if (x) { if (isW(x) !== w) add(r + d, c + dc, r + d === last ? { promo: 1 } : null); }
+            else if (q === ep) add(r + d, c + dc, { ep: 1 });
+          }
+        } else if (t === 'n' || t === 'k') {
+          for (const d of (t === 'n' ? N_D : K_D)) { const a = r + d[0], b = c + d[1]; if (on(a, b)) { const x = B[a * 8 + b]; if (!x || isW(x) !== w) add(a, b); } }
+          const home = w ? 60 : 4, opp = w ? 'b' : 'w', rook = w ? 'R' : 'r';
+          if (t === 'k' && i === home && (cast[w ? 'K' : 'k'] || cast[w ? 'Q' : 'q']) && !attacked(home, opp)) {
+            if (cast[w ? 'K' : 'k'] && !B[home + 1] && !B[home + 2] && B[home + 3] === rook && !attacked(home + 1, opp)) add(r, 6, { castle: 'k' });
+            if (cast[w ? 'Q' : 'q'] && !B[home - 1] && !B[home - 2] && !B[home - 3] && B[home - 4] === rook && !attacked(home - 1, opp)) add(r, 2, { castle: 'q' });
+          }
+        } else {
+          for (const d of (t === 'r' ? R_D : t === 'b' ? B_D : K_D)) {
+            let a = r + d[0], b = c + d[1];
+            while (on(a, b)) { const x = B[a * 8 + b]; if (!x) add(a, b); else { if (isW(x) !== w) add(a, b); break; } a += d[0]; b += d[1]; }
+          }
+        }
+      }
+      return out;
+    }
+    function make(m) {
+      const p = B[m.f], w = isW(p), u = { m, p, cap: B[m.t], cast: Object.assign({}, cast), ep };
+      B[m.t] = m.promo ? (w ? 'Q' : 'q') : p; B[m.f] = '';
+      if (m.ep) { u.epSq = m.t + (w ? 8 : -8); u.epCap = B[u.epSq]; B[u.epSq] = ''; }
+      if (m.castle) { const r0 = m.t & ~7; if (m.castle === 'k') { B[r0 + 5] = B[r0 + 7]; B[r0 + 7] = ''; } else { B[r0 + 3] = B[r0]; B[r0] = ''; } }
+      ep = m.two ? (m.f + m.t) / 2 : -1;
+      if (p === 'K') cast.K = cast.Q = false;
+      if (p === 'k') cast.k = cast.q = false;
+      if (m.f === 63 || m.t === 63) cast.K = false;
+      if (m.f === 56 || m.t === 56) cast.Q = false;
+      if (m.f === 7 || m.t === 7) cast.k = false;
+      if (m.f === 0 || m.t === 0) cast.q = false;
+      return u;
+    }
+    function unmake(u) {
+      const m = u.m; B[m.f] = u.p; B[m.t] = u.cap; cast = u.cast; ep = u.ep;
+      if (m.ep) B[u.epSq] = u.epCap;
+      if (m.castle) { const r0 = m.t & ~7; if (m.castle === 'k') { B[r0 + 7] = B[r0 + 5]; B[r0 + 5] = ''; } else { B[r0] = B[r0 + 3]; B[r0 + 3] = ''; } }
+    }
+    const inCheck = s => attacked(B.indexOf(s === 'w' ? 'K' : 'k'), s === 'w' ? 'b' : 'w');
+    const legal = s => pseudo(s).filter(m => { const u = make(m), ok = !inCheck(s); unmake(u); return ok; });
+    const mid = i => 3.5 - Math.max(Math.abs((i >> 3) - 3.5), Math.abs((i & 7) - 3.5));   // 越靠近棋盘中间越大（0～3）
+    function score() {   // 局面对黑棋（电脑）有多好：子力，加上一点点位置
+      let v = 0;
+      for (let i = 0; i < 64; i++) {
+        const p = B[i]; if (!p) continue;
+        const t = p.toLowerCase(), w = isW(p);
+        let x = VAL[t];
+        if (t === 'n' || t === 'b') x += mid(i) * 8; else if (t === 'p') x += mid(i) * 4 + (w ? 6 - (i >> 3) : (i >> 3) - 1) * 5; else if (t !== 'k') x += mid(i) * 2;
+        v += w ? -x : x;
+      }
+      return v;
+    }
+    const capVal = m => B[m.t] ? VAL[B[m.t].toLowerCase()] : 0;
+    function search(depth, s, alpha, beta) {
+      if (depth === 0) return score();
+      const ms = legal(s);
+      if (!ms.length) return inCheck(s) ? (s === 'b' ? -99000 - depth : 99000 + depth) : 0;
+      ms.sort((a, b) => capVal(b) - capVal(a));
+      let best = s === 'b' ? -Infinity : Infinity;
+      for (const m of ms) {
+        const u = make(m), v = search(depth - 1, s === 'b' ? 'w' : 'b', alpha, beta); unmake(u);
+        if (s === 'b') { if (v > best) best = v; if (best > alpha) alpha = best; } else { if (v < best) best = v; if (best < beta) beta = best; }
+        if (alpha >= beta) break;
+      }
+      return best;
+    }
+    function aiMove() {   // 轻松：只看眼前一步，还经常走神；普通：多想一步；挑战：多想两步
+      const ms = legal('b'), depth = [0, 0, 1, 2][G.lv], noise = [0, 170, 30, 8][G.lv];
+      let best = null, bv = -Infinity;
+      for (const m of ms) { const u = make(m), v = search(depth, 'w', -Infinity, Infinity) + Math.random() * noise; unmake(u); if (v > bv) { bv = v; best = m; } }
+      return best;
+    }
+
+    let sel = -1, myMoves = legal('w'), last = null, turn = 'w', steps = 0;
+    G.body.innerHTML = '<div class="ch-wrap"><div class="ch-board" id="ch-board"></div></div>';
+    const board = $('#ch-board');
+    function draw() {
+      const tg = {}; if (sel >= 0) myMoves.forEach(m => { if (m.f === sel) tg[m.t] = B[m.t] || m.ep ? 'cap' : 'go'; });
+      board.innerHTML = B.map((p, i) => `<button class="ch-sq${((i >> 3) + (i & 7)) % 2 ? ' dk' : ''}${i === sel ? ' sel' : ''}${tg[i] ? ' tgt ' + tg[i] : ''}${last && (last.f === i || last.t === i) ? ' last' : ''}" data-i="${i}">${p ? chessSVG(p.toLowerCase(), isW(p)) : ''}</button>`).join('');
+    }
+    function over(coins, text) { turn = ''; G.later(() => G.end(coins, text), 1100); }
+    function afterMove(s) {   // s 这一方刚走完，看看对方还能不能走
+      const o = s === 'w' ? 'b' : 'w', ms = legal(o), chk = inCheck(o);
+      if (!ms.length) {
+        if (!chk) { G.info('没有棋可走，和棋'); over(15, '和棋！谁也没赢谁'); }
+        else if (o === 'b') { G.info('将死！'); Sound.sfx.ok(); over([0, 30, 45, 60][G.lv], '将死！你赢啦'); }
+        else { G.info('被将死了'); over(6, '被将死了，下次再来'); }
+        return false;
+      }
+      if (s === 'w' && steps >= 70) {
+        const lead = -score(); over(lead > 300 ? 22 : 12, lead > 300 ? '下了好久，你的棋子更多，算你小胜' : '下了好久还没分出胜负，算和棋');
+        return false;
+      }
+      if (chk) Sound.sfx.note(3);
+      G.info(o === 'w' ? (chk ? '将军！快保护你的国王' : '该你走了（白棋）') : (chk ? '将军！电脑在想办法…' : '电脑在想…'));
+      return true;
+    }
+    function play(m, s) {
+      const cap = B[m.t] || m.ep; make(m); last = m; sel = -1;
+      Sound.sfx[cap ? 'coin' : 'flip'](); draw();
+      if (!afterMove(s)) return;
+      if (s === 'w') { turn = 'b'; G.later(() => { const a = aiMove(); if (a) play(a, 'b'); }, 450); }
+      else { turn = 'w'; myMoves = legal('w'); }
+    }
+    G.on(board, 'click', e => {
+      const b = e.target.closest('.ch-sq'); if (!b || turn !== 'w') return;
+      const i = +b.dataset.i, m = sel >= 0 && myMoves.find(x => x.f === sel && x.t === i);
+      if (m) { steps++; play(m, 'w'); return; }
+      sel = B[i] && isW(B[i]) && sel !== i ? i : -1;
+      if (sel >= 0) Sound.sfx.pop();
+      draw();
+    });
+    G.info('你走白棋，先走一步吧'); draw();
+  };
+
+  /* ---------- 8. 五子棋 ---------- */
+  IMPL.gomoku = function (G) {
+    const N = 11, bd = Array(N * N).fill(0);   // 0 空，1 你（黑子），2 电脑（白子）
+    const at = (r, c) => r >= 0 && r < N && c >= 0 && c < N ? bd[r * N + c] : -1;
+    const DIRS = [[0, 1], [1, 0], [1, 1], [1, -1]];
+    function run(r, c, d, who) {   // 在 (r,c) 放上 who 的子以后，这个方向上连了几个、两头有几头是空的
+      let n = 1, open = 0;
+      for (const s of [1, -1]) { let a = r + d[0] * s, b = c + d[1] * s; while (at(a, b) === who) { n++; a += d[0] * s; b += d[1] * s; } if (at(a, b) === 0) open++; }
+      return [n, open];
+    }
+    function worth(r, c, who) {
+      let s = 0;
+      for (const d of DIRS) {
+        const [n, open] = run(r, c, d, who);
+        s += n >= 5 ? 100000 : n === 4 ? [0, 1200, 10000][open] : n === 3 ? [0, 120, 1000][open] : n === 2 ? [0, 12, 100][open] : open;
+      }
+      return s;
+    }
+    const five = (r, c, who) => DIRS.some(d => run(r, c, d, who)[0] >= 5);
+    function aiPick() {   // 每个空格算一算：自己下在这儿有多好，加上不下在这儿会多危险
+      const defend = [0, .5, .9, 1.05][G.lv], noise = [0, 320, 50, 0][G.lv];
+      let best = -1, bv = -1;
+      for (let i = 0; i < N * N; i++) if (!bd[i]) {
+        const r = Math.floor(i / N), c = i % N;
+        const v = worth(r, c, 2) + worth(r, c, 1) * defend + Math.random() * noise + (5 - Math.max(Math.abs(r - 5), Math.abs(c - 5)));
+        if (v > bv) { bv = v; best = i; }
+      }
+      return best;
+    }
+    let turn = 1, lastAt = -1, mine = 0;
+    G.body.innerHTML = '<div class="ch-wrap"><div class="gm-board" id="gm-board"></div></div>';
+    const board = $('#gm-board');
+    const draw = () => { board.innerHTML = bd.map((v, i) => `<button class="gm${v === 1 ? ' b' : v === 2 ? ' w' : ''}${i === lastAt ? ' new' : ''}" data-i="${i}">${v ? '<i></i>' : ''}</button>`).join(''); };
+    function put(i, who) {
+      bd[i] = who; lastAt = i; Sound.sfx.flip(); draw();
+      if (five(Math.floor(i / N), i % N, who)) {
+        turn = 0; if (who === 1) Sound.sfx.ok();
+        G.info(who === 1 ? '连成五个啦！' : '电脑连成五个了');
+        G.later(() => G.end(who === 1 ? [0, 20, 32, 46][G.lv] : 5, who === 1 ? `五子连珠！你用 ${mine} 颗子赢了` : '电脑先连成了五个，下次拦住它'), 1100);
+        return false;
+      }
+      if (bd.every(v => v)) { turn = 0; G.later(() => G.end(10, '棋盘下满了，算和棋'), 900); return false; }
+      return true;
+    }
+    G.on(board, 'click', e => {
+      const b = e.target.closest('.gm'); if (!b || turn !== 1) return;
+      const i = +b.dataset.i; if (bd[i]) return;
+      mine++;
+      if (!put(i, 1)) return;
+      turn = 2; G.info('电脑在想…');
+      G.later(() => { if (put(aiPick(), 2)) { turn = 1; G.info('该你下了（黑子）'); } }, 420);
+    });
+    G.info('你下黑子，先下一颗吧'); draw();
   };
 
   $('#g-close').addEventListener('click', () => { Sound.sfx.click(); close(); });
