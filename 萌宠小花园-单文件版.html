@@ -529,7 +529,7 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .modal.wide { max-width: 880px; }
 .map-say { font-weight: bold; margin: 0 0 8px; min-height: 1.5em; text-align: center; }
 .mapbox { border: 2.5px solid var(--line); border-radius: var(--r3); overflow: auto; background: #BFDDE3; max-height: 66dvh; -webkit-overflow-scrolling: touch; }
-.mapin { min-width: 820px; max-width: calc(64dvh * 1.530); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
+.mapin { min-width: 820px; max-width: calc(64dvh * 1.224); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
 .mapin svg.map { display: block; width: 100%; height: auto; font-family: inherit; }
 .map-pet { transition: transform 1s linear; pointer-events: none; }
 .spot { cursor: pointer; }
@@ -560,6 +560,21 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .gm i { position: absolute; inset: 9%; border-radius: 50%; border: 2px solid var(--line); background: #FFFDF6; }
 .gm.b i { background: #5B4636; }
 .gm.new i { box-shadow: 0 0 0 3px rgba(224, 138, 112, .85); }
+
+/* ---------- 家里的每一只宠物：头像可以点、宠物列表、小状态条、小伙伴头上的小牌子 ---------- */
+.hud-pet { cursor: pointer; }
+.pet-row { display: flex; align-items: center; gap: 8px; text-align: left; background: var(--paper); border: 2px solid var(--line); border-radius: var(--r3); padding: 6px 8px; margin-bottom: 7px; }
+.pet-row.cur { background: #FBEFC4; }
+.pr-pic { width: 54px; flex: none; }
+.pr-pic svg { width: 100%; display: block; overflow: visible; }
+.pr-info { flex: 1; min-width: 0; }
+.pr-note { font-size: 12.5px; opacity: .8; white-space: nowrap; }
+.mini-stats { display: flex; gap: 3px; margin-top: 5px; }
+.modal > .mini-stats { max-width: 240px; margin: 6px auto 12px; }
+.ms { flex: 1; height: 8px; border: 1.5px solid var(--line); border-radius: 5px; background: var(--paper2); overflow: hidden; }
+.ms i { display: block; height: 100%; }
+.ms[data-k=hunger] i { background: #E6A15C; } .ms[data-k=thirst] i { background: #8FB7CC; } .ms[data-k=clean] i { background: #B7A3CC; } .ms[data-k=happy] i { background: #E08A70; } .ms[data-k=energy] i { background: #EBC66B; }
+.pal-tag { position: absolute; left: 50%; top: -4px; transform: translateX(-50%); white-space: nowrap; font-style: normal; font-size: 12px; font-weight: bold; line-height: 1.5; background: var(--paper2); border: 1.5px solid var(--line); border-radius: var(--r1); padding: 0 7px; }
 
 </style>
 </head>
@@ -2688,7 +2703,7 @@ Object.assign(CARD_BG, {
 /* ---------- 旅行地图 ----------
  * 每个地方在地图上的位置，以及圆点的颜色（g 草木、b 水、w 冰雪、y 沙、p 奇幻、t 热闹的地方）。
  * 圆点的颜色也决定了住在那里时，小铺里卖哪一类本地货 */
-const MAP_W = 1040, MAP_H = 680;
+const MAP_W = 1040, MAP_H = 850;
 const MAP_HOME = [410, 302], MAP_FRIEND = [466, 352];
 const MAP_AT = {
   cloud: [86, 70, 'p'], penguin: [232, 60, 'w'], snow: [362, 98, 'w'], camp: [488, 106, 'w'], aurora: [606, 52, 'w'], moon: [724, 70, 'p'], spacestation: [860, 64, 'p'], rainbow: [972, 64, 'p'],
@@ -2700,7 +2715,9 @@ const MAP_AT = {
   sunfield: [110, 556, 'g'], vineyard: [226, 560, 'g'], lavender: [342, 556, 'g'], pandavale: [458, 560, 'g'], coastroad: [580, 548, 'b'],
   jungle: [150, 636, 'g'], dinovalley: [280, 640, 'y'], volcano: [410, 636, 'y'],
   circus: [504, 472, 't'], beefarm: [596, 478, 'g'], treehouse: [522, 628, 'g'], clocktower: [960, 404, 't'], coral: [700, 536, 'b'], whale: [846, 520, 'b'],
-  flamingo: [760, 620, 'b'], toyisland: [900, 596, 'p'], glacier: [986, 150, 'w'], floatisle: [778, 152, 'p']
+  flamingo: [760, 620, 'b'], toyisland: [900, 596, 'p'], glacier: [986, 150, 'w'], floatisle: [778, 152, 'p'],
+  berryfarm: [120, 736, 'g'], kitehill: [250, 736, 'g'], bazaar: [380, 740, 'y'], bigcity: [510, 736, 't'], fireworks: [640, 740, 't'], aquarium: [790, 736, 'b'], pearlbay: [920, 740, 'b'],
+  skiresort: [200, 806, 'w'], observatory: [330, 806, 'p'], magicschool: [460, 806, 'p']
 };
 const MAP_COL = { g: '#9DBB7A', b: '#8FB7CC', w: '#FFFDF6', y: '#EBC66B', p: '#B7A3CC', t: '#E08A70' };
 /* 从家（from，不写就是老家）到某个地方的那条弯弯的路；u 从 0（家）到 1（目的地），返回路上的那个点 */
@@ -2735,6 +2752,12 @@ function mapSVG(seen, cur, friend, home) {
     <path d="M680 470 q9 -6 18 0 M720 390 q9 -6 18 0 M650 250 q9 -6 18 0 M120 34 q9 -6 18 0 M690 300 q9 -6 18 0 M800 566 q9 -6 18 0 M900 500 q9 -6 18 0 M950 560 q9 -6 18 0 M690 620 q9 -6 18 0 M860 640 q9 -6 18 0 M790 484 q9 -6 18 0 M990 150 q9 -6 18 0 M776 196 q9 -6 18 0 M1000 480 q9 -6 18 0" stroke="#fff" stroke-width="2.400"/>
     <path d="M40 152 Q28 112 90 112 Q170 98 250 102 Q300 62 370 54 Q450 46 520 72 Q572 92 590 132 Q640 122 666 150 Q672 178 622 192 Q590 232 592 292 Q606 362 618 428 Q640 510 606 584 Q570 652 440 664 Q300 678 150 664 Q52 650 30 560 Q14 480 36 422 Q18 300 40 152Z" fill="#CFE0B6"/>
     <path d="M812 262 Q800 204 862 196 Q950 180 1012 206 Q1040 250 1030 330 Q1034 420 962 444 Q880 462 828 436 Q796 384 812 262Z" fill="#CFE0B6"/>
+    <path d="M70 762 Q58 712 150 704 Q300 690 460 700 Q610 694 690 718 Q722 772 660 814 Q560 842 400 838 Q220 846 112 826 Q62 804 70 762Z" fill="#CFE0B6"/>
+    <path d="M122 802 Q150 774 222 780 Q270 792 262 818 Q200 838 132 824Z" fill="#F7F8F2" stroke="none"/><path d="M318 732 Q380 708 440 730 Q452 756 400 768 Q332 768 318 732Z" fill="#EBD9A6" stroke="none"/>
+    <path d="${tree([[300, 718], [572, 724], [620, 790], [548, 808], [176, 718], [84, 778]])}" stroke="${C.dgreen}" stroke-width="2"/>
+    <path d="M186 784 l9 -15 l9 15 M236 796 l8 -13 l8 13" stroke-width="2"/>
+    <path d="M760 800 q9 -6 18 0 M880 812 q9 -6 18 0 M960 704 q9 -6 18 0 M730 690 q9 -6 18 0 M30 696 q9 -6 18 0 M990 800 q9 -6 18 0 M850 700 q9 -6 18 0" stroke="#fff" stroke-width="2.400"/>
+    <ellipse cx="920" cy="744" rx="42" ry="18" fill="${C.sand}"/><circle cx="790" cy="736" r="22" fill="rgba(255,255,255,.3)" stroke="#fff"/>
     <path d="M298 112 Q328 66 372 58 Q450 50 516 74 Q562 94 554 126 Q470 152 380 138 Q318 138 298 112Z" fill="#F7F8F2" stroke="none"/>
     <path d="M42 368 Q120 352 200 432 Q300 444 432 442 Q474 470 444 498 Q300 512 150 500 Q52 490 38 422Z" fill="#EBD9A6" stroke="none"/>
     <path d="M222 624 Q300 598 420 606 Q472 620 462 648 Q400 670 300 666 Q232 662 222 624Z" fill="#EBD9A6" stroke="none"/>
@@ -3123,6 +3146,269 @@ Object.assign(CARD_BG, {
   }
 });
 
+/* ==========================================================
+ *  第八批：又六只宠物、十个景点（地图往南扩了一截）
+ * ========================================================== */
+Object.assign(PETS, {
+  squirrel: { name: '小松鼠', defName: '果果', desc: '大尾巴像小毯子',   fav: 'nut',    talent: '翻跟头', talentIcon: 'sparkle', trick: 'trick-flip', eyes: [78, 122, 86],  hat: [100, 46] },
+  lion:     { name: '小狮子', defName: '阿毛', desc: '一头蓬蓬的鬃毛',   fav: 'pizza',  talent: '转圈圈', talentIcon: 'sparkle', trick: 'trick-spin', eyes: [80, 120, 86],  hat: [100, 34] },
+  cow:      { name: '小奶牛', defName: '朵朵', desc: '身上有朵朵花斑',   fav: 'cheese', talent: '打滚',   talentIcon: 'sparkle', trick: 'trick-roll', eyes: [78, 122, 84],  hat: [100, 44] },
+  chick:    { name: '小鸡',   defName: '叽叽', desc: '毛茸茸的小黄球',   fav: 'corn',   talent: '蹦蹦跳', talentIcon: 'sparkle', trick: 'trick-jump', eyes: [78, 122, 106], hat: [100, 62] },
+  seal:     { name: '小海豹', defName: '滑滑', desc: '圆滚滚爱晒太阳',   fav: 'fish',   talent: '打滚',   talentIcon: 'sparkle', trick: 'trick-roll', eyes: [78, 122, 88],  hat: [100, 38] },
+  raccoon:  { name: '小浣熊', defName: '团子', desc: '戴着小眼罩的淘气包', fav: 'cookie', talent: '翻跟头', talentIcon: 'sparkle', trick: 'trick-flip', eyes: [78, 122, 86],  hat: [100, 46] }
+});
+Object.assign(PET_DRAW, {
+  squirrel(m) {
+    const e = PETS.squirrel.eyes, b = '#C9895A', f = '#F6E3C7';
+    return `
+      <path class="tail" d="M132 172 Q192 178 186 112 Q182 72 150 82 Q134 90 144 108 Q158 104 158 126 Q156 154 132 172Z" fill="${b}"/>
+      <ellipse cx="100" cy="152" rx="40" ry="33" fill="${b}"/>
+      <ellipse cx="100" cy="160" rx="23" ry="21" fill="${f}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${f}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${f}"/>
+      <path d="M62 62 L54 20 L88 44Z" fill="${b}"/><path d="M138 62 L146 20 L112 44Z" fill="${b}"/>
+      <ellipse cx="100" cy="90" rx="50" ry="44" fill="${b}"/>
+      <ellipse cx="100" cy="109" rx="30" ry="18" fill="${f}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(60, 140, 104)}
+      <ellipse cx="100" cy="100" rx="5.500" ry="4" fill="${C.coral}" stroke="none"/>
+      ${_mouth(100, 105, m)}`;
+  },
+  lion(m) {
+    const e = PETS.lion.eyes, o = '#EDC06B', mn = '#C9803E';
+    let mane = '';
+    for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; mane += `<circle cx="${(100 + 49 * Math.cos(a)).toFixed(1)}" cy="${(86 + 45 * Math.sin(a)).toFixed(1)}" r="16" fill="${mn}"/>`; }
+    return `
+      <path class="tail" d="M138 162 q36 -6 32 -42" stroke="${C.line}" stroke-width="13"/><path class="tail" d="M138 162 q36 -6 32 -42" stroke="${o}" stroke-width="7.500"/>
+      <ellipse cx="100" cy="152" rx="42" ry="34" fill="${o}"/>
+      <ellipse cx="100" cy="160" rx="24" ry="21" fill="${C.cream}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${o}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${o}"/>
+      ${mane}<ellipse cx="100" cy="86" rx="50" ry="46" fill="${mn}" stroke="none"/>
+      <circle cx="66" cy="52" r="11" fill="${o}"/><circle cx="134" cy="52" r="11" fill="${o}"/>
+      <ellipse cx="100" cy="90" rx="42" ry="39" fill="${o}"/>
+      <ellipse cx="100" cy="107" rx="19" ry="14" fill="${C.cream}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(66, 134, 102)}
+      <path d="M94 98 h12 l-6 7z" fill="${C.coral}" stroke-width="2"/>
+      ${_mouth(100, 105, m)}`;
+  },
+  cow(m) {
+    const e = PETS.cow.eyes, w = '#FDF8F0', k = '#5B4636';
+    return `
+      <path class="tail" d="M140 160 q22 -4 24 -32" stroke-width="4.500"/>
+      <ellipse cx="100" cy="150" rx="45" ry="36" fill="${w}"/>
+      <path d="M66 138 q14 -10 24 4 q-4 16 -22 10q-6 -6 -2 -14z M118 158 q14 -6 20 6 q-6 12 -20 6z" fill="${k}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${k}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${k}"/>
+      <path d="M72 52 q-12 -14 -4 -26 q8 8 14 20z M128 52 q12 -14 4 -26 q-8 8 -14 20z" fill="#EADFC8"/>
+      <ellipse cx="48" cy="76" rx="17" ry="9" fill="${w}" transform="rotate(-20 48 76)"/><ellipse cx="152" cy="76" rx="17" ry="9" fill="${w}" transform="rotate(20 152 76)"/>
+      <ellipse cx="100" cy="88" rx="50" ry="44" fill="${w}"/>
+      <path d="M110 45 Q142 47 148 70 Q132 73 121 63 Q112 55 110 45Z" fill="${k}" stroke="none"/>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(54, 146, 98)}
+      <ellipse cx="100" cy="110" rx="28" ry="18" fill="#F6C9C4"/><path d="M90 106 v.100 M110 106 v.100" stroke-width="5"/>
+      ${_mouth(100, 111, m)}`;
+  },
+  chick(m) {
+    const e = PETS.chick.eyes, y = '#F6D76B', d = '#EBC04A';
+    const beak = m === 'eat'
+      ? `<path d="M90 112 L110 112 L100 119Z" fill="${C.orange}"/><path d="M92 123 L108 123 L100 133Z" fill="${C.orange}"/>`
+      : `<path d="M90 114 L110 114 L100 128Z" fill="${C.orange}"/>`;
+    return `
+      <path d="M84 172 v12 m-8 0 h16 M116 172 v12 m-8 0 h16" stroke="#C98A3C" stroke-width="4.500"/>
+      <path d="M98 64 q-12 -16 -4 -28 q6 8 4 28z M102 64 q6 -20 20 -20 q-4 12 -20 20z" fill="${y}"/>
+      <ellipse cx="100" cy="120" rx="60" ry="58" fill="${y}"/>
+      <g transform="rotate(18 42 128)"><ellipse class="wing wl" cx="42" cy="128" rx="13" ry="24" fill="${d}"/></g>
+      <g transform="rotate(-18 158 128)"><ellipse class="wing wr" cx="158" cy="128" rx="13" ry="24" fill="${d}"/></g>
+      ${_eye(e[0], e[2], m)}${_eye(e[1], e[2], m)}${_blush(58, 142, 124)}${beak}`;
+  },
+  seal(m) {
+    const e = PETS.seal.eyes, g = '#C9D3DB', d = '#A9B6C2', f = '#EEF2F4';
+    return `
+      <path class="tail" d="M128 178 q24 -4 32 -20 q6 18 -8 26 q-14 4 -24 -6z" fill="${d}"/>
+      <path d="M100 34 Q156 36 158 110 Q160 184 100 184 Q40 184 42 110 Q44 36 100 34Z" fill="${g}"/>
+      <ellipse cx="100" cy="148" rx="34" ry="29" fill="${f}" stroke="none"/>
+      <path d="M46 126 q-20 8 -22 28 q18 0 28 -12z" fill="${d}"/><path d="M154 126 q20 8 22 28 q-18 0 -28 -12z" fill="${d}"/>
+      ${_eye(e[0], e[2], m, 7)}${_eye(e[1], e[2], m, 7)}${_blush(58, 142, 106)}
+      <ellipse cx="89" cy="109" rx="12" ry="8.500" fill="${f}" stroke-width="1.800"/><ellipse cx="111" cy="109" rx="12" ry="8.500" fill="${f}" stroke-width="1.800"/>
+      <ellipse cx="100" cy="102" rx="6.500" ry="4.500" fill="${C.line}" stroke="none"/>
+      <path d="M76 108 l-16 -3 M76 112 l-16 4 M124 108 l16 -3 M124 112 l16 4" stroke-width="1.600"/>
+      ${_mouth(100, 114, m)}`;
+  },
+  raccoon(m) {
+    const e = PETS.raccoon.eyes, g = '#ADA69E', k = '#5B4636', f = '#F3EEE4';
+    const tail = 'M136 166 q44 -4 40 -54';
+    return `
+      <path class="tail" d="${tail}" stroke="${C.line}" stroke-width="21"/><path class="tail" d="${tail}" stroke="${g}" stroke-width="15"/><path class="tail" d="${tail}" stroke="${k}" stroke-width="15" stroke-dasharray="9 13" stroke-linecap="butt"/>
+      <ellipse cx="100" cy="152" rx="42" ry="34" fill="${g}"/>
+      <ellipse cx="100" cy="160" rx="24" ry="21" fill="${f}" stroke="none"/>
+      <ellipse cx="80" cy="182" rx="14" ry="8" fill="${k}"/><ellipse cx="120" cy="182" rx="14" ry="8" fill="${k}"/>
+      <path d="M58 64 L52 24 L90 46Z" fill="${g}"/><path d="M62 54 L59 34 L78 46Z" fill="${k}" stroke="none"/>
+      <path d="M142 64 L148 24 L110 46Z" fill="${g}"/><path d="M138 54 L141 34 L122 46Z" fill="${k}" stroke="none"/>
+      <ellipse cx="100" cy="90" rx="54" ry="46" fill="${g}"/>
+      <path d="M48 84 Q60 64 84 71 Q100 82 116 71 Q140 64 152 84 Q142 106 118 101 Q100 93 82 101 Q58 106 48 84Z" fill="${k}" stroke="none"/>
+      <circle cx="${e[0]}" cy="${e[2]}" r="9.500" fill="#fff" stroke="none"/><circle cx="${e[1]}" cy="${e[2]}" r="9.500" fill="#fff" stroke="none"/>
+      ${_eye(e[0], e[2], m, 5)}${_eye(e[1], e[2], m, 5)}
+      <ellipse cx="100" cy="113" rx="22" ry="15" fill="${f}" stroke="none"/>${_blush(56, 144, 112)}
+      <ellipse cx="100" cy="105" rx="6" ry="4.500" fill="${k}" stroke="none"/>
+      ${_mouth(100, 110, m)}`;
+  }
+});
+
+Object.assign(ICONS, {
+  wand: `<path d="M10 42 L30 16" stroke-width="4"/><g stroke-width="1.600">` + _star(34, 12, 10, 4.5, C.yellow) + '</g>' + _dots([[16, 14], [42, 28], [22, 6]], 1.800, C.yellow),
+  berryjam: `<rect x="14" y="5" width="20" height="7" rx="2" fill="${C.red}"/><path d="M12 12 h24 q4 4 4 10 v16 q0 6 -6 6 h-20 q-6 0 -6 -6 v-16 q0 -6 4 -10z" fill="#E88A8A"/><rect x="14" y="22" width="20" height="13" rx="2" fill="${C.cream}" stroke-width="1.400"/><circle cx="24" cy="28.500" r="3.600" fill="${C.red}" stroke="none"/>`,
+  kitecookie: `<path d="M24 4 L40 22 L24 40 L8 22Z" fill="#E9B96E"/><path d="M24 4 V40 M8 22 H40" stroke-width="1.500"/><path d="M24 40 q-6 2 -4 6 M24 40 q6 2 4 6" stroke="${C.coral}" stroke-width="2"/>`,
+  hotchoco: `<path d="M17 10 q-3 -3 0 -6 M27 10 q-3 -3 0 -6" stroke-width="1.800"/><path d="M36 22 q9 0 8 8 q-1 6 -8 5"/><path d="M8 16 h28 v20 q0 6 -6 6 h-16 q-6 0 -6 -6z" fill="${C.coral}"/><ellipse cx="22" cy="17" rx="13.500" ry="3" fill="#8C5A44" stroke-width="1.400"/><circle cx="18" cy="16.500" r="2.600" fill="#fff" stroke="none"/><circle cx="25" cy="17.500" r="2.200" fill="#fff" stroke="none"/>`,
+  starpie: `<path d="M4 30 Q4 15 24 15 Q44 15 44 30Z" fill="#3E4A7A"/><g stroke-width="1.200">` + _star(16, 24, 4, 1.8, C.yellow) + _star(27, 21, 5, 2.2, C.yellow) + _star(36, 26, 3.500, 1.600, C.yellow) + `</g><path d="M2 30 h44 l-4 10 h-36z" fill="#E2B877"/>`,
+  magicbean: `<ellipse cx="15" cy="30" rx="9" ry="12" fill="${C.purple}" transform="rotate(-20 15 30)"/><ellipse cx="33" cy="30" rx="9" ry="12" fill="#9BE0B8" transform="rotate(20 33 30)"/><ellipse cx="24" cy="18" rx="9" ry="12" fill="${C.yellow}"/><path d="M21 13 q2 -4 5 -4" stroke="#fff" stroke-width="2"/>` + _dots([[8, 10], [40, 12], [24, 42]], 1.600, C.yellow),
+  fishcracker: `<path d="M4 24 Q14 10 28 16 L40 9 V39 L28 32 Q14 38 4 24Z" fill="#E9B96E"/><circle cx="12" cy="22" r="1.800" fill="${C.line}" stroke="none"/><path d="M18 27 q4 3 8 0" stroke-width="1.400"/>` + _dots([[20, 20], [30, 24], [34, 18], [34, 30]], 1.300, C.dwood),
+  pearlcandy: `<path d="M4 26 Q4 12 24 12 Q44 12 44 26Z" fill="${C.pink}"/><path d="M12 14 l3 12 M24 12 v14 M36 14 l-3 12" stroke-width="1.400"/><path d="M4 26 Q24 46 44 26Z" fill="#F6D3DA"/><circle cx="24" cy="27" r="8" fill="${C.white}"/><path d="M20 24 q2 -3 5 -3" stroke="${C.sky}" stroke-width="2"/>`,
+  nutbrittle: `<path d="M5 30 L14 12 H36 L43 28 L34 40 H12Z" fill="#D9A866"/>` + _dots([[16, 20], [26, 18], [34, 24], [20, 30], [30, 33]], 3, '#F3DFC1') + `<path d="M5 30 L14 12 H36 L43 28 L34 40 H12Z"/>`,
+  bagel: `<ellipse cx="24" cy="26" rx="20" ry="16" fill="#D9A866"/><ellipse cx="24" cy="24" rx="7" ry="5" fill="${C.cream}" stroke-width="1.800"/>` + _dots([[10, 22], [16, 15], [30, 13], [38, 22], [36, 32], [14, 34], [24, 38]], 1.400, C.cream),
+  sparklesoda: `<rect x="19" y="3" width="10" height="6" rx="2" fill="${C.red}"/><path d="M19 9 h10 v7 q6 4 6 12 v13 q0 3 -3 3 h-16 q-3 0 -3 -3 v-13 q0 -8 6 -12z" fill="#CFE0F0"/><rect x="13" y="26" width="22" height="12" fill="#3E4A7A" stroke-width="1.600"/>` + _burst(24, 32, C.yellow, .32)
+});
+
+Object.assign(DESTS, {
+  berryfarm:   { name: '草莓园',   time: 150, souv: 'berryjam',    pet: [16, 104, .42] },
+  kitehill:    { name: '风筝山坡', time: 150, souv: 'kitecookie',  pet: [108, 104, .42] },
+  skiresort:   { name: '滑雪场',   time: 270, souv: 'hotchoco',    pet: [16, 104, .42] },
+  observatory: { name: '天文台',   time: 300, souv: 'starpie',     pet: [16, 104, .42] },
+  magicschool: { name: '魔法学院', time: 300, souv: 'magicbean',   pet: [16, 104, .42] },
+  aquarium:    { name: '水族馆',   time: 240, souv: 'fishcracker', pet: [108, 104, .42] },
+  pearlbay:    { name: '珍珠湾',   time: 270, souv: 'pearlcandy',  pet: [16, 104, .42] },
+  bazaar:      { name: '沙漠集市', time: 240, souv: 'nutbrittle',  pet: [108, 104, .42] },
+  bigcity:     { name: '大都市',   time: 210, souv: 'bagel',       pet: [16, 104, .42] },
+  fireworks:   { name: '烟花大会', time: 240, souv: 'sparklesoda', pet: [108, 104, .42] }
+});
+Object.assign(SOUVS, {
+  berryjam:    { name: '草莓酱',     ic: 'berryjam',    hunger: 14, happy: 16, sweet: 1 },
+  kitecookie:  { name: '风筝饼干',   ic: 'kitecookie',  hunger: 20, happy: 12 },
+  hotchoco:    { name: '热巧克力',   ic: 'hotchoco',    drink: true, thirst: 20, happy: 16, energy: 6 },
+  starpie:     { name: '星空派',     ic: 'starpie',     hunger: 26, happy: 12 },
+  magicbean:   { name: '魔法豆',     ic: 'magicbean',   hunger: 8,  happy: 20, energy: 12 },
+  fishcracker: { name: '小鱼饼干',   ic: 'fishcracker', hunger: 22, happy: 10 },
+  pearlcandy:  { name: '珍珠糖',     ic: 'pearlcandy',  hunger: 6,  happy: 26, sweet: 1 },
+  nutbrittle:  { name: '果仁酥',     ic: 'nutbrittle',  hunger: 24, energy: 10 },
+  bagel:       { name: '芝麻贝果',   ic: 'bagel',       hunger: 34 },
+  sparklesoda: { name: '烟花汽水',   ic: 'sparklesoda', drink: true, thirst: 28, happy: 16 }
+});
+Object.assign(CARD_BG, {
+  berryfarm(r) {
+    let rows = '';
+    for (let k = 0; k < 3; k++) for (let x = 112 + k * 8; x < 300; x += 30) { const y = 150 + k * 20; rows += `<path d="M${x - 9} ${y} q9 -12 18 0z" fill="${C.green}" stroke-width="1.600"/><circle cx="${x - 5}" cy="${y + 3}" r="3.500" fill="${C.red}" stroke-width="1.200"/><circle cx="${x + 5}" cy="${y + 4}" r="3" fill="${C.red}" stroke-width="1.200"/>`; }
+    return `<rect width="300" height="200" fill="${r ? '#F6DDB8' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 60 : 250}" cy="${r ? 56 : 34}" r="${r ? 24 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      ${_hill('M0 116 Q150 96 300 112 V200 H0Z', '#CFE0B6')}
+      <path d="M176 118 V96 Q208 70 240 96 V118Z" fill="#EEF5F4"/><path d="M176 98 H240 M208 80 V118" stroke-width="1.400"/>
+      ${_hill('M0 136 Q150 124 300 134 V200 H0Z', '#B5CE92')}
+      <path d="M104 148 H306 M104 168 H306 M104 188 H306" stroke="${C.dwood}" stroke-width="2"/>${rows}
+      ${r ? `<path d="M118 110 q6 -8 12 0 q6 -8 12 0" stroke-width="2"/><path d="M84 196 h30 l-4 -16 h-22z" fill="${C.wood}"/>` + _dots([[92, 178], [100, 176], [107, 179]], 4, C.red) : ''}`;
+  },
+  kitehill(r) {
+    const kite = (x, y, s, c) => `<path d="M${x} ${y + 16 * s} q${-8 * s} ${14 * s} ${2 * s} ${30 * s}" stroke-width="1.400"/><path d="M${x} ${y - 16 * s} L${x + 12 * s} ${y} L${x} ${y + 16 * s} L${x - 12 * s} ${y}Z" fill="${c}"/><path d="M${x} ${y - 16 * s} V${y + 16 * s} M${x - 12 * s} ${y} H${x + 12 * s}" stroke-width="1.400"/>`;
+    return `<rect width="300" height="200" fill="#DCECE6" stroke="none"/>
+      <circle cx="52" cy="36" r="15" fill="#F3D98B"/>
+      ${r ? _arcBow(210, 150, 100) : `<path d="M196 70 a8 8 0 0 1 2 -16 a11 11 0 0 1 21 -1 a8.500 8.500 0 0 1 1 17z" fill="#fff"/>`}
+      ${kite(110, 46, 1.2, C.coral)}${kite(250, 40, 1, C.blue)}${kite(176, 26, .8, C.yellow)}${r ? kite(40, 86, .8, C.purple) + kite(280, 96, .7, C.pink) : ''}
+      ${_hill('M0 140 Q80 90 170 120 Q240 140 300 112 V200 H0Z', '#C3D69B')}
+      ${_hill('M0 160 Q150 142 300 158 V200 H0Z', '#A9C987')}
+      <path d="M30 176 l-3 -8 M30 176 l0 -10 M30 176 l3 -8 M230 186 l-3 -8 M230 186 l0 -10 M230 186 l3 -8 M276 170 l-3 -8 M276 170 l0 -10 M276 170 l3 -8" stroke="${C.dgreen}" stroke-width="2"/>
+      <circle cx="210" cy="176" r="5" fill="${C.pink}" stroke-width="1.600"/><circle cx="60" cy="188" r="5" fill="${C.yellow}" stroke-width="1.600"/>`;
+  },
+  skiresort(r) {
+    const pine = (x, y, s) => `<path d="M${x} ${y} v${6 * s}" stroke-width="3"/><path d="M${x - 11 * s} ${y} L${x} ${y - 30 * s} L${x + 11 * s} ${y}Z" fill="#5E8478"/>`;
+    const chair = (x, y) => `<path d="M${x} ${y} v12" stroke-width="1.600"/><path d="M${x - 7} ${y + 12} h14 v7 h-14z" fill="${C.coral}" stroke-width="1.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#4A5680' : '#DCECE6'}" stroke="none"/>
+      ${r ? _dots([[30, 20], [90, 30], [150, 14], [270, 26]], 1.800, '#FFF6C9') : `<circle cx="250" cy="34" r="15" fill="#F3D98B"/>`}
+      ${_hill('M0 110 L60 60 L120 100 L190 44 L260 96 L300 76 V200 H0Z', r ? '#7C88B0' : '#C9D8E6')}
+      <path d="M176 54 L190 44 L204 54 M48 70 L60 60 L72 70" stroke="#fff" stroke-width="3"/>
+      <path d="M100 170 L300 60 V200 H100Z" fill="${C.white}" stroke="none"/><path d="M100 170 L300 60" stroke-width="1.600"/>
+      <path d="M120 116 L300 32" stroke-width="1.600"/>${chair(160, 97)}${chair(214, 72)}${chair(266, 48)}<path d="M132 150 V110" stroke-width="4"/>
+      ${_hill('M-6 150 Q100 136 200 160 L306 150 V206 H-6Z', C.white)}
+      <rect x="226" y="140" width="50" height="32" fill="${C.wood}"/><path d="M218 142 L251 118 L284 142Z" fill="${r ? '#E9E0CF' : C.white}"/><rect x="244" y="152" width="14" height="20" fill="${r ? C.yellow : C.dwood}" stroke-width="1.600"/>
+      ${pine(120, 186, 1)}${pine(196, 190, .8)}
+      <path d="M160 150 l14 8 M178 134 l14 8" stroke="${C.blue}" stroke-width="2"/>`;
+  },
+  observatory(r) {
+    return `<rect width="300" height="200" fill="#2E3A66" stroke="none"/>
+      ${_dots([[20, 20], [60, 44], [104, 16], [150, 34], [206, 12], [262, 28], [288, 70], [130, 70], [40, 80]], 1.800, '#FFF6C9')}
+      ${r ? `<path d="M210 30 l40 -16 M150 60 l30 -12" stroke="#FFF6C9" stroke-width="2.400"/><circle cx="70" cy="40" r="13" fill="${C.orange}"/><ellipse cx="70" cy="40" rx="24" ry="5.500" stroke="${C.yellow}" stroke-width="3" transform="rotate(-18 70 40)"/>` : `<path d="M60 26 A14 14 0 1 0 76 48 A11 11 0 0 1 60 26Z" fill="#FFF6C9"/>`}
+      ${_hill('M0 136 Q110 96 220 116 Q270 124 300 140 V200 H0Z', '#56628C')}
+      <rect x="170" y="96" width="76" height="38" fill="#E9E0CF"/><path d="M166 98 A42 42 0 0 1 250 98Z" fill="#D8D2C2"/><path d="M204 57 L226 60 L222 98 H206Z" fill="#3E4A7A"/>
+      <path d="M214 76 L246 46" stroke="${C.line}" stroke-width="9"/><path d="M214 76 L246 46" stroke="${C.gray}" stroke-width="5.500"/>
+      <rect x="200" y="112" width="14" height="22" fill="${C.dwood}" stroke-width="1.600"/><rect x="178" y="106" width="12" height="10" fill="${C.yellow}" stroke-width="1.400"/><rect x="226" y="106" width="12" height="10" fill="${C.yellow}" stroke-width="1.400"/>
+      ${_hill('M0 158 Q150 144 300 156 V200 H0Z', '#6E86A6')}`;
+  },
+  magicschool(r) {
+    const tw = (x, y, w, h, c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#D9CCE6"/><path d="M${x - 5} ${y} L${x + w / 2} ${y - w * 1.5} L${x + w + 5} ${y}Z" fill="${c}"/><rect x="${x + w / 2 - 3.5}" y="${y + 12}" width="7" height="11" rx="3.500" fill="${C.yellow}" stroke-width="1.400"/>`;
+    return `<rect width="300" height="200" fill="#5A4E86" stroke="none"/>
+      ${_dots([[24, 22], [70, 44], [118, 20], [280, 30], [130, 70], [44, 96]], 1.800, '#FFF6C9')}
+      <path d="M60 30 A15 15 0 1 0 78 54 A12 12 0 0 1 60 30Z" fill="#FFF6C9"/>
+      ${r ? _burst(110, 50, C.yellow, .5) + _burst(276, 80, C.pink, .5) + `<path d="M130 100 v10 M146 84 v10 M286 110 v10" stroke="${C.cream}" stroke-width="4"/>` + _dots([[130, 97], [146, 81], [286, 107]], 3, C.yellow) : ''}
+      ${_hill('M0 140 Q120 108 220 120 Q270 126 300 142 V200 H0Z', '#7C6BA6')}
+      <rect x="170" y="96" width="92" height="46" fill="#D9CCE6"/>
+      ${tw(160, 84, 22, 58, '#3E4A7A')}${tw(250, 84, 22, 58, '#3E4A7A')}${tw(200, 58, 30, 84, C.coral)}
+      <g stroke-width="1.400">${_star(215, 8, 6, 2.700, C.yellow)}</g>
+      <path d="M204 142 v-22 a11 11 0 0 1 22 0 v22z" fill="${C.dwood}"/>
+      ${_hill('M0 160 Q150 146 300 158 V200 H0Z', '#8E7DB8')}`;
+  },
+  aquarium(r) {
+    const jelly = (x, y, c) => `<path d="M${x - 10} ${y} q-2 14 2 20 M${x} ${y} v22 M${x + 10} ${y} q2 14 -2 20" stroke="${c}" stroke-width="2"/><path d="M${x - 14} ${y} a14 13 0 0 1 28 0z" fill="${c}" stroke-width="1.800"/>`;
+    return `<rect width="300" height="200" fill="#E9E0CF" stroke="none"/>
+      <rect x="14" y="14" width="272" height="130" rx="10" fill="#8FC4D4"/>
+      <path d="M24 30 h60 M24 40 h30" stroke="#fff" stroke-width="3" opacity=".7"/>
+      ${_fish(60, 70, C.orange)}${_fish(110, 44, C.yellow)}${_fish(236, 96, C.coral)}${_fish(200, 40, C.pink)}${jelly(256, 50, '#D9C8EA')}${jelly(40, 104, '#F6C9D2')}
+      ${r ? `<path d="M120 86 Q150 62 196 76 L216 62 V100 L196 90 Q160 104 120 86Z" fill="#7FA3BF"/><circle cx="136" cy="82" r="2" fill="${C.line}" stroke="none"/><path d="M160 76 l8 -14 l6 14z" fill="#7FA3BF" stroke-width="1.800"/>` : _fish(160, 84, C.blue)}
+      <path d="M90 142 q-8 -18 0 -32 M100 142 q8 -16 0 -28 M214 142 q-8 -16 0 -30" stroke="${C.dgreen}" stroke-width="4"/>
+      <rect x="14" y="14" width="272" height="130" rx="10"/>
+      <rect x="-6" y="152" width="312" height="54" fill="#D8D2C2" stroke="none"/><path d="M0 152 H300"/>
+      <path d="M30 170 h30 M250 176 h30 M200 190 h26" stroke="#B5B1A6" stroke-width="2"/>`;
+  },
+  pearlbay(r) {
+    return `<rect width="300" height="200" fill="${r ? '#F6D3B0' : '#DCECE6'}" stroke="none"/>
+      <circle cx="${r ? 150 : 250}" cy="${r ? 80 : 34}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <path d="M-6 96 Q40 60 90 96Z M210 96 Q260 50 306 96Z" fill="#C9B79A"/>
+      <rect y="96" width="300" height="104" fill="${r ? '#8FB0C4' : '#A9CDD9'}" stroke="none"/><path d="M0 96 H300" stroke-width="1.600"/>
+      <path d="M120 116 q8 -5 16 0 M180 130 q8 -5 16 0 M90 140 q8 -5 16 0" stroke="#fff" stroke-width="2"/>
+      <path d="M-6 206 V160 Q80 140 170 150 Q260 144 306 162 V206Z" fill="${C.sand}"/>
+      <path d="M184 176 Q184 150 220 148 Q256 150 256 176Z" fill="${C.pink}"/><path d="M196 174 L204 154 M220 174 V149 M244 174 L236 154" stroke-width="1.400"/>
+      <path d="M184 176 Q220 200 256 176Z" fill="#F6D3DA"/><circle cx="220" cy="177" r="9" fill="${C.white}"/><path d="M216 174 q2 -3 5 -3" stroke="${C.sky}" stroke-width="2"/>
+      <circle cx="140" cy="184" r="5" fill="${C.white}" stroke-width="1.600"/><circle cx="154" cy="190" r="4" fill="${C.white}" stroke-width="1.600"/><circle cx="276" cy="186" r="5" fill="${C.white}" stroke-width="1.600"/>
+      ${r ? _burst(220, 156, '#FFF6C9', .7) : ''}`;
+  },
+  bazaar(r) {
+    const stall = (x, c) => `<rect x="${x}" y="112" width="74" height="46" fill="${C.wood}"/><path d="M${x - 6} 112 h86 l-8 -24 h-70z" fill="${c}"/><path d="M${x + 14} 90 l-4 20 M${x + 37} 90 v20 M${x + 60} 90 l4 20" stroke="${C.cream}" stroke-width="5" opacity=".85"/><rect x="${x + 8}" y="120" width="58" height="14" fill="${C.cream}" stroke-width="1.600"/>`;
+    return `<rect width="300" height="200" fill="${r ? '#E9A878' : '#F6E9C8'}" stroke="none"/>
+      <circle cx="${r ? 150 : 150}" cy="${r ? 70 : 30}" r="${r ? 26 : 15}" fill="${r ? C.orange : '#F3D98B'}"/>
+      <rect x="108" y="70" width="84" height="60" fill="#EBD39A"/><path d="M118 72 A32 30 0 0 1 182 72Z" fill="${C.blue}"/><path d="M150 42 v-12"/><path d="M140 130 v-22 a10 10 0 0 1 20 0 v22z" fill="${C.dwood}"/>
+      ${stall(4, C.coral)}${stall(222, C.purple)}
+      ${_dots([[22, 127], [34, 127], [46, 127], [58, 127]], 4, C.orange)}<path d="M238 132 q0 -10 6 -10 q6 0 6 10z M258 132 q0 -12 7 -12 q7 0 7 12z" fill="${C.sky}" stroke-width="1.600"/>
+      <rect x="-6" y="158" width="312" height="48" fill="#E3C27F" stroke="none"/><path d="M0 158 H300"/>
+      <path d="M96 184 h44 l6 12 h-56z" fill="${C.red}" stroke-width="1.800"/><path d="M104 190 h34" stroke="${C.yellow}" stroke-width="2.400"/>
+      ${r ? `<path d="M0 60 Q150 96 300 60" stroke-width="1.600"/>` + [40, 96, 150, 204, 260].map((x, i) => `<ellipse cx="${x}" cy="${[78, 88, 91, 88, 78][i]}" rx="6" ry="8" fill="${i % 2 ? C.yellow : C.red}" stroke-width="1.600"/>`).join('') : ''}`;
+  },
+  bigcity(r) {
+    const cs = ['#D8D2C2', '#C9D8E6', '#E9E0CF', '#C9B8D8', '#D8D2C2', '#C9D8E6'];
+    let b = '';
+    [[96, 60, 34], [132, 34, 30], [164, 76, 38], [204, 20, 32], [238, 56, 34], [274, 84, 32]].forEach((q, i) => {
+      b += `<rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${150 - q[1]}" fill="${r ? '#56628C' : cs[i]}"/>`;
+      for (let y = q[1] + 10; y < 138; y += 16) for (let x = q[0] + 6; x < q[0] + q[2] - 8; x += 12) b += `<rect x="${x}" y="${y}" width="6" height="8" fill="${r ? ((x + y) % 5 ? C.yellow : '#3E4A7A') : C.sky}" stroke="none"/>`;
+    });
+    return `<rect width="300" height="200" fill="${r ? '#2E3A66' : '#DCECE6'}" stroke="none"/>
+      ${r ? _dots([[20, 20], [60, 40], [100, 16]], 1.800, '#FFF6C9') + `<path d="M50 44 A13 13 0 1 0 64 64 A10 10 0 0 1 50 44Z" fill="#FFF6C9"/>` : `<circle cx="52" cy="36" r="15" fill="#F3D98B"/>`}
+      ${b}<path d="M220 20 v-14" stroke-width="2"/>
+      <rect x="-6" y="150" width="312" height="56" fill="#9A9488" stroke="none"/><path d="M0 150 H300"/><path d="M0 178 H300" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+      <path d="M176 164 V140 Q176 134 184 134 H250 Q262 136 264 148 V164Z" fill="${C.yellow}" stroke-width="2"/><path d="M184 140 h12 v10 h-12z M202 140 h12 v10 h-12z M220 140 h12 v10 h-12z M240 140 h12 l6 10 h-18z" fill="${C.sky}" stroke-width="1.400"/>${_wh(196, 166, 7)}${_wh(246, 166, 7)}`;
+  },
+  fireworks(r) {
+    return `<rect width="300" height="200" fill="#2B3560" stroke="none"/>
+      ${_dots([[20, 16], [140, 10], [286, 20], [10, 90], [292, 110]], 1.600, '#FFF6C9')}
+      ${_burst(70, 54, C.coral, 1.4)}${_burst(230, 44, C.yellow, 1.5)}${_burst(150, 80, C.pink, 1)}${r ? _burst(116, 30, '#9BE0B8', .9) + _burst(270, 96, C.sky, .8) + _burst(30, 100, C.yellow, .7) + `<path d="M186 16 A12 12 0 1 0 198 36 A10 10 0 0 1 186 16Z" fill="#FFF6C9"/>` : ''}
+      ${_dots([[70, 54], [230, 44], [150, 80]], 3, '#fff')}
+      <path d="M0 132 H300" stroke-width="1.600"/><rect y="132" width="300" height="34" fill="#3E4A7A" stroke="none"/>
+      <path d="M-6 132 Q150 86 306 132 V140 Q150 100 -6 140Z" fill="#56628C"/><path d="M40 122 v14 M100 110 v20 M150 106 v22 M200 110 v20 M260 122 v14" stroke-width="2"/>
+      <path d="M60 150 q8 -4 16 0 M180 156 q8 -4 16 0 M240 148 q8 -4 16 0" stroke="#8FB7CC" stroke-width="2"/>
+      <rect x="-6" y="166" width="312" height="40" fill="#6E6A8C" stroke="none"/><path d="M0 166 H300"/>
+      <path d="M24 166 v-18 M276 166 v-18" stroke-width="3"/><ellipse cx="24" cy="142" rx="7" ry="9" fill="${C.red}" stroke-width="1.600"/><ellipse cx="276" cy="142" rx="7" ry="9" fill="${C.yellow}" stroke-width="1.600"/>`;
+  }
+});
+
 </script>
 <script>
 'use strict';
@@ -3494,24 +3780,25 @@ const WEARS = {
 /* 旅行用品。once 用一次少一个；to 是带上它能去的地方 */
 const GEAR = {
   bell:     { name: '幸运铃铛', ic: 'bell',     price: 18, desc: '更容易遇见珍贵风景', once: true },
-  strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边、沙漠和金字塔', to: ['sea', 'desert', 'pyramid'] },
+  strawhat: { name: '草帽',     ic: 'strawhat', price: 45, desc: '可以去海边、沙漠、金字塔和沙漠集市', to: ['sea', 'desert', 'pyramid', 'bazaar'] },
   umbrella: { name: '小雨伞',   ic: 'umbrella', price: 55, desc: '可以去彩虹瀑布和蘑菇森林', to: ['waterfall', 'mushwood'] },
-  lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇、乐园和水晶山洞', to: ['bamboo', 'town', 'ferris', 'cave'] },
+  lantern:  { name: '小灯笼',   ic: 'lantern',  price: 60, desc: '可以去竹林、小镇、乐园、水晶山洞和烟花大会', to: ['bamboo', 'town', 'ferris', 'cave', 'fireworks'] },
   camera:   { name: '小相机',   ic: 'camera',   price: 70, desc: '更容易多带回一张明信片' },
   tent:     { name: '小帐篷',   ic: 'tent',     price: 80, desc: '可以去雪山、营地和长颈鹿草原', to: ['snow', 'camp', 'safari'] },
-  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界和珊瑚礁', to: ['ocean', 'coral'] },
+  goggles:  { name: '潜水镜',   ic: 'goggles',  price: 90, desc: '可以去海底世界、珊瑚礁和水族馆', to: ['ocean', 'coral', 'aquarium'] },
   boat:     { name: '小木船',   ic: 'boat',     price: 100, desc: '可以去椰子小岛、企鹅冰原和玩具岛', to: ['island', 'penguin', 'toyisland'] },
   hotair:   { name: '热气球',   ic: 'hotair',   price: 130, desc: '可以去云上城堡、糖果王国、彩虹桥和浮空岛', to: ['cloud', 'candy', 'rainbow', 'floatisle'] },
   rocket:   { name: '小火箭',   ic: 'rocket',   price: 180, desc: '可以去月亮上面和太空站', to: ['moon', 'spacestation'] },
   ticket:   { name: '游园年票', ic: 'ticket',   price: 75,  desc: '可以去动物园、小火车站、夜市和马戏团', to: ['zoo', 'station', 'nightmarket', 'circus'] },
-  rod:      { name: '钓鱼竿',   ic: 'rod',      price: 85,  desc: '可以去渔港、贝壳沙滩和水乡', to: ['harbor', 'beach', 'watertown'] },
+  rod:      { name: '钓鱼竿',   ic: 'rod',      price: 85,  desc: '可以去渔港、贝壳沙滩、水乡和珍珠湾', to: ['harbor', 'beach', 'watertown', 'pearlbay'] },
   compass:  { name: '指南针',   ic: 'compass',  price: 95,  desc: '可以去热带雨林、熊猫竹谷、恐龙谷和树屋村', to: ['jungle', 'pandavale', 'dinovalley', 'treehouse'] },
-  sled:     { name: '小雪橇',   ic: 'sled',     price: 110, desc: '可以去极光冰原、冰屋村和北极冰川', to: ['aurora', 'igloo', 'glacier'] },
+  sled:     { name: '小雪橇',   ic: 'sled',     price: 110, desc: '可以去极光冰原、冰屋村、北极冰川和滑雪场', to: ['aurora', 'igloo', 'glacier', 'skiresort'] },
   binoculars: { name: '望远镜', ic: 'binoculars', price: 115, desc: '可以去鲸鱼湾和火烈鸟岛', to: ['whale', 'flamingo'] },
+  wand:     { name: '魔法棒',   ic: 'wand',     price: 140, desc: '可以去魔法学院和天文台', to: ['magicschool', 'observatory'] },
   treasure: { name: '藏宝图',   ic: 'treasure', price: 120, desc: '可以去海盗湾、古城堡和火山口', to: ['piratebay', 'castle', 'volcano'] }
 };
-const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill', 'vineyard', 'sunfield', 'lavender', 'beefarm', 'clocktower'];
-const CAR_DESTS = ['track', 'canyon', 'coastroad'];   // 只有开车才到得了的地方
+const BASE_DESTS = ['flower', 'rice', 'spring', 'sakura', 'meadow', 'lake', 'orchard', 'maple', 'farm', 'teahill', 'vineyard', 'sunfield', 'lavender', 'beefarm', 'clocktower', 'berryfarm', 'kitehill'];
+const CAR_DESTS = ['track', 'canyon', 'coastroad', 'bigcity'];   // 只有开车才到得了的地方
 /* 各地小铺的本地货：住在哪一类地方（和地图上圆点的颜色一样），小铺里就多卖那一类的东西。
  * 每个地方从自己那一类里轮着挑六样，再加上当地的特产，所以每个地方卖的都不太一样 */
 const LOCAL = {
@@ -3568,7 +3855,10 @@ const STICKERS = [
   { id: 's27', ic: 'treasure',  name: '大探险家',     c: 'places', n: 40 },
   { id: 's28', ic: 'chess',     name: '棋盘高手',     c: 'game', n: 50 },
   { id: 's29', ic: 'heart',     name: '动物园园长',   c: 'pals', n: 8 },
-  { id: 's30', ic: 'binoculars', name: '走到世界尽头', c: 'places', n: 55 }
+  { id: 's30', ic: 'binoculars', name: '走到世界尽头', c: 'places', n: 55 },
+  { id: 's31', ic: 'trophy',    name: '成长之星',     c: 'level', n: 20 },
+  { id: 's32', ic: 'crown',     name: '满级王者',     c: 'level', n: 50 },
+  { id: 's33', ic: 'wand',      name: '地图全点亮',   c: 'places', n: 68 }
 ];
 
 /* ---------- 存档 ---------- */
@@ -3615,7 +3905,17 @@ function loadState() {
     if (s.floor !== 2 && s.floor !== 0) s.floor = 1;
     s.furn.put.forEach(p => { if ((FURNS[p.id].car || p.id === 'parkmat') && p.f !== 0) p.f = 0; });   // 旧存档：小车和停车位从一楼搬到负一楼的车库
     if (!DESTS[s.home]) s.home = null;
-    s.pals = (Array.isArray(s.pals) ? s.pals : []).filter(p => p && PETS[p.type] && p.type !== s.pet.type);
+    // 旧存档里的小伙伴只记了种类和名字：补上它自己的状态和等级，从 1 级开始
+    s.pals = (Array.isArray(s.pals) ? s.pals : []).map(p => p && p.pet ? p : p && p.type ? newPal(p.type, p.name) : null).filter(p => p && PETS[p.pet.type] && p.pet.type !== s.pet.type);
+    s.pals.forEach(p => {
+      const d0 = newPal(p.pet.type, p.pet.name);
+      for (const k in d0) if (p[k] === undefined) p[k] = d0[k];
+      p.stats = Object.assign(d0.stats, p.stats); p.level = clamp(p.level || 1, 1, MAX_LEVEL);
+      if (p.trip && !DESTS[p.trip.dest]) p.trip = null;
+      if (p.sick && !ILLS[p.sick.type]) p.sick = null;
+      if (p.runaway && !ILLS[p.runaway.type]) p.runaway = null;
+    });
+    s.level = clamp(s.level || 1, 1, MAX_LEVEL);
     if (!s.meds) s.meds = {};
     return s;
   } catch (e) { return null; }
@@ -3688,8 +3988,9 @@ function itemBtn(attr, ic, name, sub, sel) {
 }
 
 /* ---------- 成长 ---------- */
-const needExp = lv => 40 + lv * 30;
-const levelTitle = lv => lv < 3 ? '宝宝' : lv < 6 ? '小可爱' : lv < 10 ? '小明星' : '超级明星';
+const MAX_LEVEL = 50;                                   // 每只宠物最高 50 级
+const needExp = lv => 40 + Math.min(lv, 12) * 30;      // 升下一级要多少经验；12 级以后每级都一样多，不然后面太难升
+const levelTitle = lv => lv < 3 ? '宝宝' : lv < 6 ? '小可爱' : lv < 10 ? '小明星' : lv < 20 ? '超级明星' : lv < 30 ? '闪亮巨星' : lv < 40 ? '冒险大师' : lv < MAX_LEVEL ? '传奇伙伴' : '满级王者';
 function addStat(k, v) { S.stats[k] = clamp(S.stats[k] + v, 0, 100); }
 function addCoins(n) {
   S.coins += n;
@@ -3697,12 +3998,14 @@ function addCoins(n) {
   Sound.sfx.coin(); updateHUD();
 }
 function addExp(n) {
+  if (S.level >= MAX_LEVEL) { S.exp = 0; return; }   // 满级以后不再涨经验
   S.exp += n;
   let up = false;
-  while (S.exp >= needExp(S.level)) { S.exp -= needExp(S.level); S.level++; S.coins += 20; up = true; }
+  while (S.level < MAX_LEVEL && S.exp >= needExp(S.level)) { S.exp -= needExp(S.level); S.level++; S.coins += 20; up = true; }
+  if (S.level >= MAX_LEVEL) S.exp = 0;
   if (up) {
     Sound.sfx.level(); confetti();
-    banner('长大啦！Lv.' + S.level + ' ' + levelTitle(S.level));
+    banner((S.level >= MAX_LEVEL ? '满级啦！Lv.' : '长大啦！Lv.') + S.level + ' ' + levelTitle(S.level));
     setTimeout(() => toast('升级奖励：橡果 +20'), 2500);
     renderPet(true);
   }
@@ -3713,7 +4016,7 @@ function afterAction() { updateHUD(); renderPet(); checkStickers(); save(); }
 function updateHUD() {
   $('#hud-petname').textContent = S.pet.name;
   $('#hud-lv').innerHTML = 'Lv.' + S.level + '<em> ' + levelTitle(S.level) + '</em>';
-  $('#hud-exp').style.width = (S.exp / needExp(S.level) * 100) + '%';
+  $('#hud-exp').style.width = (S.level >= MAX_LEVEL ? 100 : Math.min(100, S.exp / needExp(S.level) * 100)) + '%';
   $('#hud-coin b').textContent = S.coins;
   $('#hud-ill').textContent = S.runaway ? '离家出走了' : S.sick && !S.trip ? ILLS[S.sick.type].name : '';
   for (const k in S.stats) {
@@ -4276,7 +4579,7 @@ function openPack() {
   if (!tools.length && !S.gear.bell) html += '<p class="hint" style="margin-top:0">商店的“旅行用品”里有草帽、雨伞、小木船、热气球、小火箭……<br>带上它们能去更远的地方。</p>';
   else html += '<div class="item-grid">' + tools.map(k => itemBtn(`data-pt="${k}"`, GEAR[k].ic, GEAR[k].name, GEAR[k].desc)).join('') +
     (S.gear.bell ? itemBtn('data-pb="1"', 'bell', '幸运铃铛', '×' + S.gear.bell) : '') + '</div>';
-  const cars = myCars();
+  const cars = myCars().filter(k => !carOut(k));   // 被别的宠物开出去的车不能再开
   if (cars.length) {   // 有车就默认开最快的那辆，点一下可以不开
     sel.car = cars.slice().sort((a, b) => FURNS[b].car - FURNS[a].car)[0];
     html += '<h3>开车去（路上更快，点一下可以不开）</h3><div class="item-grid">' + cars.map(k => itemBtn(`data-pc="${k}"`, FURNS[k].ic, FURNS[k].name, FURNS[k].tip, k === sel.car)).join('') + '</div>';
@@ -4501,47 +4804,116 @@ function renderHomeView() {
   $('#home-tag').innerHTML = icon('mapic') + '<em>' + homeName() + '</em>';
 }
 
-/* ---------- 家里的其他小伙伴 ----------
- * S.pet 是现在陪着你的那一只，S.pals 是家里另外几只。大家一起吃饭、一起长大，随时可以换一只来陪你 */
+/* ---------- 家里的每一只宠物 ----------
+ * 每只宠物都是单独养的：各有各的饱饱、水分、干净、开心、精力，各有各的等级，也各自去旅行、各自生病。
+ * 现在正在照顾的那一只，它的这些东西直接放在 S 上（S.pet、S.stats、S.level……）；
+ * 家里其他几只收在 S.pals 里，每一只是一包同样的东西（PET_KEYS 里的那几项）。
+ * 换一只来照顾，就是把它那一包和 S 上的对调。
+ * 没在照顾的宠物也会慢慢变饿变渴，但最低只掉到 30，不会在你看不见的时候生病 */
+const PET_KEYS = ['pet', 'level', 'exp', 'stats', 'wear', 'sleeping', 'trip', 'sick', 'runaway', 'risk', 'sweet', 'immune'];
 const PET_PRICE = 180;
+const newPal = (type, name) => ({ pet: { type, name }, level: 1, exp: 0, stats: { hunger: 62, thirst: 68, clean: 74, happy: 70, energy: 86 }, wear: null, sleeping: false, trip: null, sick: null, runaway: null, risk: NO_RISK(), sweet: 0, immune: 0 });
+const tripDone = t => !!t && (Date.now() - t.start) / 1000 * SPEED >= t.dur;
+const palAway = b => !!(b.runaway || (b.trip && !tripDone(b.trip)));   // 这只不在家（旅行回来了、还没去迎接的算在家）
+const carOut = id => !!((S.trip && S.trip.car === id) || S.pals.some(b => b.trip && b.trip.car === id));   // 这辆车是不是被哪只宠物开出去了
+const topLevel = () => Math.max(S.level, ...S.pals.map(b => b.level || 1));
+const lowest = st => Math.min(st.hunger, st.thirst, st.clean, st.happy, st.energy);
+function palMood(b) {
+  if (b.sleeping) return 'sleep';
+  if (b.sick) return b.sick.type;
+  const mn = lowest(b.stats);
+  return mn < 25 ? 'sad' : mn < 45 ? 'normal' : 'happy';
+}
+const palNote = b => b.runaway ? '在栗子家' : b.trip ? (tripDone(b.trip) ? '旅行回来了' : '旅行中') : b.sick ? ILLS[b.sick.type].short : b.sleeping ? '在睡觉' : lowest(b.stats) < 35 ? '想要照顾' : '';
 let palSig = '';
 function renderPals(force) {
   const el = $('#pals'); if (!el) return;
-  const sig = S.pals.map(p => p.type).join(',') + '|' + (S.sleeping ? 1 : 0);
+  const show = S.pals.map((b, i) => ({ b, i })).filter(x => !palAway(x.b)).slice(0, 4);
+  const sig = show.map(x => [x.i, x.b.pet.type, palMood(x.b), x.b.wear || '', palNote(x.b)].join(':')).join('|');
   if (!force && sig === palSig) return;
   palSig = sig;
-  el.innerHTML = S.pals.slice(0, 4).map((p, i) => `<button class="pal p${i}" data-pal="${p.type}" title="${esc(p.name)}">${petSVG(p.type, S.sleeping ? 'sleep' : 'happy')}</button>`).join('');
+  el.innerHTML = show.map((x, n) => {
+    const note = palNote(x.b);
+    return `<button class="pal p${n}" data-pal="${x.i}" title="${esc(x.b.pet.name)}">${petSVG(x.b.pet.type, palMood(x.b), x.b.wear)}${note && note !== '在睡觉' ? `<i class="pal-tag">${note}</i>` : ''}</button>`;
+  }).join('');
 }
-function openPal(type) {
-  const p = S.pals.find(q => q.type === type); if (!p || decor || bath) return;
-  Sound.sfx[PETS[type].fly ? 'chirp' : 'pop']();
-  const m = openModal(`<div class="hero">${petSVG(type, 'happy')}</div><h2>${esc(p.name)}</h2><p>${PETS[type].name} · ${PETS[type].desc}</p>
-    <div class="row"><button class="btn green" id="pal-swap">换它来陪我</button><button class="btn plain" data-close>摸摸头就好</button></div>`);
-  $('#pal-swap', m).onclick = () => { closeModal(); swapPet(type); };
+const miniBars = st => '<div class="mini-stats">' + ['hunger', 'thirst', 'clean', 'happy', 'energy'].map(k => `<span class="ms" data-k="${k}"><i style="width:${Math.round(st[k])}%"></i></span>`).join('') + '</div>';
+function petRow(b, i) {   // i < 0 表示现在正在照顾的这一只
+  const note = i < 0 ? (S.runaway ? '在栗子家' : S.trip ? '旅行中' : S.sick ? ILLS[S.sick.type].short : S.sleeping ? '在睡觉' : '') : palNote(b);
+  return `<div class="pet-row${i < 0 ? ' cur' : ''}"><div class="pr-pic">${petSVG(b.pet.type, i < 0 ? 'happy' : palMood(b), b.wear)}</div>` +
+    `<div class="pr-info"><b>${esc(b.pet.name)}</b> <span class="lv">Lv.${b.level}</span>${note ? ` <span class="pr-note">${note}</span>` : ''}${miniBars(b.stats)}</div>` +
+    (i < 0 ? '<button class="btn small gray" disabled>正在照顾</button>' : `<button class="btn small green" data-switch="${i}">照顾它</button>`) + '</div>';
 }
-function swapPet(type) {
-  const i = S.pals.findIndex(q => q.type === type); if (i < 0 || bath) return;
-  if (blocked()) return;
-  const cur = S.pet; S.pet = S.pals[i]; S.pals[i] = cur;
-  petSig = ''; resetIdle();
-  renderPet(true); renderPals(true); updateHUD(); updateActions(); renderWall(); renderAlert();
+/* 点左上角的头像：看看家里所有的宠物，换一只来照顾 */
+function openPets() {
+  if (bath || decor) return;
+  Sound.sfx.click();
+  const m = openModal(`<h2>我的宠物</h2><p class="hint" style="margin:0 0 8px">每只宠物都要单独照顾，各有各的等级，最高 Lv.${MAX_LEVEL}。<br>没在照顾的也会慢慢变饿，但不会生病</p>` +
+    petRow(S, -1) + S.pals.map((b, i) => petRow(b, i)).join('') +
+    '<div class="row"><button class="btn small plain" id="pets-shop">再领养一只</button></div>');
+  m.addEventListener('click', e => { const b = e.target.closest('[data-switch]'); if (b) { closeModal(); switchPet(+b.dataset.switch); } });
+  $('#pets-shop', m).onclick = () => { closeModal(); shopTab = 'pet'; switchScene('shop'); };
+}
+function openPal(i) {
+  const b = S.pals[i]; if (!b || decor || bath) return;
+  Sound.sfx[PETS[b.pet.type].fly ? 'chirp' : 'pop']();
+  const note = palNote(b);
+  const m = openModal(`<div class="hero">${petSVG(b.pet.type, palMood(b), b.wear)}</div><h2>${esc(b.pet.name)} <span class="lv">Lv.${b.level}</span></h2><p>${PETS[b.pet.type].name}${note ? ' · ' + note : ''}</p>${miniBars(b.stats)}
+    <div class="row"><button class="btn green" id="pal-swap">换它来照顾</button><button class="btn plain" data-close>摸摸头就好</button></div>`);
+  $('#pal-swap', m).onclick = () => { closeModal(); switchPet(i); };
+}
+/* 换一只来照顾：把它那一包东西和 S 上的对调 */
+function switchPet(i) {
+  const b = S.pals[i]; if (!b || bath || floorBusy || Games.active) return;
+  if (decor) toggleDecor();
+  const mine = {};
+  PET_KEYS.forEach(k => { mine[k] = S[k]; S[k] = b[k]; });
+  S.pals[i] = mine;
+  petSig = ''; tempMood = null; resetIdle(); $('#bubble').classList.remove('show');
+  renderPet(true); renderPals(true); updateHUD(); updateActions(); renderAway(); renderAlert(); renderFurn(); playSceneMusic();
   if (scene === 'shop') renderShop();
-  Sound.sfx.ok(); setTempMood('joy', 1600); say('换我来陪你啦！我是' + S.pet.name + '~', 3000);
+  if (scene === 'album') renderAlbum();
+  Sound.sfx.ok();
+  if (S.trip) tickTrip();   // 它要是已经旅行回来了，马上迎接
+  else if (!gone() && !S.sleeping && !S.sick) { setTempMood('joy', 1400); say(pick(['换我啦！我是' + S.pet.name + '~', '轮到我啦，一起玩吧！']), 2800); }
   save();
 }
 function adoptPet(type) {
-  if (!PETS[type] || S.pet.type === type || S.pals.some(p => p.type === type)) return;
+  const have = t => S.pet.type === t || S.pals.some(b => b.pet.type === t);
+  if (!PETS[type] || have(type)) return;
   if (S.coins < PET_PRICE) { Sound.sfx.bad(); toast('橡果不够啦，去游乐场玩游戏捡一些吧'); return; }
   const m = openModal(`<div class="hero">${petSVG(type, 'happy')}</div><h2>领养${PETS[type].name}</h2><p>给新伙伴起个名字吧</p>
     <input id="ad-name" class="text-input" maxlength="6" value="${PETS[type].defName}" autocomplete="off">
     <div class="row"><button class="btn green" id="ad-ok">带它回家（${acorns(PET_PRICE)}）</button></div>`);
   $('#ad-ok', m).onclick = () => {
-    if (S.coins < PET_PRICE || S.pals.some(p => p.type === type)) { closeModal(); return; }
+    if (S.coins < PET_PRICE || have(type)) { closeModal(); return; }
     const name = ($('#ad-name', m).value || '').trim().slice(0, 6) || PETS[type].defName;
-    S.coins -= PET_PRICE; S.pals.push({ type, name });
+    S.coins -= PET_PRICE; S.pals.push(newPal(type, name));
     closeModal(); Sound.sfx.level(); confetti(); banner('欢迎 ' + name + ' 来到家里');
     renderPals(true); updateHUD(); renderShop(); checkStickers(); save();
   };
+}
+/* 没在照顾的宠物：慢慢变饿变渴（最低到 30），睡着的恢复精力，出门旅行的照样寄明信片 */
+function tickPals(dt) {
+  S.pals.forEach(b => {
+    const st = b.stats, t = b.trip;
+    if (t) {
+      const el = (Date.now() - t.start) / 1000 * SPEED;
+      if (!t.mailed && el >= t.dur * .5) {
+        t.mailed = true; S.mail.push(t.card); Sound.sfx.mail();
+        if (!Games.active) toast('叮咚~ ' + b.pet.name + ' 寄来了一张明信片');
+        renderMailbox(); updateDots();
+      }
+      if (el >= t.dur && !t.told) { t.told = 1; if (!Games.active) toast(b.pet.name + ' 旅行回来了，换它出来看看带回了什么'); }
+      return;
+    }
+    if (b.runaway) return;
+    if (b.sleeping) { st.energy = clamp(st.energy + 1.6 * dt, 0, 100); if (st.energy >= 100) b.sleeping = false; return; }
+    if (Games.active) return;
+    const dec = (k, r) => { if (st[k] > 30) st[k] = Math.max(30, st[k] - r * dt); };
+    dec('hunger', .1); dec('thirst', .11); dec('clean', .045); dec('happy', .06); dec('energy', .03);
+  });
+  renderPals();
 }
 
 /* ---------- 旅行手帐（明信片 / 特产 / 贴纸） ---------- */
@@ -4769,11 +5141,11 @@ function renderShop() {
     h = '<p class="shop-note">开车去旅行，路上更快，还能去只有开车才到得了的地方。有了车，搬家也不用花钱</p>';
     for (const k in FURNS) if (FURNS[k].car) h += furnCard(k, 'car');
   } else if (shopTab === 'pet') {
-    h = '<p class="shop-note">家里可以养好几只小伙伴，大家一起吃饭、一起长大。点“换它来”，就由它陪你玩</p>';
+    h = '<p class="shop-note">家里可以养好几只宠物。每只都要单独照顾，各有各的等级；点“照顾它”或左上角的头像，可以换一只来照顾</p>';
     for (const k in PETS) {
-      const p = PETS[k], pal = S.pals.find(q => q.type === k), mine = S.pet.type === k;
-      h += `<div class="sitem"><div class="thumb pet-thumb">${petSVG(k, 'happy')}</div><b>${mine ? esc(S.pet.name) : pal ? esc(pal.name) : p.name}</b><small>${mine || pal ? p.name : p.desc}</small><small></small>` +
-        (mine ? '<button class="btn small gray" disabled>正陪着你</button>' : pal ? `<button class="btn small green" data-buy="swap:${k}">换它来</button>` : `<button class="btn small" data-buy="pet:${k}">${acorns(PET_PRICE)}</button>`) + '</div>';
+      const p = PETS[k], pi = S.pals.findIndex(q => q.pet.type === k), pal = S.pals[pi], mine = S.pet.type === k;
+      h += `<div class="sitem"><div class="thumb pet-thumb">${petSVG(k, 'happy')}</div><b>${mine ? esc(S.pet.name) : pal ? esc(pal.pet.name) : p.name}</b><small>${mine || pal ? p.name : p.desc}</small><small>${mine ? 'Lv.' + S.level : pal ? 'Lv.' + pal.level : ''}</small>` +
+        (mine ? '<button class="btn small gray" disabled>正在照顾</button>' : pal ? `<button class="btn small green" data-buy="swap:${pi}">照顾它</button>` : `<button class="btn small" data-buy="pet:${k}">${acorns(PET_PRICE)}</button>`) + '</div>';
     }
   } else {
     for (const k in GEAR) { const g = GEAR[k]; h += card(g.ic, g.name, g.desc, g.once ? '用一次少一个 · 有 ' + (S.gear[k] || 0) + ' 个' : '可以一直用', g.price, 'gear', k, !g.once && !!S.gear[k]); }
@@ -4782,7 +5154,7 @@ function renderShop() {
 }
 function buy(kind, id, btn) {
   if (kind === 'pet') { adoptPet(id); return; }
-  if (kind === 'swap') { swapPet(id); return; }
+  if (kind === 'swap') { switchPet(+id); return; }
   if (kind === 'souv' && !(S.home && DESTS[S.home].souv === id)) return;   // 特产只有住在当地才买得到
   const item = kind === 'souv' ? Object.assign({ price: souvPrice(id) }, SOUVS[id]) : { food: FOODS, seed: SEEDS, wear: WEARS, gear: GEAR, med: MEDS, furn: FURNS, car: FURNS }[kind][id];
   if (!item) return;
@@ -4825,7 +5197,7 @@ function progress(key) {
   if (before < t.need && before + 1 >= t.need) setTimeout(() => toast('任务完成：' + t.name + '，去领奖励吧'), 900);
   updateDots();
 }
-function stickerValue(s) { return s.c === 'level' ? S.level : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : s.c === 'cars' ? myCars().length : s.c === 'pals' ? S.pals.length + 1 : s.c === 'places' ? Object.keys(DESTS).filter(beenTo).length : (S.counters[s.c] || 0); }
+function stickerValue(s) { return s.c === 'level' ? topLevel() : s.c === 'cards' ? Object.keys(S.cards).length : s.c === 'recipes' ? Object.keys(S.cookbook).length : s.c === 'furn' ? S.furn.own.length : s.c === 'cars' ? myCars().length : s.c === 'pals' ? S.pals.length + 1 : s.c === 'places' ? Object.keys(DESTS).filter(beenTo).length : (S.counters[s.c] || 0); }
 function checkStickers() {
   STICKERS.forEach(s => {
     if (!S.stickers.includes(s.id) && stickerValue(s) >= s.n) {
@@ -4858,7 +5230,7 @@ function openMenu() {
   const m = openModal(`<h2>设置</h2><p class="hint" style="margin:0 0 8px">这一轮已经玩了 ${Math.floor(PT.secs / 60)} 分钟，玩满 ${PLAY_LIMIT / 60} 分钟要休息 ${COOL_DOWN / 60} 分钟</p>
     <div class="row"><button class="btn small plain" id="m-rename">改名字</button><button class="btn small green" id="m-title">回到封面</button></div>
     <h3>给爸爸妈妈的话</h3>
-    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。每连续玩 15 分钟会强制休息 5 分钟，倒计时结束才能继续（中途离开 5 分钟以上会重新计时）。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。在手帐的地图上点一个去过的地方可以搬家；住在不同的地方，商店的“本地”里会多出当地才有的东西。商店的“宠物”里可以再领养小伙伴。</p>
+    <p style="font-size:15px;text-align:left">进度会自动保存在这台设备的浏览器里。一次旅行大约 2～4 分钟，关掉游戏时间也照常走。每连续玩 15 分钟会强制休息 5 分钟，倒计时结束才能继续（中途离开 5 分钟以上会重新计时）。宠物太脏、太饿、太渴或太累时，会先出现症状并提示还有多久会生病；生病后吃药加休息就好。如果生病后 10 分钟一直不吃药（关掉游戏的时间也算），它会离家出走，带上药和它最爱的食物就能接回来。在手帐的地图上点一个去过的地方可以搬家；住在不同的地方，商店的“本地”里会多出当地才有的东西。商店的“宠物”里可以再领养；每只宠物单独照顾、单独升级（最高 50 级），点左上角的头像可以换一只来照顾。</p>
     <div class="row"><button class="btn small gray" id="m-reset">重新领养一只</button></div>`);
   $('#m-rename', m).onclick = () => {
     const m2 = openModal(`<h2>新名字</h2><input id="rn" class="text-input" maxlength="6" value="${esc(S.pet.name)}" autocomplete="off"><div class="row"><button class="btn" id="rn-ok">好啦</button></div>`);
@@ -5115,7 +5487,7 @@ function cardSlotsHTML() {
   }).join('');
 }
 function renderFurn() {
-  $('#furn').innerHTML = S.furn.put.filter(p => p.f === S.floor && FURNS[p.id] && !(S.trip && S.trip.car === p.id)).map(p =>
+  $('#furn').innerHTML = S.furn.put.filter(p => p.f === S.floor && FURNS[p.id] && !carOut(p.id)).map(p =>
     `<div class="fi ${FURNS[p.id].type}${decor && decor.sel === p.id ? ' sel' : ''}" data-fid="${p.id}" style="${furnStyle(p)}">${furnSVG(p.id)}${p.id === 'cards' ? cardSlotsHTML() : ''}<button class="stow" data-stow="${p.id}">收起来</button></div>`
   ).join('');
 }
@@ -5148,7 +5520,7 @@ function toggleDecor() {
 function renderDecorBar() {
   const bar = $('#decor-bar');
   if (!decor) { bar.innerHTML = ''; return; }
-  const spare = S.furn.own.filter(id => FURNS[id] && !S.furn.put.some(p => p.id === id) && !(S.trip && S.trip.car === id));
+  const spare = S.furn.own.filter(id => FURNS[id] && !S.furn.put.some(p => p.id === id) && !carOut(id));
   bar.innerHTML = '<div class="tray">' + (spare.length
     ? spare.map(id => `<button data-place="${id}" title="${FURNS[id].name}">${furnSVG(id)}</button>`).join('')
     : '<span class="tip">家具都摆出来了。想要更多，去商店的“家具”看看。<br>点右边的楼梯，可以去布置另一层。</span>') +
@@ -5348,6 +5720,12 @@ function applyOffline() {
     if (k && !k.treated) k.age += Math.max(0, real - restGap);   // 生病没吃药就关掉游戏，时间照样算（强制休息的时间除外）
     if (k && k.treated && (ILLS[k.type].rest !== 'sleep' || slept)) k.rest += el;
   }
+  S.pals.forEach(b => {   // 没在照顾的宠物：离线时也只掉到 30
+    if (b.trip || b.runaway) return;
+    const s = b.stats, low = (k, rate) => { s[k] = Math.max(Math.min(s[k], 30), s[k] - el * rate * 0.2); };
+    if (b.sleeping) { s.energy = clamp(s.energy + el * 1.6, 0, 100); if (s.energy >= 100) b.sleeping = false; }
+    else { low('energy', 0.03); low('hunger', 0.1); low('thirst', 0.11); low('clean', 0.045); low('happy', 0.06); }
+  });
   S.plots.forEach(p => {
     if (!p || p.growth >= 100) return;
     const eff = Math.min(el, p.water / 100 * 45);
@@ -5371,7 +5749,7 @@ function tick() {
   } else if (!Games.active) {
     dec('hunger', 0.1); dec('thirst', 0.11); dec('clean', 0.045); dec('happy', 0.06); dec('energy', 0.03);
   }
-  tickGarden(dt); tickTrip(); if (S) { tickVisitor(dt); tickSick(dt); }
+  tickGarden(dt); tickTrip(); if (S) { tickVisitor(dt); tickSick(dt); tickPals(dt); }
   updateHUD(); renderPet();
   tickN++;
   if (tickN % 5 === 0) save();
@@ -5459,7 +5837,8 @@ function bindEvents() {
   $('#floor-btn').onclick = () => goFloor(1);
   $('#floor-btn2').onclick = () => goFloor(-1);
   $('#home-tag').onclick = () => { if (!bath) openMap(); };
-  $('#pals').addEventListener('click', e => { const b = e.target.closest('[data-pal]'); if (b) openPal(b.dataset.pal); });
+  $('#pals').addEventListener('click', e => { const b = e.target.closest('[data-pal]'); if (b) openPal(+b.dataset.pal); });
+  $('.hud-pet').onclick = () => openPets();
   // 地图上的每个地方都可以点（手帐里的地图和弹出来的地图都算）
   document.addEventListener('click', e => { const s = e.target.closest ? e.target.closest('[data-spot]') : null; if (s && S) openPlace(s.dataset.spot, !!s.closest('.modal')); });
   $('#decor-bar').addEventListener('click', e => {

@@ -522,7 +522,7 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .modal.wide { max-width: 880px; }
 .map-say { font-weight: bold; margin: 0 0 8px; min-height: 1.5em; text-align: center; }
 .mapbox { border: 2.5px solid var(--line); border-radius: var(--r3); overflow: auto; background: #BFDDE3; max-height: 66dvh; -webkit-overflow-scrolling: touch; }
-.mapin { min-width: 820px; max-width: calc(64dvh * 1.530); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
+.mapin { min-width: 820px; max-width: calc(64dvh * 1.224); margin: 0 auto; }   /* 屏幕够高就整张显示，不够就可以拖着看 */
 .mapin svg.map { display: block; width: 100%; height: auto; font-family: inherit; }
 .map-pet { transition: transform 1s linear; pointer-events: none; }
 .spot { cursor: pointer; }
@@ -553,3 +553,18 @@ i[data-ic] { font-style: normal; display: inline-flex; }
 .gm i { position: absolute; inset: 9%; border-radius: 50%; border: 2px solid var(--line); background: #FFFDF6; }
 .gm.b i { background: #5B4636; }
 .gm.new i { box-shadow: 0 0 0 3px rgba(224, 138, 112, .85); }
+
+/* ---------- 家里的每一只宠物：头像可以点、宠物列表、小状态条、小伙伴头上的小牌子 ---------- */
+.hud-pet { cursor: pointer; }
+.pet-row { display: flex; align-items: center; gap: 8px; text-align: left; background: var(--paper); border: 2px solid var(--line); border-radius: var(--r3); padding: 6px 8px; margin-bottom: 7px; }
+.pet-row.cur { background: #FBEFC4; }
+.pr-pic { width: 54px; flex: none; }
+.pr-pic svg { width: 100%; display: block; overflow: visible; }
+.pr-info { flex: 1; min-width: 0; }
+.pr-note { font-size: 12.5px; opacity: .8; white-space: nowrap; }
+.mini-stats { display: flex; gap: 3px; margin-top: 5px; }
+.modal > .mini-stats { max-width: 240px; margin: 6px auto 12px; }
+.ms { flex: 1; height: 8px; border: 1.5px solid var(--line); border-radius: 5px; background: var(--paper2); overflow: hidden; }
+.ms i { display: block; height: 100%; }
+.ms[data-k=hunger] i { background: #E6A15C; } .ms[data-k=thirst] i { background: #8FB7CC; } .ms[data-k=clean] i { background: #B7A3CC; } .ms[data-k=happy] i { background: #E08A70; } .ms[data-k=energy] i { background: #EBC66B; }
+.pal-tag { position: absolute; left: 50%; top: -4px; transform: translateX(-50%); white-space: nowrap; font-style: normal; font-size: 12px; font-weight: bold; line-height: 1.5; background: var(--paper2); border: 1.5px solid var(--line); border-radius: var(--r1); padding: 0 7px; }
